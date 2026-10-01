@@ -61,6 +61,10 @@ Print host JSON with your actual paths from inside MCPJAM using
 Edit mcp_server_sdk.py above its main guard. Implement set_swing(amount: int):
 register it, describe it, validate 0–75, send the set_swing backend command,
 return the actual acknowledgement. Restart the host connection and rediscover.
+AI may generate the short function. You must explain the contract, scope,
+validation and outcome checks. The main workshop emphasizes theory and application;
+full code listings are appendix references, not a memorization requirement.
+Practise foundational and design questions with [INTERVIEW_PREP.md](INTERVIEW_PREP.md).
 
 Call 35, 0, 75, and 100 explicitly. Invalid 100 must produce a tool error before
 the backend call. Read the `swing` key in get_state's result and allow the UI to

@@ -1,4 +1,4 @@
-# MCPJAM Studio: build an MCP server
+# Introduction to MCP servers with MCPJAM
 
 MCPJAM is a small Python DAW used as the backend for an MCP workshop. By the
 end, students will have built and tested a real MCP server with the official
@@ -36,8 +36,8 @@ extract it so the inner package folder is named `MCPJAM`. Both routes contain
 the same starter and completed solution. Read
 [Student Quick Start](Student-Quick-Start.md), or follow the
 platform commands below. The
-[workshop slides](MCPJAM-Workshop-Windows-and-Mac.pptx) and
-[PDF](MCPJAM-Workshop-Windows-and-Mac.pdf) are also included.
+[workshop slides](MCPJAM-Intro-Theory-and-Production.pptx) and
+[PDF](MCPJAM-Intro-Theory-and-Production.pdf) are also included.
 
 Keep the package folder named `MCPJAM`. Install dependencies before
 class, from inside that folder. The code requires Python 3.10+; for a new Mac
@@ -181,14 +181,22 @@ code.
 Install dependencies and rehearse host setup **before class**. Basic Python
 functions and dictionaries are assumed; no previous MCP experience is needed.
 
-1. **0-12 minutes:** Demo, architecture, capabilities.
-2. **12-20 minutes:** Connect, observe/act/verify, protocol lifecycle.
-3. **20-30 minutes:** Read a tool, validation, exercise briefing.
-4. **30-45 minutes:** Build `set_swing`, test, troubleshoot.
-5. **45-57 minutes:** Guided `mute_track`, security, remote and advanced concepts.
-6. **57-60 minutes:** Demonstrate and explain the server.
+1. **0-13 minutes:** Definitions, architecture, primitives and comparisons.
+2. **13-25 minutes:** Use cases, revisions, transports and tool contracts.
+3. **25-31 minutes:** Outcome verification and one short code excerpt.
+4. **31-40 minutes:** AI-assisted tool exercise, tests and failure reasoning.
+5. **40-55 minutes:** Security and six production engineering patterns.
+6. **55-60 minutes:** Interview design scenario and recall.
 
-One implemented new tool is required; `mute_track` is a guided/stretch task.
+The main slides emphasize theory and where to apply it. Full code and OS setup
+commands are appendix references. AI can generate the short exercise function;
+students still explain and verify its contract, validation and effects.
+[INTERVIEW_PREP.md](INTERVIEW_PREP.md) covers 20 foundational/design questions
+and the difference between practices demonstrated here and production extensions.
+Mute is optional follow-up. The code remains pinned to v1 SDK 1.19.0; the slides
+also explain the newer July 2026 protocol changes rather than presenting the
+older handshake as universal behavior.
+
 The backend acknowledges writes when queued, so read `get_state` after the UI
 processes the command to verify the change. The demo socket is unauthenticated
 and should remain on loopback. It is not a production MCP endpoint.
