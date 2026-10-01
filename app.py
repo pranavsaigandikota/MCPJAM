@@ -719,7 +719,7 @@ class BeatBoxStudio:
         mcp_left.pack(side="left", padx=8, pady=3)
 
         self.mcp_pill = tk.Label(
-            mcp_left, text="● MCP PROTOCOL ACTIVE :8765",
+            mcp_left, text="● LOCAL DAW BACKEND :8765",
             fg="#00e5ff", bg="#1a202c", font=("Segoe UI", 9, "bold"),
             padx=8, pady=2, bd=1, relief="ridge"
         )
@@ -1361,7 +1361,7 @@ class BeatBoxStudio:
         self.mcp_pill.configure(bg="#00e5ff", fg="#101114", text="● MCP EXECUTING")
         self.telemetry_lamp.configure(fg="#ffcb6b", text="AI PRODUCER")
         self.root.after(450, lambda: self.mcp_pill.configure(
-            bg="#1a202c", fg="#00e5ff", text="● MCP PROTOCOL ACTIVE :8765"
+            bg="#1a202c", fg="#00e5ff", text="● LOCAL DAW BACKEND :8765"
         ))
         self.root.after(450, lambda: self.telemetry_lamp.configure(
             fg="#2ee59d", text="REMOTE SYNC"

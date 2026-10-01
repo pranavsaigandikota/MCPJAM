@@ -5,7 +5,7 @@ end, students will have built and tested a real MCP server with the official
 Python SDK.
 
 The revised slides, speaker notes, checkpoints, and one-hour teaching plan are
-in [workshop_delivery/Instructor-Guide.md](workshop_delivery/Instructor-Guide.md).
+in [Instructor-Guide.md](Instructor-Guide.md).
 
 ## What students build
 
@@ -31,13 +31,13 @@ git clone https://github.com/pranavsaigandikota/MCPJAM.git
 cd MCPJAM
 ```
 
-Or download the [student pack](workshop_delivery/MCPJAM-Student-Code.zip), then
+Or download the [student pack](MCPJAM-Student-Code.zip), then
 extract it so the inner package folder is named `MCPJAM`. Both routes contain
 the same starter and completed solution. Read
-[Student Quick Start](workshop_delivery/Student-Quick-Start.md), or follow the
+[Student Quick Start](Student-Quick-Start.md), or follow the
 platform commands below. The
-[workshop slides](workshop_delivery/MCPJAM-Workshop-Windows-and-Mac.pptx) and
-[PDF](workshop_delivery/MCPJAM-Workshop-Windows-and-Mac.pdf) are also included.
+[workshop slides](MCPJAM-Workshop-Windows-and-Mac.pptx) and
+[PDF](MCPJAM-Workshop-Windows-and-Mac.pdf) are also included.
 
 Keep the package folder named `MCPJAM`. Install dependencies before
 class, from inside that folder. The code requires Python 3.10+; for a new Mac

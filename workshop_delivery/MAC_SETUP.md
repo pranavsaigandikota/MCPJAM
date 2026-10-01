@@ -1,0 +1,129 @@
+# MCPJAM on macOS
+
+Use the same starter, exercises and tool names as Windows. Only installation,
+executable paths and shell commands differ. Complete setup before class.
+
+## 1. Install Python with Tk
+
+For a new installation, use the standard **Python 3.13 universal2 macOS
+installer** from [Python's macOS downloads](https://www.python.org/downloads/macos/).
+The installer runs on Intel and Apple Silicon and includes native Tk; see
+[Python's macOS installation guide](https://docs.python.org/3/using/mac.html).
+The [pygame release files](https://pypi.org/project/pygame/#files) include Python
+3.13 wheels for both Mac architectures. Use a normal build for this workshop.
+
+After installation, run `Install Certificates.command` in the matching
+`/Applications/Python 3.13` folder, as described in Python's installation guide.
+Open a new Terminal window:
+
+```bash
+python3.13 --version
+python3.13 -m tkinter
+```
+
+A small Tk window should open; close it. If you already have Python 3.10–3.13
+with working Tk, use its versioned command instead of `python3.13`. Avoid
+Apple's `/usr/bin/python3` for this class. If using Homebrew or another
+distribution, Tk must be installed for the same interpreter; it cannot be
+installed with pip. The python.org installer is the documented class route.
+
+## 2. Clone or extract, then install
+
+Clone from Terminal:
+
+```bash
+git clone https://github.com/pranavsaigandikota/MCPJAM.git
+cd MCPJAM
+```
+
+If Git is unavailable on your Mac, use the downloadable
+[student zip](https://github.com/pranavsaigandikota/MCPJAM/raw/refs/heads/main/workshop_delivery/MCPJAM-Student-Code.zip)
+instead. Extract it so the inner package is named **MCPJAM**, then open Terminal
+in that folder. The directory must contain `requirements.txt` and `app.py`.
+
+From inside the cloned or extracted folder:
+
+```bash
+python3.13 -m venv .venv
+./.venv/bin/python -m pip install -r requirements.txt
+./.venv/bin/python workshop_preflight.py
+./.venv/bin/python -m tkinter
+```
+
+Close the Tk test window. Create a fresh venv on your Mac instead of copying
+one from Windows. These commands select the interpreter without activation.
+
+## 3. Start the music application
+
+From inside `MCPJAM`, move to its parent and run the package:
+
+```bash
+cd ..
+./MCPJAM/.venv/bin/python -m MCPJAM
+```
+
+Keep the Terminal window and DAW open. Run the package this way because the
+application uses relative imports. `__main__.py` supplies the entry point.
+No Windows executable, PowerShell, MIDI keyboard, external soundfont or
+FluidSynth installation is required for the core workshop. Without MIDI, the
+code uses its built-in synthesizer. If audio initialization fails, the app
+reports visual-only mode; verify tool changes in the UI and with `get_state`.
+
+## 4. Connect a host using your Mac's paths
+
+In a second Terminal window, inside the `MCPJAM` folder:
+
+```bash
+./.venv/bin/python workshop_preflight.py --host-config
+```
+
+Copy the printed interpreter and script paths into your host's configuration.
+This prints JSON only and does not edit your host. The `mcpServers` structure
+is an example used by some hosts; adapt it to your host's format. Keep spaces
+inside one JSON string and use absolute paths rather than `~`.
+Restart/reconnect the host connection after configuration or code edits. The
+host launches the stdio server; you do not launch a second server manually.
+
+## 5. Make explicit calls
+
+With the DAW running, from inside `MCPJAM`:
+
+```bash
+./.venv/bin/python workshop_client.py
+./.venv/bin/python workshop_client.py --tool set_tempo --arguments '{"bpm":120}'
+./.venv/bin/python workshop_client.py --tool get_state
+```
+
+After implementing `set_swing` in `mcp_server_sdk.py`:
+
+```bash
+./.venv/bin/python workshop_client.py --tool set_swing --arguments '{"amount":35}'
+./.venv/bin/python workshop_client.py --tool get_state
+./.venv/bin/python workshop_client.py --tool set_swing --arguments '{"amount":100}'
+```
+
+The invalid call should print `isError: true` and exit with code 1. Writes are
+queued; allow the UI to process them before checking state. The starter has
+two tools; swing and mute are student additions. To run the completed solution,
+add `--server mcp_server_solution.py` to the client command.
+
+## Mac troubleshooting
+
+| Symptom | Action |
+| --- | --- |
+| `python3.13` not found | Install the documented Python and reopen Terminal. |
+| `_tkinter` missing or no Tk window | Use Python with native Tk, then recreate the venv with that interpreter. |
+| pip certificate error | Run the matching `Install Certificates.command`; keep certificate verification enabled. |
+| pygame attempts a source build | Check Python version/architecture; the documented 3.13 route has Mac wheels. |
+| `No module named MCPJAM` | Run from the parent of the folder named exactly `MCPJAM`. |
+| Port 8765 already in use | Close the extra DAW instance; keep one backend running. |
+| Tools missing | Check the absolute paths, SDK version, and restart the connection. |
+| Connection refused | Start the DAW; discovery alone does not connect to the backend. |
+| No MIDI output or no sound | MIDI is optional; verify state visually. Check Mac volume/output device if audio is needed. |
+
+## Validation scope
+
+The protocol code is shared across platforms. Windows protocol and slide checks
+do not replace a native Mac rehearsal. Before class, run this guide on a Mac
+used by participants, demonstrate 120 BPM, and verify valid and invalid swing
+calls. Preflight checks imports and SDK version, not GUI/audio or host behavior.

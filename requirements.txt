@@ -1,0 +1,4 @@
+mcp[cli]==1.19.0
+pydantic>=2.7.4
+pygame
+mido
