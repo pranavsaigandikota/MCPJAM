@@ -57,7 +57,7 @@ def new_project(title='MCPJAM Pop', bpm=112, key='C', bars=32, duration_seconds=
     spec = {'song_id': uuid.uuid4().hex, 'title': title, 'bpm': bpm, 'key': key,
             'bars': bars, 'duration_seconds': duration_seconds, 'articulation': articulation, 'style': style,
             'swing': 8, 'revision': 1, 'tracks': {}}
-    for track, instrument, volume in [('keys', 'piano', 80), ('bass', 'finger_bass', 90),
+    for track, instrument, volume in [('keys', 'piano', 88), ('bass', 'finger_bass', 90),
                                       ('pad', 'strings', 48), ('lead', 'acoustic_guitar', 82),
                                       ('drums', 'piano', 85)]:
         spec['tracks'][track] = {'instrument': instrument, 'volume': volume, 'muted': False}

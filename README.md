@@ -65,6 +65,10 @@ piano, acoustic guitar, finger bass, strings, and sampled drums; its former
 synth lead/bass/pad patches have been replaced. Other explicitly selected
 General MIDI patches still come from the same GeneralUser bank.
 
+Live playback and WAV export share a damped room reverb. Piano has a stronger
+reverb send; bass and drums stay drier. Chorus is disabled to avoid a modulated,
+metallic texture. The default piano accompaniment is more prominent.
+
 To start music chat directly:
 
 ```powershell
