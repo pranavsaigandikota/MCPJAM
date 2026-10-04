@@ -107,6 +107,14 @@ def arrangement(spec):
     sections = []
     for bar in range(musical_bars):
         progress = bar / musical_bars
+        if spec.get('score') == 'funk_pop':
+            from funk_score import funk_bar
+            section = ('intro' if progress<.14 else 'groove' if progress<.55 else
+                       'breakdown' if progress<.7 else 'lift' if progress<.93 else 'outro')
+            if not sections or sections[-1]['name'] != section:
+                sections.append({'name':section,'start_bar':bar+1})
+            funk_bar(note,bar,root,section)
+            continue
         if spec.get('score') == 'dark_piano_16':
             from composed_score import score_bar
             section = ('intro' if bar < 2 else 'pulse' if bar < 4 else 'groove' if bar < 8 else

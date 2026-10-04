@@ -33,7 +33,7 @@ def render_sample_song(spec):
             return stored['result']
     accompaniment = copy.deepcopy(spec)
     accompaniment.pop('sample_pack', None)
-    for track in ('bass', 'drums'):
+    for track in (('bass','drums') if spec.get('sample_bass', True) else ('drums',)):
         accompaniment['tracks'][track]['muted'] = True
     result = render_wav(accompaniment)
     mix = read_audio(result['wav_path']) * .7
@@ -52,6 +52,8 @@ def render_sample_song(spec):
         if event['type'] != 'note_on' or event['channel'] not in (1,9):
             continue
         if event['channel'] == 1:
+            if not spec.get('sample_bass', True):
+                continue
             target = 440 * 2 ** ((event['note'] - 69)/12)
             ratio = target / fundamental
             source = samples['bass']
@@ -79,6 +81,6 @@ def render_sample_song(spec):
         wav.writeframes(pcm.tobytes())
     result = {'wav_path':str(path),'sample_rate':44100,'channels':2,
             'peak':int(np.max(np.abs(pcm.astype('int32')))),
-            'audio_engine':'modern808_samples_with_generaluser_gs'}
+            'audio_engine':('modern808_samples_with_generaluser_gs' if spec.get('sample_bass', True) else 'modern_drums_with_generaluser_gs')}
     cache.write_text(json.dumps({'signature':signature,'result':result}))
     return result

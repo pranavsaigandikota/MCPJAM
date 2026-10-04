@@ -68,6 +68,19 @@ def create_pop_song(title: str = 'MCPJAM Pop', bpm: int = 112, key: str = 'C', b
 
 
 @mcp.tool()
+def create_funk_song(title: str = 'Gold Rush', bpm: int = 112, key: str = 'E', duration_seconds: float = 30) -> dict:
+    """Create/play original upbeat funk-pop with soft sampled finger bass, syncopated electric piano, clipped acoustic guitar chords, brass call/response and modern sampled drums. No copied song melody/lyrics. Duration 5–180 seconds, BPM 40–240, supported tonic key. Background player required."""
+    spec = new_project(title,bpm,key,16,duration_seconds,'normal','pop')
+    spec.update(score='funk_pop',sample_pack='modern808',sample_bass=False,swing=4)
+    for track,instrument,volume in [('keys','electric_piano',68),('lead','trumpet',55),('pad','acoustic_guitar',52),('bass','finger_bass',58),('drums','piano',78)]:
+        spec['tracks'][track].update(instrument=instrument,volume=volume,muted=False)
+    validate(spec)
+    result=save_project(spec)
+    result.update(play_project(spec))
+    return result
+
+
+@mcp.tool()
 def create_composed_song(title: str = 'Nightfall', bpm: int = 128, key: str = 'D') -> dict:
     """Play a deliberately scored original 16-bar dark piano/808 arrangement: connected chord voicings, question/answer melody, rests, dynamics, restrained dance groove and breakdown. GS piano/strings plus modern808 samples. 30 seconds at 128 BPM; tempo changes adjust duration. BPM 40–240, supported tonic key. Background player required."""
     spec = new_project(title,bpm,key,16,None,'normal','edm')

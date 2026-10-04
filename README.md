@@ -418,3 +418,8 @@ piano voicings, a recurring question/answer melody, rests, held strings, modern
 808 samples and a resolving ending. It does not randomly jump octaves or add
 constant tom fills. This is one authored score, not a general-purpose AI composer.
 Tempo and track/instrument edits are supported; its structure is designed for 16 bars.
+
+## Original funk-pop score
+
+Use create_funk_song for a 30-second original funk-pop arrangement with softer GS finger bass, electric piano, clipped guitar, brass answers and modern sampled drums. This is an authored groove, not a recreation of a commercial recording. Bass starts at volume 58 and remains editable with set_song_track.
+
