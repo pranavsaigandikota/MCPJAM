@@ -6,7 +6,8 @@ CATALOG_URI = "music://instruments/catalog"
 INSTRUMENTS = {
     "piano": 0, "electric_piano": 4, "nylon_guitar": 24,
     "acoustic_guitar": 25, "electric_guitar": 27, "finger_bass": 33,
-    "synth_bass": 38, "strings": 48, "choir": 52, "trumpet": 56,
+    "synth_bass": 38, "violin": 40, "viola": 41, "cello": 42, "contrabass": 43,
+    "strings": 48, "choir": 52, "trumpet": 56,
     "saxophone": 65, "flute": 73, "synth_lead": 81, "warm_pad": 89,
 }
 

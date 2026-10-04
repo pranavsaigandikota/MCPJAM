@@ -1,0 +1,9 @@
+{
+  "servers": {
+    "mcpjam-music": {
+      "type": "stdio",
+      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
+      "args": ["${workspaceFolder}/mcp_server_music.py"]
+    }
+  }
+}

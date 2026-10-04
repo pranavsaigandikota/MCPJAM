@@ -1,7 +1,7 @@
 """Original syncopated funk-pop score with restrained bass and brass answers."""
 
 
-def funk_bar(note, bar, root, section):
+def funk_bar(note, bar, root, section, piano_motion='chords'):
     beat = bar * 4
     transpose = root - 4
     # Em9 -> A13, voiced around common tones, with an occasional Dmaj9 lift.
@@ -10,9 +10,14 @@ def funk_bar(note, bar, root, section):
     chord = chords[index]
     bass = [40,33,38,33][index] + transpose
     quiet = section in ('intro','breakdown','outro')
-    for offset in ((.5,2.5) if quiet else (.5,1.75,2.5,3.75)):
-        for pitch in chord:
-            note('keys',pitch+transpose,beat+offset,.24,62 if quiet else 76)
+    if piano_motion == 'up_down':
+        run = chord + [chord[2] + 12, chord[1] + 12, chord[0] + 12, chord[1]]
+        for index, pitch in enumerate(run):
+            note('keys', pitch + transpose, beat + .25 + index * .45, .34, 62 if quiet else 78)
+    else:
+        for offset in ((.5,2.5) if quiet else (.5,1.75,2.5,3.75)):
+            for pitch in chord:
+                note('keys',pitch+transpose,beat+offset,.24,62 if quiet else 76)
     if section != 'intro':
         for i in range(8):
             if i in (2,6):

@@ -8,12 +8,14 @@ import time
 
 from mcp.server.fastmcp import FastMCP
 from instrument_catalog import register_instrument_catalog
+from music_theory import register_music_theory
 
 from mcp_server_sdk import call_daw
 from music_arranger import INSTRUMENTS, new_project, read_project, save_project, render_wav, arrangement, validate, song_duration
 
 mcp = FastMCP('mcpjam-music')
 register_instrument_catalog(mcp)
+register_music_theory(mcp)
 
 
 @mcp.tool()
@@ -61,9 +63,10 @@ def play_project(spec):
 
 @mcp.tool()
 def create_pop_song(title: str = 'MCPJAM Pop', bpm: int = 112, key: str = 'C', bars: int = 32,
-                    duration_seconds: float | None = None, articulation: str = 'legato', style: str = 'pop') -> dict:
-    """Create and play original instrumental music with phrases, dynamics, and held notes. Style pop or rnb (minor seventh chords and a syncopated half-time groove). Set duration_seconds (5–180) for exact length, e.g. 30; otherwise bars (8–64). BPM 40–240, tonic C/D/F#/Bb etc. Articulation legato/normal/staccato. Uses GeneralUser GS piano, guitar, bass, strings, drums. Returns editable song_id and MIDI; no vocals."""
-    spec = new_project(title, bpm, key, bars, duration_seconds, articulation, style)
+                    duration_seconds: float | None = None, articulation: str = 'legato', style: str = 'pop',
+                    hold_notes: bool = False, dynamics: str = 'flat') -> dict:
+    """Create and play original instrumental music with phrases, dynamics, and held notes. Style pop or rnb (minor seventh chords and a syncopated half-time groove). Set duration_seconds (5–180) for exact length, e.g. 30; otherwise bars (8–64). BPM 40–240, tonic C/D/F#/Bb etc. Articulation legato/normal/staccato. Set hold_notes true for longer connected melodic notes. Set dynamics to flat, crescendo, decrescendo, or swell. Uses GeneralUser GS piano, guitar, bass, strings, drums. Returns editable song_id and MIDI; no vocals."""
+    spec = new_project(title, bpm, key, bars, duration_seconds, articulation, style, hold_notes, dynamics)
     result = save_project(spec)
     result.update(play_project(spec))
     return result
@@ -109,6 +112,21 @@ def create_composed_song(title: str = 'Nightfall', bpm: int = 128, key: str = 'D
 
 
 @mcp.tool()
+def create_orchestral_song(title: str = 'Feral Ascent', bpm: int = 155, key: str = 'D', duration_seconds: float = 30, mood: str = 'dramatic') -> dict:
+    """Create/play an original cinematic orchestral instrumental with layered violin, cello, piano ostinato, sustained strings, and dynamic climax. Mood can be dramatic or happy. Duration 5-180 seconds, BPM 40-240."""
+    spec = new_project(title, bpm, key, 32, duration_seconds, 'legato', 'pop', True, 'swell')
+    spec.update(score='orchestral', sample_pack='generaluser_gs', swing=0, mood=mood)
+    for track, instrument, volume in [('keys', 'piano', 68), ('lead', 'violin', 74),
+                                      ('pad', 'strings', 64), ('bass', 'cello', 56),
+                                      ('drums', 'piano', 68)]:
+        spec['tracks'][track].update(instrument=instrument, volume=volume, muted=False)
+    validate(spec)
+    result = save_project(spec)
+    result.update(play_project(spec))
+    return result
+
+
+@mcp.tool()
 def create_808_song(title: str = 'Blackout', bpm: int = 128, key: str = 'D',
                     duration_seconds: float = 30, energy: int = 80) -> dict:
     """Create a restrained dark dance beat using the modern808 hard-trap WAV pack for tuned sub bass and drums, with GS piano/strings atmosphere. No GS synth lead or electric-guitar lead. Requires background player. Duration 5–180, energy 0–100, BPM 40–240. Live playback and export use the same rendered sample mix."""
@@ -141,14 +159,19 @@ def create_edm_song(title: str = 'Midnight Pursuit', bpm: int = 132, key: str = 
 def edit_song(song_id: str = '', bpm: int | None = None, key: str | None = None,
               bars: int | None = None, swing: int | None = None, title: str | None = None,
               duration_seconds: float | None = None, articulation: str | None = None, style: str | None = None,
-              energy: int | None = None, variation: int | None = None) -> dict:
-    """Edit tempo, key, duration_seconds (5-180), bars (8-64), swing (0-75), title, articulation (legato/normal/staccato), style (pop/rnb/edm), or EDM energy/variation (0-100). Rebuild MIDI and restart. Empty song_id uses current song. A bars edit clears exact duration; tempo edits preserve it. BPM 40-240."""
+              energy: int | None = None, variation: int | None = None,
+              piano_motion: str | None = None, hold_notes: bool | None = None,
+              dynamics: str | None = None, mood: str | None = None,
+              melody_style: str | None = None) -> dict:
+    """Edit tempo, key, duration_seconds (5-180), bars (8-64), swing (0-75), title, articulation (legato/normal/staccato), style (pop/rnb/edm), EDM energy/variation (0-100), funk piano_motion (chords/up_down), hold_notes, dynamics (flat/crescendo/decrescendo/swell), orchestral mood (dramatic/happy), or melody_style (smooth/jumpy). Rebuild MIDI and restart."""
     spec = copy.deepcopy(current_project(song_id))
     if bars is not None and duration_seconds is None:
         spec['duration_seconds'] = None
     for field, value in [('bpm', bpm), ('key', key), ('bars', bars), ('swing', swing), ('title', title),
                          ('duration_seconds', duration_seconds), ('articulation', articulation), ('style', style),
-                         ('energy', energy), ('variation', variation)]:
+                         ('energy', energy), ('variation', variation), ('piano_motion', piano_motion),
+                         ('hold_notes', hold_notes), ('dynamics', dynamics), ('mood', mood),
+                         ('melody_style', melody_style)]:
         if value is not None:
             spec[field] = value
     validate(spec)

@@ -25,6 +25,10 @@ def validate(spec):
             raise ValueError(f'{field} must be an integer from 0 to 100')
     if spec.get('articulation', 'legato') not in ('legato', 'normal', 'staccato'):
         raise ValueError('articulation must be legato, normal, or staccato')
+    if spec.get('dynamics', 'flat') not in ('flat', 'crescendo', 'decrescendo', 'swell'):
+        raise ValueError('dynamics must be flat, crescendo, decrescendo, or swell')
+    if type(spec.get('hold_notes', False)) is not bool:
+        raise ValueError('hold_notes must be a boolean')
     if spec.get('duration_seconds') is not None:
         duration = spec['duration_seconds']
         if isinstance(duration, bool) or not isinstance(duration, (int, float)) or not 5 <= duration <= 180:
@@ -54,10 +58,10 @@ def song_duration(spec):
     return spec.get('duration_seconds') or spec['bars'] * 240 / spec['bpm']
 
 
-def new_project(title='MCPJAM Pop', bpm=112, key='C', bars=32, duration_seconds=None, articulation='legato', style='pop'):
+def new_project(title='MCPJAM Pop', bpm=112, key='C', bars=32, duration_seconds=None, articulation='legato', style='pop', hold_notes=False, dynamics='flat'):
     spec = {'song_id': uuid.uuid4().hex, 'title': title, 'bpm': bpm, 'key': key,
             'bars': bars, 'duration_seconds': duration_seconds, 'articulation': articulation, 'style': style,
-            'swing': 8, 'revision': 1, 'tracks': {}}
+            'hold_notes': hold_notes, 'dynamics': dynamics, 'swing': 8, 'revision': 1, 'tracks': {}}
     for track, instrument, volume in [('keys', 'piano', 88), ('bass', 'finger_bass', 42),
                                       ('pad', 'strings', 48), ('lead', 'acoustic_guitar', 82),
                                       ('drums', 'piano', 85)]:
@@ -94,10 +98,23 @@ def arrangement(spec):
         onset = max(0, beat + swing + rng.uniform(-.008, .008))
         if onset >= total_beats:
             return
-        if track == 'lead':
-            duration *= {'legato': 1.03, 'normal': .9, 'staccato': .48}[spec.get('articulation', 'legato')]
+        articulation = spec.get('articulation', 'legato')
+        if track != 'drums':
+            duration *= {'legato': 1.18, 'normal': 1.0, 'staccato': .48}[articulation]
+            if spec.get('hold_notes', False):
+                duration = max(duration, .85)
         duration = min(duration, total_beats - onset)
-        vel = max(1, min(127, round((velocity + rng.randint(-5, 5)) * settings['volume'] / 100)))
+        progress = min(1.0, max(0.0, beat / max(total_beats, 1.0)))
+        dynamics = spec.get('dynamics', 'flat')
+        if dynamics == 'crescendo':
+            dynamic_level = .68 + .44 * progress
+        elif dynamics == 'decrescendo':
+            dynamic_level = 1.12 - .44 * progress
+        elif dynamics == 'swell':
+            dynamic_level = .68 + .52 * math.sin(math.pi * progress)
+        else:
+            dynamic_level = 1.0
+        vel = max(1, min(127, round((velocity + rng.randint(-5, 5)) * settings['volume'] / 100 * dynamic_level)))
         events.extend([{'beat': onset, 'type': 'note_on', 'channel': CHANNELS[track], 'note': pitch, 'velocity': vel},
                        {'beat': onset + duration, 'type': 'note_off', 'channel': CHANNELS[track], 'note': pitch, 'velocity': 0}])
 
@@ -117,7 +134,7 @@ def arrangement(spec):
                        'breakdown' if progress<.7 else 'lift' if progress<.93 else 'outro')
             if not sections or sections[-1]['name'] != section:
                 sections.append({'name':section,'start_bar':bar+1})
-            funk_bar(note,bar,root,section)
+            funk_bar(note,bar,root,section,spec.get('piano_motion', 'chords'))
             continue
         if spec.get('score') == 'dark_piano_16':
             from composed_score import score_bar
@@ -126,6 +143,14 @@ def arrangement(spec):
             if not sections or sections[-1]['name'] != section:
                 sections.append({'name':section,'start_bar':bar+1})
             score_bar(note,bar,root,section)
+            continue
+        if spec.get('score') == 'orchestral':
+            from orchestral_score import orchestral_bar
+            section = 'intro' if progress < .12 else 'build' if progress < .45 else 'climax' if progress < .85 else 'outro'
+            if not sections or sections[-1]['name'] != section:
+                sections.append({'name': section, 'start_bar': bar + 1})
+            orchestral_bar(note, bar, root, section, rng, spec.get('mood', 'dramatic'),
+                           spec.get('melody_style', 'smooth'))
             continue
         if spec.get('style') == 'edm':
             section = ('outro' if bar == musical_bars - 1 else 'intro' if progress < .12 else

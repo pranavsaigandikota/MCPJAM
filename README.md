@@ -1,10 +1,14 @@
-# Intro to MCP Servers with MCPJAM
+# MCPJAM: Student Setup and MCP Music Workshop
 
 **Understand MCP, trace a tool call, and implement and test a tool in a starter MCP server.**
 
-MCPJAM is a small Python music application used as the backend for a beginner
-workshop. Students extend the supplied Python SDK server with one swing tool.
-Basic Python functions and dictionaries are assumed.
+MCPJAM is a self-contained Python music application and MCP workshop. This
+README is the single setup sheet: clone the repository, run the setup script,
+then choose the visual sequencer, music chat, or explicit workshop client.
+
+Students do not need MIDI hardware. Audio uses the bundled GeneralUser GS
+soundfont and FluidSynth. Gemini is only needed for natural-language music
+chat; explicit MCP tests do not need an API key.
 
 - [Current 27-slide Figma presentation](https://www.figma.com/slides/mmQgw9DYp2CZDK7xDu69aZ)
 - [Slide-by-slide instructor guide](workshop_delivery/Instructor-Guide.md)
@@ -13,6 +17,82 @@ Basic Python functions and dictionaries are assumed.
 
 The Figma deck is the current workshop. Older PPTX/PDF files in workshop_delivery
 are historical exports and do not reflect this 27-slide revision.
+
+## One-command setup
+
+Use the commands for your operating system from the repository root.
+
+### Windows 10/11 PowerShell
+
+Prerequisite: 64-bit Python 3.10–3.13 with Tk. `setup.ps1` can install Python
+3.13 through `winget` if Python is missing. If `winget` is unavailable, install
+Python from https://www.python.org/downloads/ and run the commands again.
+
+```powershell
+git clone https://github.com/pranavsaigandikota/MCPJAM.git
+Set-Location MCPJAM
+powershell -NoProfile -ExecutionPolicy Bypass -File .\setup.ps1
+```
+
+The setup script creates `.venv`, installs `requirements-audio.txt`, downloads
+and verifies the pinned FluidSynth runtime, checks Tk, and runs preflight.
+
+Start the background music chat:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\run_music_chat.ps1
+```
+
+Start the visual sequencer instead:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\run_app.ps1
+```
+
+Run only one of those applications at a time because both use local port 8765.
+
+### macOS
+
+Prerequisites: Homebrew, Python 3.13 with Tk, and a working audio output.
+
+```bash
+git clone https://github.com/pranavsaigandikota/MCPJAM.git
+cd MCPJAM
+bash setup.sh
+bash run_music_chat.sh
+```
+
+For Tk and FluidSynth installation details, see [MAC_SETUP.md](MAC_SETUP.md).
+The equivalent visual app command is `bash run_app.sh`.
+
+### Linux or core-only installation
+
+For workshop protocol work without local audio, use Python 3.10+ with Tk:
+
+```bash
+python3 -m venv .venv
+./.venv/bin/python -m pip install -r requirements.txt
+./.venv/bin/python workshop_preflight.py
+```
+
+Linux audio playback additionally requires a system FluidSynth library and
+audio driver; install `requirements-audio.txt` after those system packages.
+
+## VS Code MCP setup
+
+The repository includes [.vscode/mcp.json](.vscode/mcp.json), which launches
+the full music server with `.venv`. Open the cloned folder in VS Code, run the
+setup command above, and reconnect the `mcpjam-music` server. Then use an
+MCP-enabled chat to ask for songs, for example:
+
+> Create an original fast cinematic orchestral song at 155 BPM in D with
+> dramatic violin, sustained strings, cello bass, and piano ostinatos.
+
+After changing the MCP server or its imported Python modules, reconnect the
+server so VS Code refreshes its tools and resources.
+
+The included server is `mcp_server_music.py`. The beginner workshop server is
+`mcp_server_sdk.py`; use that one when following the `set_swing` exercise.
 
 ## Copy-and-paste setup and playback
 
@@ -94,6 +174,12 @@ committed. The explicit workshop client needs no key.
 | workshop_client.py | Discover tools and test explicit arguments without a model |
 | mcp_server_solution.py | Completed reference implementation |
 | gemini_host.py | Optional Gemini AI host with an MCP client |
+| mcp_server_music.py | Full music MCP server for creation, editing, playback, and export |
+| music_arranger.py | Project validation, arrangement generation, MIDI writing, and WAV rendering |
+| music_theory.py | Read-only scales, chords, progressions, and arrangement guidance |
+| orchestral_score.py | Original cinematic orchestral score generator |
+| instrument_catalog.py | Read-only GeneralUser GS instrument resource |
+| .vscode/mcp.json | VS Code MCP launch configuration |
 | verify_workshop.py | MCP integration checks with a controlled mock backend |
 | verify_live.py | MCP checks against the running music application |
 
@@ -435,10 +521,30 @@ bass 40. Existing saved projects retain their settings until edited.
 
 Use `set_song_track(track="bass", volume=30)` for low bass or volume 45 for
 medium bass. Perceived loudness also depends on instrument and arrangement.
-# Instrument catalog MCP resource
+## Current music MCP capabilities
+
+The full music server exposes these original arrangement tools:
+
+- `create_pop_song`: pop or R&B instrumentals with legato, held notes, and dynamics.
+- `create_funk_song`: electric piano, guitar, bass, brass responses, and sampled drums.
+- `create_bossa_song`: nylon guitar, piano, light percussion, and quiet bass.
+- `create_edm_song` and `create_808_song`: cinematic dance and sample-based 808 arrangements.
+- `create_composed_song`: authored piano/808 arrangement with breakdown and drop.
+- `create_orchestral_song`: violin, sustained strings, cello, piano ostinatos, builds, and climaxes.
+- `edit_song`: change tempo, key, style, articulation, dynamics, held notes, piano motion,
+  orchestral mood, and melody style.
+- `set_song_track`: change instruments, volume, or mute tracks.
+- `play_song`, `pause_song`, `resume_song`, `stop_song`, and `export_song`.
+
+Useful edit values include `dynamics=flat|crescendo|decrescendo|swell`,
+`mood=dramatic|happy`, `melody_style=smooth|jumpy`, and
+`piano_motion=chords|up_down`. Songs are original instrumentals and do not
+generate vocals or reproduce commercial recordings.
+
+## MCP resources: instruments and music theory
 
 The SDK workshop, solution, and music servers expose the read-only JSON resource
-`music://instruments/catalog`. It lists the 14 GeneralUser GS presets supported by
+`music://instruments/catalog`. It lists the GeneralUser GS presets supported by
 the song editor, their exact instrument IDs and zero-based MIDI programs. It is
 not a complete list of every preset in the SoundFont. It also documents drum
 channel behavior and the optional modern808 sample override. Reading it does not
@@ -455,3 +561,32 @@ python workshop_client.py --server mcp_server_music.py --resource music://instru
 Reconnect any existing MCP client after updating to discover the resource.
 Hosts choose when to read resources; publishing one does not automatically add
 it to a model's context. `get_state` remains a tool.
+
+The full music server also exposes `music://theory/reference`, a read-only JSON
+resource containing scale formulas, triad and seventh-chord intervals, common
+pop/R&B/jazz progressions, and guidance for held notes, dynamics, and piano
+motion:
+
+```powershell
+.\.venv\Scripts\python.exe workshop_client.py --server mcp_server_music.py --resource music://theory/reference
+```
+
+## Verification and troubleshooting
+
+Run the controlled workshop tests with the music app closed:
+
+```powershell
+.\.venv\Scripts\python.exe verify_workshop.py
+```
+
+Run live checks with the app running:
+
+```powershell
+.\.venv\Scripts\python.exe verify_live.py
+```
+
+If audio is unavailable, rerun `setup.ps1` or run
+`.\.venv\Scripts\python.exe setup_audio.py`, then restart the app. If VS Code
+does not show the newer tools, use the MCP server reconnect/restart command.
+Do not run `run_app.ps1` and `run_music_chat.ps1` at the same time; both use
+port 8765.
