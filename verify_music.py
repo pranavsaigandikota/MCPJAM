@@ -30,7 +30,7 @@ async def main():
         async with ClientSession(read, write) as session:
             await session.initialize()
             assert {t.name for t in (await session.list_tools()).tools} == {
-                'get_state', 'create_pop_song', 'edit_song', 'set_song_track', 'play_song', 'stop_song', 'export_song', 'pause_song', 'resume_song'}
+                'get_state', 'create_pop_song', 'create_edm_song', 'edit_song', 'set_song_track', 'play_song', 'stop_song', 'export_song', 'pause_song', 'resume_song'}
             checks += 1
             state = state_from(await session.call_tool('get_state', {}))
             assert state['audio_engine'] == 'generaluser_gs' and not state['soundfont_error']
@@ -100,7 +100,15 @@ async def main():
                 result_data(await session.call_tool('stop_song', {}))
                 assert not state_from(await session.call_tool('get_state', {}))['timeline_active']
                 checks += 1
-                print(f'PASS: {checks} live music checks; sampled engine, MIDI, edits, rejection, WAV, and stop.')
+                edm = result_data(await session.call_tool('create_edm_song', {'duration_seconds':30, 'energy':92, 'variation':17}))
+                assert {'build','drop','breakdown','final_drop'} <= {section['name'] for section in edm['sections']}
+                checks += 1
+                before_edm = read_project(edm['song_id'])
+                assert (await session.call_tool('edit_song', {'energy':101})).isError
+                assert read_project(edm['song_id']) == before_edm
+                checks += 1
+                result_data(await session.call_tool('stop_song', {}))
+                print(f'PASS: {checks} live music checks; sampled engine, MIDI, edits, rejection, WAV, EDM structure and stop.')
             finally:
                 await session.call_tool('stop_song', {})
                 from mcp_server_sdk import call_daw

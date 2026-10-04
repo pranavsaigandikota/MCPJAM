@@ -53,15 +53,31 @@ def create_pop_song(title: str = 'MCPJAM Pop', bpm: int = 112, key: str = 'C', b
 
 
 @mcp.tool()
+def create_edm_song(title: str = 'Midnight Pursuit', bpm: int = 132, key: str = 'D',
+                    duration_seconds: float = 30, energy: int = 85, variation: int = 0) -> dict:
+    """Create/play original cinematic EDM: minor-key riffs, four-on-floor kick, syncopated bass, tom layers, snare builds, drops and breakdown. All sounds GeneralUser GS. Duration 5–180 seconds (subject to 64-bar limit), BPM 40–240, energy/variation 0–100. Variation changes melodic accents; energy controls drum density. No copied melody or vocals."""
+    spec = new_project(title, bpm, key, 32, duration_seconds, 'normal', 'edm')
+    spec.update(energy=energy, variation=variation, swing=0)
+    spec['tracks']['bass']['instrument'] = 'synth_bass'
+    spec['tracks']['lead']['instrument'] = 'electric_guitar'
+    validate(spec)
+    result = save_project(spec)
+    result.update(play_project(spec))
+    return result
+
+
+@mcp.tool()
 def edit_song(song_id: str = '', bpm: int | None = None, key: str | None = None,
               bars: int | None = None, swing: int | None = None, title: str | None = None,
-              duration_seconds: float | None = None, articulation: str | None = None, style: str | None = None) -> dict:
-    """Edit song tempo, key, duration_seconds (5–180), bars (8–64), swing (0–75), title, or articulation (legato/normal/staccato). Rebuild MIDI and restart. Empty song_id uses current song. A bars edit clears a prior exact duration; tempo edits preserve exact duration. BPM 40–240."""
+              duration_seconds: float | None = None, articulation: str | None = None, style: str | None = None,
+              energy: int | None = None, variation: int | None = None) -> dict:
+    """Edit tempo, key, duration_seconds (5-180), bars (8-64), swing (0-75), title, articulation (legato/normal/staccato), style (pop/rnb/edm), or EDM energy/variation (0-100). Rebuild MIDI and restart. Empty song_id uses current song. A bars edit clears exact duration; tempo edits preserve it. BPM 40-240."""
     spec = copy.deepcopy(current_project(song_id))
     if bars is not None and duration_seconds is None:
         spec['duration_seconds'] = None
     for field, value in [('bpm', bpm), ('key', key), ('bars', bars), ('swing', swing), ('title', title),
-                         ('duration_seconds', duration_seconds), ('articulation', articulation), ('style', style)]:
+                         ('duration_seconds', duration_seconds), ('articulation', articulation), ('style', style),
+                         ('energy', energy), ('variation', variation)]:
         if value is not None:
             spec[field] = value
     validate(spec)

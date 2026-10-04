@@ -20,8 +20,12 @@ CHANNELS = {'keys': 0, 'bass': 1, 'pad': 2, 'lead': 3, 'drums': 9}
 
 
 def validate(spec):
-    if spec.get('style', 'pop') not in ('pop', 'rnb'):
-        raise ValueError('style must be pop or rnb')
+    if spec.get('style', 'pop') not in ('pop', 'rnb', 'edm'):
+        raise ValueError('style must be pop, rnb, or edm')
+    for field in ('energy', 'variation'):
+        value = spec.get(field, 80 if field == 'energy' else 0)
+        if type(value) is not int or not 0 <= value <= 100:
+            raise ValueError(f'{field} must be an integer from 0 to 100')
     if spec.get('articulation', 'legato') not in ('legato', 'normal', 'staccato'):
         raise ValueError('articulation must be legato, normal, or staccato')
     if spec.get('duration_seconds') is not None:
@@ -74,7 +78,7 @@ def read_project(song_id):
 def arrangement(spec):
     """Intro, verses, choruses, bridge, outro with a repeating melodic hook."""
     validate(spec)
-    rng = random.Random(spec['song_id'])
+    rng = random.Random(spec['song_id'] + str(spec.get('variation', 0)))
     root = PITCHES[spec['key']]
     rnb = spec.get('style', 'pop') == 'rnb'
     total_beats = song_duration(spec) * spec['bpm'] / 60
@@ -103,6 +107,14 @@ def arrangement(spec):
     sections = []
     for bar in range(musical_bars):
         progress = bar / musical_bars
+        if spec.get('style') == 'edm':
+            section = ('outro' if bar == musical_bars - 1 else 'intro' if progress < .12 else
+                       'build' if progress < .30 else 'drop' if progress < .62 else
+                       'breakdown' if progress < .74 else 'final_drop')
+            if not sections or sections[-1]['name'] != section:
+                sections.append({'name': section, 'start_bar': bar + 1})
+            edm_bar(note, bar, root, section, spec.get('energy', 80), rng)
+            continue
         section = ('outro' if bar == musical_bars-1 else 'intro' if progress < .125 else 'verse' if progress < .375 else
                    'chorus' if progress < .625 else 'bridge' if progress < .75 else
                    'chorus' if progress < .9375 else 'outro')
@@ -169,6 +181,59 @@ def arrangement(spec):
     for event in events:
         event['time_sec'] = round(event['beat'] * 60 / spec['bpm'], 6)
     return events, sections
+
+
+def edm_bar(note, bar, root, section, energy, rng):
+    """Original minor-key cinematic dance groove with builds and drum answers."""
+    beat = bar * 4
+    drop = section in ('drop', 'final_drop')
+    chord_root = 48 + root + (0, 0, 8, 10)[bar % 4]
+    minor = bar % 4 < 2
+    chord = [chord_root, chord_root + (3 if minor else 4), chord_root + 7]
+    intensity = .55 + energy / 220
+    # Sustained strings supply atmosphere; piano adds clear sampled attacks.
+    for pitch in chord:
+        note('pad', pitch, beat, 3.9, 55 if not drop else 72)
+    if section in ('intro', 'breakdown', 'outro'):
+        for i, pitch in enumerate(chord + [chord[1] + 12]):
+            note('keys', pitch + 12, beat + i * .75, 1.2, 62)
+        note('lead', chord_root + 12, beat + .5, 2.8, 62)
+        if section == 'intro':
+            note('drums', 41, beat, .3, 90)
+        return
+    for offset in ((0, 1, 2, 3) if drop else (0, 2)):
+        note('drums', 36, beat + offset, .15, round(118 * intensity))
+    for offset in (1, 3):
+        note('drums', 38, beat + offset, .12, 105)
+        note('drums', 39, beat + offset + .012, .12, 78)
+    for i in range(8 if energy < 85 else 16):
+        spacing = .5 if energy < 85 else .25
+        note('drums', 42, beat + i * spacing, .06, 72 if i % 2 == 0 else 45)
+    for offset in (.5, 1.5, 2.5, 3.5):
+        note('drums', 46, beat + offset, .22, 62)
+        note('bass', chord_root - 12, beat + offset, .32, 108)
+    # A separate tom/percussion response gives the beat a cinematic pulse.
+    for i, offset in enumerate((.75, 1.75, 2.75, 3.25, 3.5)):
+        note('drums', (41, 45, 47, 43, 50)[i], beat + offset, .18, 82 + i * 4)
+    if section == 'build':
+        count = 8 if bar % 2 == 0 else 16
+        for i in range(count):
+            note('drums', 38, beat + i * 4 / count, .05, 40 + round(i / count * 60))
+        for i, pitch in enumerate(chord):
+            note('keys', pitch + 12, beat + i * .5, .35, 75)
+    else:
+        motif = [(0, 0, .65), (.75, 0, .35), (1.5, 3, .4), (2.25, 7, .6), (3, 5, .35)]
+        if bar % 4 == 3:
+            motif = [(0, 10, .7), (1, 7, .6), (2, 3, 1.6)]
+        for offset, interval, length in motif:
+            if rng.random() < .15:
+                interval += 12
+            note('lead', 60 + root + interval, beat + offset, length, 98)
+        for offset in (0, 2):
+            for pitch in chord:
+                note('keys', pitch + 12, beat + offset, .35, 78)
+        if bar % 4 == 0:
+            note('drums', 49, beat, .7, 100)
 
 
 def save_project(spec):

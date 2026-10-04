@@ -378,3 +378,19 @@ Any compatible local MCP host can launch mcp_server_music.py with the same
 virtual-environment Python. Use that server path for a music demo, or
 mcp_server_sdk.py for the student workshop. Gemini is the included host;
 configuration for another chat application's local MCP support depends on that host.
+
+
+## Cinematic EDM through MCP
+
+`create_edm_song` creates original minor-key dance arrangements with four-on-the-floor
+kicks, syncopated bass, layered tom percussion, snare builds, drops, a breakdown,
+and a final drop. Sounds remain entirely GeneralUser GS, including electronic
+patches from that bank. Reverb applies to both live audio and exports.
+
+Example chat request: "Make a 30-second dark cinematic EDM beat in D at 132 BPM,
+energy 92, variation 17. Export the WAV." Follow up with "lower energy to 70" or
+"change variation to 35"; `edit_song` exposes both controls. Energy controls drum
+density; variation changes deterministic melodic accents. This is a MIDI arranger,
+not a model that copies recordings or produces vocals.
+
+`verify_music.py` includes EDM structure and invalid-energy rejection checks.
