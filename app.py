@@ -90,17 +90,14 @@ class BeatBoxStudio:
             # Prefer GeneralUser‑GS bundled soundfont if it exists
             # -------------------------------------------------
             import pathlib
-            local_sf2 = pathlib.Path(__file__).parents[1] / "GeneralUser-GS" / "GeneralUser-GS.sf2"
+            from .soundfont_audio import SOUNDFONT, create_synth
+            local_sf2 = SOUNDFONT
+            self.audio_engine = "default_midi"
+            self.soundfont_path = None
+            self.soundfont_error = None
             if local_sf2.is_file():
                 try:
-                    import fluidsynth
-                    self.fs = fluidsynth.Synth()
-                    import sys
-                    driver = "dsound" if sys.platform == "win32" else ("coreaudio" if sys.platform == "darwin" else "pulseaudio")
-                    self.fs.start(driver=driver)
-                    sfid = self.fs.sfload(str(local_sf2))
-                    # Select program 0 (default preset) on channel 0
-                    self.fs.program_select(0, sfid, 0, 0)
+                    self.fs = create_synth(live=True)
                     class FluidSynthWrapper:
                         def __init__(self, fs):
                             self.fs = fs
@@ -113,16 +110,20 @@ class BeatBoxStudio:
                         def close(self):
                             self.fs.delete()
                     self.midi_out = FluidSynthWrapper(self.fs)
-                    print(f"[BeatBox] Loaded GeneralUser‑GS soundfont from {local_sf2}")
+                    self.audio_engine = "generaluser_gs"
+                    self.soundfont_path = str(local_sf2)
+                    print(f"[MCPJAM] Loaded GeneralUser GS soundfont from {local_sf2}")
                     return
                 except Exception as fe:
-                    print(f"[BeatBox] FluidSynth load failed: {fe}")
+                    self.soundfont_error = str(fe)
+                    print(f"[MCPJAM] FluidSynth load failed: {fe}. Run setup_audio.py and install requirements-audio.txt.")
             # Fallback: use default MIDI output
             port = pygame.midi.get_default_output_id()
             if port != -1:
                 self.midi_out = pygame.midi.Output(port, 0)
                 print(f"[BeatBox] Initialized default MIDI output on port {port}")
             else:
+                self.audio_engine = "dsp"
                 print("[BeatBox] No default MIDI output port found.")
         except Exception as e:
             print(f"[BeatBox] Failed to initialize MIDI: {e}")
@@ -662,7 +663,7 @@ class BeatBoxStudio:
         tk.Label(swing_box, text="SWING", fg="#7aa2f7", bg="#1f2127",
                  font=("Segoe UI", 8, "bold")).pack(side="left", padx=2)
         self.scale_swing = tk.Scale(
-            swing_box, from_=0, to=65, orient="horizontal", showvalue=0,
+            swing_box, from_=0, to=75, orient="horizontal", showvalue=0,
             bg="#1f2127", troughcolor="#101114", fg="#ffffff", length=60,
             highlightthickness=0, cursor="hand2", command=self._on_swing_change
         )
@@ -1078,7 +1079,7 @@ class BeatBoxStudio:
     # Multi-Pillar & Chord Audio Triggering
     # -----------------------------------------------------------------------
     def _trigger_sound(self, track, step_num, override_chord=None, override_note=None, engine=None, override_program=None):
-        if not AUDIO_ENABLED:
+        if not AUDIO_ENABLED and self.midi_out is None:
             return
         any_solo = any(self.track_solo.values())
         if any_solo and not self.track_solo[track]:
@@ -1207,7 +1208,7 @@ class BeatBoxStudio:
         self.cmd_queue.put({"_internal": "update_banner", "text": "AI PRODUCER: Timeline Playback Complete"})
         self.timeline_active = False
 
-    def _raw_midi_timeline_loop(self, raw_events):
+    def _raw_midi_timeline_loop(self, raw_events, generation):
         """
         Thread that directly fires MIDI note_on / note_off / program_change
         messages to self.midi_out using absolute timestamps from a parsed
@@ -1234,7 +1235,7 @@ class BeatBoxStudio:
         start_time = time.time()
         event_idx = 0
 
-        while self.running and getattr(self, "timeline_active", False) and event_idx < len(all_events):
+        while self.running and getattr(self, "timeline_active", False) and generation == getattr(self, 'playback_generation', 0) and event_idx < len(all_events):
             if getattr(self, "timeline_paused", False):
                 time.sleep(0.05)
                 start_time += 0.05
@@ -1265,6 +1266,9 @@ class BeatBoxStudio:
 
             time.sleep(0.005)  # tighter poll for precise timing
 
+        # An old playback thread must not silence the newly edited song.
+        if generation != getattr(self, 'playback_generation', 0):
+            return
         # All notes off on all channels when done
         try:
             for ch in range(16):
@@ -1453,6 +1457,11 @@ class BeatBoxStudio:
 
         elif kind == "stop":
             self.timeline_active = False
+            self.playback_generation = getattr(self, 'playback_generation', 0) + 1
+            if self.midi_out:
+                for ch in range(16):
+                    for note in range(128):
+                        self.midi_out.note_off(note, 0, ch)
             self.stop_playback()
             self.ai_action_banner.configure(text="AI PRODUCER: Stopped sequencer ⏹")
 
@@ -1505,15 +1514,28 @@ class BeatBoxStudio:
 
         elif kind == "play_midi_raw":
             # Faithful MIDI file playback — direct note_on/off to GM synth
+            self.playback_generation = getattr(self, 'playback_generation', 0) + 1
+            if self.midi_out:
+                for ch in range(16):
+                    for note in range(128):
+                        self.midi_out.note_off(note, 0, ch)
             self.playing = False
             self.timeline_active = True
             self.timeline_paused = False
             raw_events = cmd.get("events", [])
             title = cmd.get("title", "MIDI File")
+            self.song_title = title
+            self.song_id = cmd.get('song_id', '')
+            self.song_revision = cmd.get('revision', 0)
+            self.song_duration_seconds = cmd.get('duration_seconds', 0)
+            self.song_event_count = len(raw_events)
+            self.song_tracks = cmd.get('song_tracks', {})
+            if 'bpm' in cmd:
+                self.set_bpm(cmd['bpm'])
             self.ai_action_banner.configure(text=f"🎵 Playing: {title}")
             threading.Thread(
                 target=self._raw_midi_timeline_loop,
-                args=(raw_events,),
+                args=(raw_events, self.playback_generation),
                 daemon=True
             ).start()
 
@@ -1556,7 +1578,18 @@ class BeatBoxStudio:
             "muted": dict(self.track_muted),
             "solo": dict(self.track_solo),
             "patterns": {t: list(self.pattern[t]) for t in TRACKS},
-            "audio_enabled": AUDIO_ENABLED
+            "audio_enabled": AUDIO_ENABLED or self.midi_out is not None,
+            "audio_engine": getattr(self, "audio_engine", "dsp"),
+            "soundfont_path": getattr(self, "soundfont_path", None),
+            "soundfont_error": getattr(self, "soundfont_error", None),
+            "timeline_active": getattr(self, "timeline_active", False),
+            "timeline_paused": getattr(self, "timeline_paused", False),
+            "song_title": getattr(self, "song_title", ""),
+            "song_id": getattr(self, "song_id", ""),
+            "song_revision": getattr(self, "song_revision", 0),
+            "song_tracks": getattr(self, "song_tracks", {}),
+            "song_duration_seconds": getattr(self, "song_duration_seconds", 0),
+            "song_event_count": getattr(self, "song_event_count", 0)
         }
 
     def _start_socket_server(self):

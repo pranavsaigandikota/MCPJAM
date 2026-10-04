@@ -39,7 +39,7 @@ def get_state() -> dict[str, Any]:
 
 @mcp.tool()
 def set_tempo(bpm: int) -> str:
-    """Set the DAW tempo from 40 to 240 beats per minute."""
+    """Set tempo from 40 to 240 BPM."""
     if not 40 <= bpm <= 240:
         raise ValueError("bpm must be between 40 and 240")
     result = call_daw({"cmd": "set_tempo", "bpm": bpm})

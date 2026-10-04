@@ -8,7 +8,7 @@ cd MCPJAM
 ```
 
 Basic Python is assumed; no MCP knowledge is required.
-Complete setup before class. Mac users should first follow [MAC_SETUP.md](MAC_SETUP.md)
+Complete setup before class. Mac users should first follow [MAC_SETUP.md](../MAC_SETUP.md)
 for Python with Tk, certificates, and host configuration. Both platforms use the
 same Python files, tool names, validations, and exercises.
 
@@ -63,8 +63,8 @@ register it, describe it, validate 0–75, send the set_swing backend command,
 return the actual acknowledgement. Restart the host connection and rediscover.
 AI may generate the short function. You must explain the contract, scope,
 validation and outcome checks. The main workshop emphasizes theory and application;
-full code listings are appendix references, not a memorization requirement.
-Practise foundational and design questions with [INTERVIEW_PREP.md](INTERVIEW_PREP.md).
+full implementations remain in the repository. The 27-slide presentation has no appendix.
+See the repository README.md for the exact 60-minute schedule and optional Gemini demo.
 
 Call 35, 0, 75, and 100 explicitly. Invalid 100 must produce a tool error before
 the backend call. Read the `swing` key in get_state's result and allow the UI to
@@ -103,3 +103,4 @@ Set-Content -LiteralPath swing-input.json -Value '{"amount":35}' -Encoding UTF8
 Starter has two tools; the completed solution adds swing and mute.
 To inspect the solution through the SDK client, add --server mcp_server_solution.py.
 The local DAW socket is not MCP and has no authentication. Keep it on loopback.
+

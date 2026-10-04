@@ -10,3 +10,9 @@ workshop_delivery/*-check.json
 workshop_delivery/powerpoint-overflow.json
 workshop_delivery/slide-code-verification.json
 *-input.json
+.env
+.env.*
+!.env.example
+.audio_runtime/
+.workshop-*.log
+generated_music/

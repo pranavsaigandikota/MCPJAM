@@ -1,240 +1,619 @@
-# MCPJAM workshop: Windows and macOS
+# Instructor guide — current Figma workshop
 
-21 core slides, 60 minutes; 13 appendix slides are reference only.
+[Open the 27-slide deck](https://www.figma.com/slides/mmQgw9DYp2CZDK7xDu69aZ)
 
-See ../MAC_SETUP.md and ../WORKSHOP_PRESENTATION.md for setup and timing. Interview practice: ../INTERVIEW_PREP.md. Full code and commands are appendix references; main slides emphasize theory, use cases and six production patterns.
+## 1. Intro to MCP Servers
 
-## 1. Introduction to MCP servers
+Presented by Pranav
 
-00–02 min / One live example
+X
 
-The workshop is an introduction to MCP servers. Demo the preconfigured tempo tool and read state. Explain that the AI proposes an action, the host/client routes it, and the server calls the backend. Code is evidence of the boundary, not material to memorize. AI assistance is allowed in the lab, but students must explain and verify the implementation. Set expectations: foundational interview preparation and a small practical tool; not a production deployment or a guarantee of any interview result.
+**Presenter notes**
 
-## 2. What an MCP server actually is
+Exact 60-minute allocation:
+- Before the clock: check-in and installation readiness.
+- 0–15 minutes: introduction, MCP theory, APIs, real-world examples, discovery, and SDK.
+- 15–25 minutes: links, demo, architecture, code walkthrough, and exercise briefing.
+- 25–30 minutes: flexible setup/help buffer; ready students begin early.
+- 30–50 minutes: protected student implementation and testing.
+- 50–55 minutes: security risks and defenses.
+- 55–58 minutes: advanced capabilities, multiple servers, and enterprise overview.
+- 58–60 minutes: apply the pattern elsewhere, check understanding, and close.
+35 minutes guided teaching/demo + 20 minutes practical work + 5 minutes buffer.
 
-02–04 min / A precise definition
+## 2. Check-In
 
-Interview answer: MCP is a protocol for applications to discover and use server-provided tools, resources and prompts. A server is a program exposing those capabilities. JSON-RPC supplies message envelopes; transports carry them. A tool can read or mutate, so do not define all tools as writes. The LLM does not acquire arbitrary Python execution. Host and server are separate responsibilities even if the application embeds both. A server may wrap an HTTP API, a library, a database, or an application socket.
 
-## 3. Host, client, server: who owns what?
 
-04–07 min / Explain the boundaries
+**Presenter notes**
 
-Ask who should decide which servers a user installs and whether to request confirmation: the host manages its connection and consent policy. A server still enforces access to the backend. Multiple servers are integrated by multiple client connections under host control. A shared remote server can serve many callers; one-client-to-one-server relationship does not mean only one user can use a server. Context should be limited to what the task needs. The class server/backend separation is real: MCP stdio is different from the DAW localhost JSON socket.
+Before the clock: check-in and installation readiness. Follow README.md. Confirm that Python, the app, and workshop_client.py work. Gemini is optional for the explicit student tests.
 
-## 4. Tools, resources, prompts: choose the primitive
+## 3. Today’s workshop
 
-07–10 min / Which one fits?
+Understand MCP, trace a tool call, and implement and test a tool in a starter MCP server.
 
-Conceptual control: tools are model-controlled, resources application-controlled and prompts user-controlled; host UX varies. get_state is a read tool, so resource versus tool is about how the context is exposed, not a claim that tools always mutate. Example challenge: expose a reference document as a resource, a database search as a bounded read tool, and a recurring analysis workflow as a prompt. Our starter registers tools only; the resource and prompt examples are hypothetical extensions. Resources can have URI templates and support notifications/subscriptions where supported.
+UNDERSTAND
 
-## 5. MCP, function calling, APIs, and RAG
+Connect an AI application to useful software capabilities.
 
-10–13 min / Different jobs
+TRACE
 
-These distinctions are architectural reasoning, not competing-product claims. Model function calling supplies proposed arguments; MCP supplies an interoperable capability interface and wire methods. An API remains responsible for domain behavior and access. RAG is a retrieval pattern, not the same category as a capability protocol; a server can expose retrieval. MCP alone does not select a model, guarantee agent reasoning, create a vector store, or make arbitrary software compatible without an adapter. If one fixed application needs one known API, a direct integration may be simpler.
+Follow a request from the host to the music application.
 
-## 6. Where would you apply MCP?
+IMPLEMENT + TEST
 
-13–16 min / Choose by the integration need
+Extend the supplied server with one validated tool.
 
-Decision question: is the objective to reuse capabilities across MCP-compatible AI hosts, or just add a fixed button/API call to one application? MCP is useful for a reusable integration surface. A direct API/function can be the smaller design for a single fixed workflow. Evaluate host support, tool clarity, ownership of data, permission scope, latency and operational cost. MCPJAM demonstrates wrapping a running application; interview answers should transfer the same adapter concept to docs, services and developer tooling. Avoid broad execute-anything tools.
+**Presenter notes**
 
-## 7. The call flow depends on the protocol revision
+0–15 minutes: introduction and theory. Outcome: extend an existing Python SDK server; students implement and test one tool.
 
-16–19 min / Do not memorize one universal handshake
+## 4. What MCP is
 
-Version distinction verified against the official July 2026 release notes: initialize/initialized and the Mcp-Session-Id header are retired in 2026-07-28. Metadata on requests carries version/client capabilities; server/discover is optional. Older hosts/SDKs still need their corresponding lifecycle. The class code deliberately remains on the validated v1 SDK, not a migration exercise. JSON is the data format; JSON-RPC is the request/response envelope; MCP defines capability methods and semantics for a given revision. Supported features must be checked against both host and SDK. See https://blog.modelcontextprotocol.io/posts/2026-07-28/ .
+Model Context Protocol
 
-## 8. Local stdio or remote Streamable HTTP?
+An open standard that connects AI applications to tools, data, and reusable instructions.
 
-19–22 min / Same purpose, different deployment
+An MCP server is the program that exposes those capabilities.
 
-Stdout must carry protocol messages only in the class stdio server. Stdio is not itself a sandbox: a launched local server executes code with its OS privileges. Streamable HTTP carries MCP over HTTP and may use SSE for streaming where the revision permits; legacy HTTP+SSE is not synonymous with the modern transport. HTTP is useful for remotely managed/shared services, but network deployment requires proper auth, per-user access, timeouts and limits. In older local HTTP profiles validate Origin against DNS rebinding and bind to loopback as appropriate. The DAW socket at 8765 is a third, application-specific connection, not either MCP transport.
+Today: extend an existing server using the Python SDK.
 
-## 9. Design a tool as an API contract
+**Presenter notes**
 
-22–25 min / Reason about the interface
+Explain the shared interface. The workshop extends an existing server using the Python SDK; it does not build an application or server from scratch.
 
-Production pattern #1: thin adapter and a narrow contract. This is a common API engineering approach, not a mandatory MCP deployment topology. Name, docstring and types describe how to call; validation and authorization enforce what is allowed. Prefer typed/structured outcomes for machine consumers; our simple write tools return strings and get_state returns a dict. Tool annotations can communicate read-only/destructive hints but are not trusted authorization rules. The class has typed input and range/allowlist checks; it does not implement caller identity or production object-level permissions. Do not move all business rules into a prompt.
+## 5. Why developers use MCP
 
-## 10. An acknowledgement is not the completed effect
+Benefit
 
-25–28 min / Explain asynchronous behavior
+What it means in a project
 
-Production pattern #2: distinguish accepted, queued, completed and failed. app.py enqueues writes and immediately acknowledges them; mcp_server_sdk.py honestly says queued. get_state provides observed state after UI processing. In a production asynchronous backend, use an explicit job/operation handle and a status/read operation when needed. This is a design practice, not a built-in universal MCP job guarantee. A timeout does not prove an operation failed or was rolled back. Ask students to explain this without reading code.
+Interoperability
 
-## 11. The only Python excerpt to read together
+Connect compatible hosts to the same server.
 
-28–31 min / Three lines, five responsibilities
+Consistency
 
-Read the exact first three lines of set_tempo from the starter: decorator, typed signature and description. Do not require syntax memorization or hand-written JSON-RPC. Open the file once to point to the explicit validation, call_daw and queued return. All full functions and Windows/Mac commands are appendix/reference material. AI may draft code; the student must review the tool contract, scope and tests. A function decorator does not create a permission system.
+Use a common discovery and calling interface.
 
-## 12. Seven-minute practice: design, generate, verify
+Reusability
 
-31–38 min / Apply the theory
+Reuse your tools across AI applications.
 
-Setup must be complete before the hour on Windows/Mac. Protect seven minutes. Student first states the name, units, valid range, side effect and proof of success. They may ask AI to generate the short function or use the provided completed solution as a guide; they are responsible for reviewing it and adding it above the main guard. Run explicit calls rather than relying on a model refusing bad input. The DAW already implements set_swing and clamps values, so only backend observation cannot prove the tool range check. If setup fails, use a prepared pair/instructor client and have the student explain the boundary. Mute is optional follow-up, not another required main-deck exercise.
+Faster development
 
-## 13. Explain the failure, not just the happy path
+Let an SDK handle protocol messages.
 
-38–40 min / Classify the layer
+**Presenter notes**
 
-Interview distinction: a JSON-RPC/protocol error is different from a tools/call result indicating execution failure; HTTP transport authorization failures are another layer. In our SDK, exceptions from range/backend checks produce tool errors. The explicit SDK client prints results and exits 1 on isError. Discovery succeeds without a live backend because it does not call call_daw. Ask which layer to inspect if the tool exists but connection is refused, or if a server fails to start because stdout contains debugging. Test boundaries, invalid types, permissions in real systems, backend outage and retries of mutations.
+0–15 minute theory segment. Common discovery and invocation help compatible hosts reuse capabilities. The SDK handles protocol mechanics; application behavior and permissions remain your responsibility.
 
-## 14. Authentication, authorization, approval
+## 6. The roles in an MCP connection
 
-40–43 min / Three different decisions
+HOST · AI application
 
-Production pattern #3: least privilege at every boundary. For HTTP use the authorization profile of the supported revision; validate token issuer/audience/expiry and relevant scopes through a correct implementation. Enforce per-user/per-object access in trusted server/backend code. The host may ask for confirmation for sensitive changes, but that is not an authorization bypass. Local stdio generally uses controlled process execution/environment credentials rather than adding OAuth to stdin. Our unauthenticated demo socket is explicitly not a production access-control design.
+Manages the model, interface, permissions, and tool workflow.
 
-## 15. Untrusted content can redirect a model
+CLIENT · inside the host
 
-43–46 min / Injection, poisoning and changed tools
+Communicates with an MCP server.
 
-Production pattern #4: treat returned context and metadata as untrusted and constrain the authority available even when model reasoning is manipulated. Review provenance and changes, isolate execution, require appropriate confirmations and enforce narrow backend credentials. Tool annotations are hints, not permission checks. Prompt wording alone is not a complete defense. Example is hypothetical: export_all_files is not exposed by our server. Explain the attack and the trusted enforcement point rather than promising the SDK prevents injection.
+↔
 
-## 16. Remote tools introduce extra boundaries
+MCP
 
-46–48 min / Tokens and network destinations
+SERVER
 
-Explain token passthrough: forwarding an MCP access token to an unrelated backend confuses audiences and weakens downstream accountability. Obtain/use correctly scoped downstream authorization. A proxy can become a confused deputy if it uses its broad identity on behalf of an unauthorized caller; apply per-client/user consent where the auth profile requires it and enforce tenant/object access. SSRF is relevant to tools accepting arbitrary URLs: restrict schemes/hosts, redirects and network egress, including internal/metadata endpoints. Do not expose secrets in results/logs. These network/OAuth controls are production extensions, not implemented by the music demo.
+Program that exposes tools, resources, and prompts.
 
-## 17. Timeouts and retries can duplicate effects
+The model proposes a tool and its arguments.
+The host coordinates the call through its MCP client.
 
-48–51 min / Think beyond a successful call
+**Presenter notes**
 
-Production pattern #5 is common distributed-system engineering applied to MCP. The class adapter implements a 5-second socket timeout, a 1 MiB response bound and ok checks; it does not implement rate limiting, idempotency, durable jobs, production audit trails or tenant isolation. A timeout means the caller does not know the result, not necessarily that the backend stopped. Use backoff/bounded retries for transient safe reads; for writes use backend-supported idempotency or reconciliation/status checks. Cancellation/progress/task features are revision/capability-dependent and cancellation is not transactional rollback. In the 2026 stateless protocol, explicit application state handles allow domain state without a protocol session.
+The model proposes a tool and its arguments. The host coordinates the call through its MCP client. The client is a component inside the host.
 
-## 18. Advanced capabilities: what do they enable?
+## 7. Where an API fits
 
-51–53 min / Know the intent and the support limits
+AI HOST
 
-Optional features depend on supported revision/client/server capabilities. Roots do not enforce OS permissions by themselves. Sampling lets a server request generation through the client/host; elicitation requests information through supported user flows, not an arbitrary secrets channel. Older revisions use server-to-client requests. The July 2026 revision uses multi-round-trip input-required flows for interactions such as sampling, elicitation and roots; do not assert one wire method applies everywhere. Students need the conceptual purpose in the hour; precise modern request shapes are follow-up. Resource subscriptions/list-changed caching are also revision-dependent. Structured MCP results are server data, not the same feature as a model producing schema-constrained text.
+Contains the MCP client
 
-## 19. How the same design appears in production
+MCP SERVER
 
-53–55 min / Deployment map
+Exposes a useful tool
 
-Production pattern #6: enforce the policy at each hop rather than trusting a gateway to solve all access control. Example stack from the original material is Entra ID plus API Management, an MCP service and internal APIs; those products are examples, not mandatory components. Separate transport/session state from business state. Stateless 2026 request handling can simplify load balancing, but does not supply application idempotency, state storage or authorization. Avoid logging secrets; bound requests, isolate services and preserve tenant identity. Our local DAW retains the thin-adapter idea while omitting this production infrastructure.
+EXISTING API
 
-## 20. Interview scenario: support copilot
+Applies application rules
 
-55–58 min / Design before choosing libraries
+DATA / ACTION
 
-Let pairs answer for one minute; ask one student for a 60-second design. Expected: identify host/client/server/backend, distinguish policy context from operational queries, expose narrow reads and a separate refund write tool, use backend-owned eligibility and limits, authenticate caller and authorize the specific order/customer, require appropriate host confirmation, validate input/output, scoped downstream credentials, prevent prompt-injected policy bypass, idempotency/reconciliation for refund retries and audit without secrets. Follow-ups: what if order text contains instructions? what if timeout occurs after refund? what if caller changes customer ID? These test reasoning, not a decorator recall exercise.
+Reads or changes the app
 
-## 21. Give a clear 90-second MCP answer
+MCP request →
 
-58–60 min / Explain, apply, defend
+API call →
 
-Use the companion INTERVIEW_PREP.md for 20 questions, answer outlines, follow-ups and a production gap checklist. Have students give this answer to a partner and identify one validated result from their tool exercise. Interview readiness means transferable explanation and trade-offs, not memorized SDK syntax. The core deck contains one three-line Python excerpt; all full implementations/OS commands are reference-only appendix material. Do not promise passing any particular interview or production expertise in one hour.
+Read / write →
 
-## 22. Reference: complete set_tempo implementation
+An MCP tool can call an existing API, Python function, or supported application command.
 
-Reference only / Not required to memorize
+Existing permissions and business rules still apply.
 
-Exact starter source. Full code is reference material; the main workshop reads only the decorator, signature and description. Point to validation, backend mapping and truthful queued acknowledgement. Interview preparation is based on reasoning about these responsibilities, not Python syntax memorization.
+**Presenter notes**
 
-## 23. Reference: Windows setup and test
+An MCP tool can wrap an existing HTTP API, Python function, or supported application command. Existing permissions and business rules still apply.
 
-Reference only  /  Outside the 60-minute route
+## 8. MCP servers you can use in real projects
 
-These are exact single-line commands matching README.md and workshop_client.py. Run the swing call only after adding the tool to the starter. The package directory must be named MCPJAM. Python 3.10+. requirements pins mcp[cli]==1.19.0 for FastMCP. Unix: python3 -m venv .venv; ./.venv/bin/python -m pip install -r requirements.txt; from parent ./MCPJAM/.venv/bin/python -m MCPJAM. Explicit client from package: ./.venv/bin/python workshop_client.py --tool set_swing --arguments-file swing-input.json. Set-Content creates a JSON file rather than embedding quoted JSON in native program arguments.
+MCP server
 
-## 24. Reference: Mac setup before class
+Practical use
 
-Reference only  /  Terminal: zsh or bash
+Connection to this workshop
 
-Use the standard Python 3.13 macOS installer from python.org for a new installation. It provides universal2 binaries for Intel/Apple Silicon and native Tk. Run the matching Install Certificates.command after installation. Python 3.13 pygame wheels are available for both architectures. Existing compatible Python 3.10–3.13 with working Tk can be used instead. Do not use the Apple system interpreter or copy a Windows venv. Activation is unnecessary because commands select the interpreter explicitly. See MAC_SETUP.md for detailed troubleshooting and sources. Native Mac rehearsal is required; Windows validation does not test GUI/audio on a Mac.
+Figma
 
-## 25. Reference: explicit calls on a Mac
+Read design context for a UI
 
-Reference only  /  Inside MCPJAM with the DAW running
+Retrieve useful application data
 
-Single quotes preserve literal JSON in zsh/bash. These calls start a fresh MCP subprocess using the client interpreter each time; no AI host is required for this explicit SDK test. Keep the DAW running in its original terminal. Client prints discovery and the result. Invalid 100 must return isError true and exit 1. Follow valid changes with get_state after the UI processes its queue. To use the completed solution add --server mcp_server_solution.py. The optional --arguments-file works on both platforms.
+GitHub
 
-## 26. Reference: host configuration
+Inspect repos, issues, and PRs
 
-Reference only  /  Host-specific example
+Expose specific project operations
 
-This mcpServers layout is an example used by some desktop hosts, not a universal MCP configuration standard. Rehearse the exact host chosen for the event in advance. It launches the server; no manually launched second server is needed. Do not put secrets into slides/config committed to the repo.
+Playwright
 
-## 27. Reference: Mac host configuration
+Interact with and test a web app
 
-Reference only  /  Host-specific JSON example
+Act, then verify the result
 
-Print example JSON containing actual paths from inside the project with ./.venv/bin/python workshop_preflight.py --host-config. It uses sys.executable without resolving the Unix venv symlink and the absolute server path, so it preserves the environment and handles spaces. Adapt the mcpServers structure to the selected host. Do not use tilde expansion in host configuration. The host launches the server; it need not have a shell PATH or activated venv. The Windows equivalent uses .venv/Scripts/python.exe. The script prints only and does not edit host settings.
+Filesystem
 
-## 28. Reference: set_swing solution
+Read and edit permitted files
 
-Reference only  /  Reveal after the lab
+Validate inputs and restrict access
 
-Matches the completed solution file. Include actual tests for typical and boundary values, invalid values and backend failures. Discovery of the tool alone is not sufficient.
+★ MCPJAM
 
-## 29. Reference: mute_track solution
+Read music state; change tempo or swing
 
-Reference only  /  Optional extension
+Implement and test your own tool
 
-Tests: kick true, kick false, violin true. Read state.muted.kick after UI update. This is a guided extension, not a second required beginner implementation within the timed hour.
+Connect an existing server for familiar software.
+Build your own to expose your application’s capabilities.
 
-## 30. Reference: JSON ≠ JSON-RPC ≠ MCP
+Available actions depend on the server implementation and granted permissions.
 
-Reference only  /  Protocol envelope
+**Presenter notes**
 
-This illustrates the envelope, not a payload students must manually write. The SDK handles it. Notifications have no request ID and no response. Tool execution errors can be represented as isError tool results; malformed/unsupported protocol operations use JSON-RPC error responses. mcp_server.py is an intentionally incomplete older inspection example, not the main implementation.
+Keep this explanation to approximately one minute. Figma already provides a server for design capabilities. Today, we are learning how to expose a capability from our own application using the same underlying pattern. Do not add another setup exercise.
 
-## 31. Reference: production security review
+## 9. Tools, resources, and prompts
 
-Reference only  /  Beyond the local demo
+TOOLS
 
-These are production engineering controls, not implemented by the demo. Loopback reduces network exposure but provides no caller identity. For remote servers use the authorization and transport requirements of the supported protocol revision. Treat tool annotations as untrusted hints. Preserve separate authorization to downstream services and avoid confused-deputy behavior. Gateway controls supplement, not replace, per-user backend checks.
+Callable operations
 
-## 32. Reference: the adapter and server startup
+Example: set_tempo or get_state
 
-Reference only  /  mcp_server_sdk.py
+RESOURCES
 
-Startup and get_state are exact source excerpts. call_daw uses socket.create_connection with timeout=5, sends JSON plus newline, reads at most 1_048_577 bytes and rejects responses above 1_048_576 or without the terminating newline. Empty replies, malformed JSON and a missing/false ok produce errors. Those are adapter checks, not authentication, rate limits or complete server-side protection. app.py accepts many commands but the SDK starter exposes only get_state and set_tempo. The DAW mutation handlers already implement set_swing and mute_track; students expose them as MCP tools. get_state returns a dictionary containing bpm, swing, muted and other keys. Full adapter source:
+Application context and data
 
-def call_daw(command: dict[str, Any]) -> dict[str, Any]:
-    with socket.create_connection((HOST, PORT), timeout=5) as connection:
-        connection.sendall(json.dumps(command).encode("utf-8") + b"\n")
-        with connection.makefile("rb") as stream:
-            reply = stream.readline(1_048_577)
-    if not reply:
-        raise RuntimeError("The DAW did not return a response")
-    if len(reply) > 1_048_576 or not reply.endswith(b"\n"):
-        raise RuntimeError("The DAW response exceeded the limit or was incomplete")
-    result = json.loads(reply.decode("utf-8"))
-    if not isinstance(result, dict) or result.get("ok") is not True:
-        raise RuntimeError(f"DAW rejected the command: {result}")
-    return result
+Example: a reference document
 
-## 33. Instructor: rehearse the success path
+PROMPTS
 
-Instructor reference  /  Preparation
+Reusable instructions
 
-Distribute platform-specific setup before class. Rehearse on native Mac hardware used by participants: Windows protocol tests do not establish Mac GUI/audio results. Run preflight and a Tk window test, then actual DAW and host calls. No MIDI hardware or soundfont is needed. The same MCP Python files serve both platforms. The supplied protocol tests use a mock DAW, not the real GUI. Protect coding time and keep advanced concepts at recognition level. Instructor uses solution, students use starter.
+Example: a review workflow
 
-## 34. Sources + version scope
+The server exposes capabilities. The host decides how to use them.
 
-Reference only  /  Updated October 1, 2026
+**Presenter notes**
 
-July 2026 revision — stateless request lifecycle
-https://blog.modelcontextprotocol.io/posts/2026-07-28/
-Official Python SDK — workshop v1.x API
-https://github.com/modelcontextprotocol/python-sdk/tree/v1.19.0
-MCP architecture and concepts
-https://modelcontextprotocol.io/docs/learn/architecture
-Tools, resources and prompts — versioned spec
-https://modelcontextprotocol.io/specification/2025-11-25/server/tools
-Security best practices
-https://modelcontextprotocol.io/docs/2025-11-25/tutorials/security/security_best_practices
-HTTP authorization
-https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization
-Sampling + elicitation
-https://modelcontextprotocol.io/specification/2025-11-25/client/sampling
-Mac Python/Tk: https://docs.python.org/3/using/mac.html
-Mac installer: https://www.python.org/downloads/macos/
-Pygame architecture/version wheels: https://pypi.org/project/pygame/#files
-Additional: https://modelcontextprotocol.io/specification/2025-11-25/client/elicitation . The workshop pins the v1 SDK API. Original deck: MCPJAM-Workshop-Full-Edition (1).pptx. All original major subjects retained, retimed or moved into the appendices. Mac setup instructions are documented; native GUI/audio/host rehearsal remains an instructor prerequisite.
+Tools can read or change state. get_state is a read tool. This starter exposes tools; resources and prompts are other MCP capabilities.
+
+## 10. Discover → select → invoke
+
+1 · DISCOVER
+
+The client lists tools with their names, descriptions, and input schemas.
+
+2 · SELECT
+
+The model proposes a tool and arguments; the host coordinates the call.
+
+3 · INVOKE
+
+The client calls the tool. The server validates, executes, and returns a result.
+
+set_tempo accepts bpm, an integer.
+Python validation enforces the allowed range.
+
+**Presenter notes**
+
+For the pinned workshop SDK: initialize the connection, list tools, and call a tool. Discovery provides the tool name, description, and input schema. The model proposes; the host coordinates. Explicit clients can call a tool without any model.
+
+## 11. JSON, JSON-RPC, MCP, and the SDK
+
+Layer
+
+Responsibility
+
+JSON
+
+A format for representing data
+
+JSON-RPC
+
+An envelope for requests, responses, and errors
+
+MCP
+
+Defines capability messages and their meaning
+
+Python SDK
+
+Handles protocol messages and dispatches tool calls
+
+You implement behavior, validation, permissions,
+and backend integration.
+
+**Presenter notes**
+
+The SDK handles protocol messages and dispatches tool calls. You implement useful behavior, validation, and backend integration. The SDK does not automatically implement business authorization or make every tool safe.
+
+## 12. Links and readiness
+
+github.com/pranavsaigandikota/MCPJAM
+
+aistudio.google.com/api-keys
+
+1  Open README.md for setup and launch instructions.
+
+2  Start the music application.
+
+3  Open mcp_server_sdk.py.
+
+4  Use workshop_client.py for explicit tool tests.
+
+Gemini key: AI demo only. Explicit tool tests need no key.
+
+**Presenter notes**
+
+15–25 minutes: links, demo, architecture, code walkthrough, and exercise briefing. Follow README.md launch commands. Gemini API key is only for the AI host demonstration; workshop_client.py needs no model or key.
+
+## 13. Watch This
+
+
+
+**Presenter notes**
+
+A transition lasting only a few seconds. Move directly into the approximately three-minute live demo.
+
+## 14. Demo: an AI controls the music app
+
+“Set the tempo to 120 BPM.”
+
+1  Inspect the selected tool and arguments.
+
+2  Observe the change in the music application.
+
+3  Call get_state to verify the result.
+
+**Presenter notes**
+
+Approximately three minutes. Start at a tempo other than 120. Show set_tempo with bpm: 120. The model proposes the call; the host coordinates execution. Observe the app, then call get_state. If the AI host fails, use the rehearsed workshop_client.py command from README.md. Save set_swing for the student exercise.
+Optional preparation before the clock: configure GeneralUser GS using README.md. The optional mcp_server_music.py supports instrumental pop arrangements and edits; keep the workshop demo focused on tempo and save swing for students.
+
+## 15. Architecture: follow the call
+
+Host + MCP client
+
+gemini_host.py or the explicit workshop_client.py
+
+mcp_server_sdk.py
+
+Tool definitions and the Python SDK
+
+call_daw()
+
+Backend adapter
+
+app.py
+
+Music application · UI and audio
+
+↓  Client ↔ server: MCP over stdio
+
+↓  Tool function → adapter: Python function call
+
+↓  Adapter ↔ app: newline-delimited JSON over the local socket
+
+**Presenter notes**
+
+mcp_server_sdk.py is the MCP server. app.py is the music application. The backend socket is separate from MCP. The optional Gemini host calls Google over its API, while the local client-server connection remains MCP over stdio.
+
+## 16. The files you will use
+
+File
+
+Purpose
+
+README.md
+
+Setup, launch commands, and exercises
+
+mcp_server_sdk.py
+
+Starter MCP server and backend adapter
+
+workshop_client.py
+
+Discover tools and test explicit arguments
+
+mcp_server_solution.py
+
+Completed reference implementation
+
+MCPJAM · edit the starter, test through the client.
+
+**Presenter notes**
+
+Open these files in the local clone. The completed solution is a reference after attempting the exercise. gemini_host.py is the optional model-driven demo host.
+
+## 17. A tool is a clear function contract
+
+@mcp.tool()
+def set_tempo(bpm: int) -> str:
+    """Set tempo from 40 to 240 BPM."""
+
+DECORATOR
+
+Registers the tool
+
+TYPE ANNOTATION
+
+Describes the input
+
+DOCSTRING
+
+Describes its purpose
+
+Validation and backend execution live in the function body.
+
+**Presenter notes**
+
+Open set_tempo in mcp_server_sdk.py. Point to validation, call_daw(), and the return value. Briefly identify FastMCP server creation and mcp.run(). Keep full code in the repository.
+
+## 18. A useful tool can act and observe
+
+READ STATE
+
+Observe the starting value
+
+PERFORM AN ACTION
+
+Call a specific tool
+
+READ STATE AGAIN
+
+Verify the expected result
+
+→
+
+→
+
+A queued or accepted request does not prove the action finished.
+Verify the application state.
+
+**Presenter notes**
+
+The application acknowledges writes when queued. Poll get_state until the expected state is observed; do not assume that an acknowledgement proves completion. Avoid blind retries of actions.
+
+## 19. Your task: add a swing tool
+
+Implement set_swing(amount: int) in mcp_server_sdk.py.
+
+Register it with @mcp.tool() and a clear description.
+
+Accept integers from 0 to 75; reject values outside that range.
+
+Use call_daw(): command set_swing, field amount.
+
+Return a useful result.
+
+Use set_tempo as your example.
+Place your tool definition before server startup.
+
+**Presenter notes**
+
+Finish the briefing by minute 25. Students extend the supplied server, not build it from scratch. Do not reveal the reference solution before the attempt. Define the tool before server startup.
+
+## 20. Build, reconnect, and test
+
+1  Implement and save your tool.
+
+2  Restart the server or reconnect to load the changes.
+
+3  Confirm discovery and test explicit inputs.
+
+4  Use get_state to verify the change.
+
+Edit mcp_server_sdk.py · Test with workshop_client.py
+
+5-minute setup/help buffer  →  20 minutes of protected practice
+
+**Presenter notes**
+
+25–30 minutes: separate five-minute flexible setup/help buffer; ready students begin early.
+30–50 minutes: protect all 20 minutes for student implementation and testing.
+- 3 minutes: locate and understand the existing tool.
+- 8 minutes: implement set_swing.
+- 3 minutes: restart/reconnect and confirm discovery.
+- 4 minutes: test valid, boundary, and invalid inputs.
+- 2 minutes: show a partner the result and explain the implementation.
+Early finishers: natural-language request or optional mute_track. A second tool is not required.
+
+## 21. What a successful test shows
+
+Test
+
+Expected evidence
+
+Tool discovery
+
+set_swing appears in the available tools
+
+Amount 35
+
+Accepted and verified through get_state
+
+Amount 0 and 75
+
+Boundary values accepted
+
+Amount 100
+
+Tool error; application state unchanged
+
+Test validation with explicit client arguments.
+The model may refuse or modify an invalid request before calling.
+
+**Presenter notes**
+
+Success: demonstrate one valid call, one rejected call, and explain the decorator, validation, and backend connection. Use explicit arguments to test validation because a model may refuse or change invalid natural-language requests.
+
+## 22. The security risks behind a tool call
+
+UNAUTHORIZED ACCESS
+
+Tools or records exposed to a caller who should not have access.
+
+EXCESSIVE PERMISSIONS
+
+A tool or backend account can do more than the task requires.
+
+INDIRECT INJECTION
+
+Malicious instructions hidden in documents or tool results.
+
+Range validation checks the value.
+Authorization checks whether the caller may perform the action.
+
+**Presenter notes**
+
+50–55 minutes: security risks and defenses. Range validation checks a value. Authorization checks whether this caller may perform the action. The local workshop socket is a trusted-machine demo, not a production authenticated service.
+
+## 23. Tool poisoning and rug pulls
+
+TOOL POISONING
+
+Malicious instructions in a tool description try to manipulate the model or its workflow.
+
+RUG PULLS
+
+A previously trusted tool changes its description or behavior after approval.
+
+Review what you connect—and review what changes.
+
+**Presenter notes**
+
+These are related risks, not synonyms. A malicious description can influence a model before execution. A rug pull changes a previously trusted tool. Review tool metadata and updates, and keep access controls outside model instructions.
+
+## 24. Security controls for MCP tools
+
+✓  Check access: identity, token audience, and permission for the action.
+
+↓  Limit permissions: tools and backend accounts get only what they need.
+
+!  Treat external content as untrusted: documents and tool results can contain malicious instructions.
+
+↻  Review code and updates: server sources, dependencies, and tool descriptions.
+
+**Presenter notes**
+
+For protected remote services, validate tokens intended for that service. Do not blindly forward incoming tokens to downstream APIs. Prompt-injection filters can help, but do not replace access controls. Keep secrets out of source code and projected demonstrations.
+
+## 25. Advanced capabilities
+
+Structured results, images, and audio where supported.
+
+Host-mediated model requests or user input where supported.
+
+Workflows using tools from multiple servers.
+
+Timeouts, outcome verification, and careful retries.
+
+The host can retrieve from one server, call another,
+and save a result through a third. The host coordinates.
+
+**Presenter notes**
+
+55–58 minutes: advanced capabilities, multiple servers, and enterprise overview. Support depends on the host, server, SDK, and protocol version. Servers do not automatically cooperate merely because they use MCP.
+
+## 26. MCP in an enterprise application
+
+IDENTITY PROVIDER
+
+Establishes identity
+Example: Entra ID
+
+Identity / token issuance
+to the client
+
+OPTIONAL GATEWAY
+
+Traffic policies and monitoring
+
+MCP SERVER
+
+Checks access to tools and data
+
+BACKEND
+
+Enforces application business rules
+
+Tool request →
+
+MCP →
+
+Application call →
+
+Entra ID and API Management are examples—not MCP requirements.
+
+**Presenter notes**
+
+55–58 minutes: brief overview, not a complete OAuth tutorial. Entra ID and API Management are examples, not requirements. Identity provider establishes identity; it is not a proxy that every tool request passes through.
+
+## 27. The same pattern in your own project
+
+EXISTING API
+
+Call a focused API endpoint
+
+PYTHON OR COMMAND
+
+Use a Python function or a constrained command
+
+APPLICATION
+
+Use a supported application interface
+
+Expose a useful capability, validate the request,
+enforce permissions, and verify the result.
+
+**Presenter notes**
+
+58–60 minutes: apply the pattern elsewhere, check understanding, and close.
+Ask students:
+- Where is the MCP server?
+- What registers your tool?
+- How did you verify that it worked?
+
