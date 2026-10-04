@@ -408,3 +408,13 @@ The MIDI export contains note data and does not embed the sample pack.
 Source: https://github.com/Boochi44/free-drum-samples (CC0 as declared by its author).
 Original licensing statement and per-file source URLs/checksums are bundled in
 samples/modern808. Importing a different private pack is not yet exposed as an MCP tool.
+
+
+## Deliberately composed demo
+
+Ask music chat to call `create_composed_song`, title Nightfall, BPM 128, key D.
+This is an original written 16-bar score (30 seconds at 128 BPM), using connected
+piano voicings, a recurring question/answer melody, rests, held strings, modern
+808 samples and a resolving ending. It does not randomly jump octaves or add
+constant tom fills. This is one authored score, not a general-purpose AI composer.
+Tempo and track/instrument edits are supported; its structure is designed for 16 bars.

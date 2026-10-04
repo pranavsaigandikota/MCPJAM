@@ -16,3 +16,5 @@ workshop_delivery/slide-code-verification.json
 .audio_runtime/
 .workshop-*.log
 generated_music/
+
+.workshop-*.json

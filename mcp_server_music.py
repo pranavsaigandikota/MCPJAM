@@ -68,6 +68,19 @@ def create_pop_song(title: str = 'MCPJAM Pop', bpm: int = 112, key: str = 'C', b
 
 
 @mcp.tool()
+def create_composed_song(title: str = 'Nightfall', bpm: int = 128, key: str = 'D') -> dict:
+    """Play a deliberately scored original 16-bar dark piano/808 arrangement: connected chord voicings, question/answer melody, rests, dynamics, restrained dance groove and breakdown. GS piano/strings plus modern808 samples. 30 seconds at 128 BPM; tempo changes adjust duration. BPM 40–240, supported tonic key. Background player required."""
+    spec = new_project(title,bpm,key,16,None,'normal','edm')
+    spec.update(sample_pack='modern808',score='dark_piano_16',energy=75,swing=0)
+    for track,instrument,volume in [('keys','piano',65),('lead','piano',66),('pad','strings',38),('bass','finger_bass',95),('drums','piano',82)]:
+        spec['tracks'][track].update(instrument=instrument,volume=volume,muted=False)
+    validate(spec)
+    result=save_project(spec)
+    result.update(play_project(spec))
+    return result
+
+
+@mcp.tool()
 def create_808_song(title: str = 'Blackout', bpm: int = 128, key: str = 'D',
                     duration_seconds: float = 30, energy: int = 80) -> dict:
     """Create a restrained dark dance beat using the modern808 hard-trap WAV pack for tuned sub bass and drums, with GS piano/strings atmosphere. No GS synth lead or electric-guitar lead. Requires background player. Duration 5–180, energy 0–100, BPM 40–240. Live playback and export use the same rendered sample mix."""
