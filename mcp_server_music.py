@@ -68,11 +68,24 @@ def create_pop_song(title: str = 'MCPJAM Pop', bpm: int = 112, key: str = 'C', b
 
 
 @mcp.tool()
+def create_bossa_song(title: str = 'Seaside Circuit', bpm: int = 112, key: str = 'C', duration_seconds: float = 30) -> dict:
+    """Create/play original playful racing-game-style bossa nova: nylon guitar syncopation, piano melody, light shaker/rim percussion and quiet root/fifth finger bass. Uses GeneralUser GS. No copied game melody. Exact duration 5–180, BPM 40–240, supported tonic key. Bass defaults to 35/100; edit with set_song_track."""
+    spec=new_project(title,bpm,key,16,duration_seconds,'normal','pop')
+    spec.update(score='bossa',swing=0)
+    for track,instrument,volume in [('keys','piano',58),('lead','piano',68),('pad','nylon_guitar',74),('bass','finger_bass',35),('drums','piano',52)]:
+        spec['tracks'][track].update(instrument=instrument,volume=volume,muted=False)
+    validate(spec)
+    result=save_project(spec)
+    result.update(play_project(spec))
+    return result
+
+
+@mcp.tool()
 def create_funk_song(title: str = 'Gold Rush', bpm: int = 112, key: str = 'E', duration_seconds: float = 30) -> dict:
     """Create/play original upbeat funk-pop with soft sampled finger bass, syncopated electric piano, clipped acoustic guitar chords, brass call/response and modern sampled drums. No copied song melody/lyrics. Duration 5–180 seconds, BPM 40–240, supported tonic key. Background player required."""
     spec = new_project(title,bpm,key,16,duration_seconds,'normal','pop')
     spec.update(score='funk_pop',sample_pack='modern808',sample_bass=False,swing=4)
-    for track,instrument,volume in [('keys','electric_piano',68),('lead','trumpet',55),('pad','acoustic_guitar',52),('bass','finger_bass',58),('drums','piano',78)]:
+    for track,instrument,volume in [('keys','electric_piano',68),('lead','trumpet',55),('pad','acoustic_guitar',52),('bass','finger_bass',38),('drums','piano',78)]:
         spec['tracks'][track].update(instrument=instrument,volume=volume,muted=False)
     validate(spec)
     result=save_project(spec)
@@ -85,7 +98,7 @@ def create_composed_song(title: str = 'Nightfall', bpm: int = 128, key: str = 'D
     """Play a deliberately scored original 16-bar dark piano/808 arrangement: connected chord voicings, question/answer melody, rests, dynamics, restrained dance groove and breakdown. GS piano/strings plus modern808 samples. 30 seconds at 128 BPM; tempo changes adjust duration. BPM 40–240, supported tonic key. Background player required."""
     spec = new_project(title,bpm,key,16,None,'normal','edm')
     spec.update(sample_pack='modern808',score='dark_piano_16',energy=75,swing=0)
-    for track,instrument,volume in [('keys','piano',65),('lead','piano',66),('pad','strings',38),('bass','finger_bass',95),('drums','piano',82)]:
+    for track,instrument,volume in [('keys','piano',65),('lead','piano',66),('pad','strings',38),('bass','finger_bass',40),('drums','piano',82)]:
         spec['tracks'][track].update(instrument=instrument,volume=volume,muted=False)
     validate(spec)
     result=save_project(spec)
@@ -146,7 +159,7 @@ def edit_song(song_id: str = '', bpm: int | None = None, key: str | None = None,
 @mcp.tool()
 def set_song_track(track: str, song_id: str = '', instrument: str | None = None,
                    muted: bool | None = None, volume: int | None = None) -> dict:
-    """Edit keys/bass/pad/lead/drums in a song; then rebuild and play. Volume 0–100. Melodic instruments: piano, electric_piano, acoustic_guitar, electric_guitar, finger_bass, synth_bass, strings, choir, trumpet, saxophone, flute, synth_lead, warm_pad. Drums use the sampled GM drum kit and accept mute/volume edits only."""
+    """Edit keys/bass/pad/lead/drums in a song; then rebuild and play. Volume 0–100; bass 25–35 is low, 40–50 medium. Melodic instruments: piano, electric_piano, nylon_guitar, acoustic_guitar, electric_guitar, finger_bass, synth_bass, strings, choir, trumpet, saxophone, flute, synth_lead, warm_pad. Drums accept mute/volume edits only."""
     spec = copy.deepcopy(current_project(song_id))
     if track not in spec['tracks']:
         raise ValueError('track must be keys, bass, pad, lead, or drums')

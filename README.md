@@ -421,5 +421,17 @@ Tempo and track/instrument edits are supported; its structure is designed for 16
 
 ## Original funk-pop score
 
-Use create_funk_song for a 30-second original funk-pop arrangement with softer GS finger bass, electric piano, clipped guitar, brass answers and modern sampled drums. This is an authored groove, not a recreation of a commercial recording. Bass starts at volume 58 and remains editable with set_song_track.
+Use create_funk_song for a 30-second original funk-pop arrangement with softer GS finger bass, electric piano, clipped guitar, brass answers and modern sampled drums. This is an authored groove, not a recreation of a commercial recording. Bass starts at volume 38 and remains editable with set_song_track.
 
+
+
+## Playful bossa nova and quieter bass
+
+Ask music chat: "Create a 30-second playful bossa nova called Seaside Circuit."
+`create_bossa_song` uses original piano phrases, syncopated GS nylon-string guitar,
+light shaker/rim percussion, and root/fifth finger bass at 35/100. It does not
+copy a game soundtrack. Default pop bass is 42, funk bass 38, composed piano/808
+bass 40. Existing saved projects retain their settings until edited.
+
+Use `set_song_track(track="bass", volume=30)` for low bass or volume 45 for
+medium bass. Perceived loudness also depends on instrument and arrangement.

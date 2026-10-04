@@ -10,7 +10,7 @@ import mido
 
 ROOT = Path(__file__).resolve().parent
 OUTPUT = ROOT / 'generated_music'
-INSTRUMENTS = {'piano': 0, 'electric_piano': 4, 'acoustic_guitar': 25,
+INSTRUMENTS = {'piano': 0, 'electric_piano': 4, 'nylon_guitar': 24, 'acoustic_guitar': 25,
                'electric_guitar': 27, 'finger_bass': 33, 'synth_bass': 38,
                'strings': 48, 'choir': 52, 'trumpet': 56, 'saxophone': 65,
                'flute': 73, 'synth_lead': 81, 'warm_pad': 89}
@@ -61,7 +61,7 @@ def new_project(title='MCPJAM Pop', bpm=112, key='C', bars=32, duration_seconds=
     spec = {'song_id': uuid.uuid4().hex, 'title': title, 'bpm': bpm, 'key': key,
             'bars': bars, 'duration_seconds': duration_seconds, 'articulation': articulation, 'style': style,
             'swing': 8, 'revision': 1, 'tracks': {}}
-    for track, instrument, volume in [('keys', 'piano', 88), ('bass', 'finger_bass', 90),
+    for track, instrument, volume in [('keys', 'piano', 88), ('bass', 'finger_bass', 42),
                                       ('pad', 'strings', 48), ('lead', 'acoustic_guitar', 82),
                                       ('drums', 'piano', 85)]:
         spec['tracks'][track] = {'instrument': instrument, 'volume': volume, 'muted': False}
@@ -107,6 +107,13 @@ def arrangement(spec):
     sections = []
     for bar in range(musical_bars):
         progress = bar / musical_bars
+        if spec.get('score') == 'bossa':
+            from bossa_score import bossa_bar
+            section = 'intro' if progress<.14 else 'outro' if progress>.9 else 'theme'
+            if not sections or sections[-1]['name'] != section:
+                sections.append({'name':section,'start_bar':bar+1})
+            bossa_bar(note,bar,root,section)
+            continue
         if spec.get('score') == 'funk_pop':
             from funk_score import funk_bar
             section = ('intro' if progress<.14 else 'groove' if progress<.55 else
