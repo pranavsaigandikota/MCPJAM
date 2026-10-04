@@ -9,6 +9,11 @@ _DLL_HANDLES = []
 
 
 def load_fluidsynth():
+    if sys.platform == 'darwin' and not os.environ.get('HOMEBREW_PREFIX'):
+        for prefix in ('/opt/homebrew', '/usr/local'):
+            if (Path(prefix) / 'lib' / 'libfluidsynth.dylib').is_file():
+                os.environ['HOMEBREW_PREFIX'] = prefix
+                break
     if sys.platform == 'win32':
         runtime = ROOT / '.audio_runtime'
         for dll in runtime.rglob('libfluidsynth*.dll'):

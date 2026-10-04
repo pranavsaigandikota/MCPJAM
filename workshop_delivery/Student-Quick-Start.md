@@ -17,37 +17,25 @@ same Python files, tool names, validations, and exercises.
 From inside MCPJAM:
 
 ```powershell
-python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-.\.venv\Scripts\python.exe workshop_preflight.py
-```
-
-Start the DAW from the parent folder:
-
-```powershell
-.\MCPJAM\.venv\Scripts\python.exe -m MCPJAM
+powershell -ExecutionPolicy Bypass -File .\setup.ps1
+powershell -ExecutionPolicy Bypass -File .
+un_app.ps1
 ```
 
 ## macOS / Terminal setup
 
-From inside MCPJAM, using the documented Python 3.13 installation:
+With Homebrew installed, from inside MCPJAM:
 
 ```bash
-python3.13 -m venv .venv
-./.venv/bin/python -m pip install -r requirements.txt
-./.venv/bin/python workshop_preflight.py
-./.venv/bin/python -m tkinter
+bash setup.sh
+bash run_app.sh
 ```
 
-Close the Tk test window, then start the DAW from the parent folder:
-
-```bash
-cd ..
-./MCPJAM/.venv/bin/python -m MCPJAM
-```
-
-Do not transfer virtual environments between computers; create one on each.
-Activation is optional because commands use the venv interpreter directly.
+Setup installs Python dependencies and FluidSynth. GeneralUser GS and its license
+are bundled. Every song uses GS; playback shows an error if it cannot load.
+Use Play/Pause, Stop, or Space in the desktop app. It starts paused.
+Windows has been tested; Mac runtime has not yet been verified.
+Create a new virtual environment on each computer.
 
 The host launches the stdio server with absolute paths to this interpreter and
 mcp_server_sdk.py. Do not launch another server manually for the host connection.

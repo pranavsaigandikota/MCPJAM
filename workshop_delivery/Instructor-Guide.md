@@ -1,6 +1,8 @@
 # Instructor guide — current Figma workshop
 
-[Open the 27-slide deck](https://www.figma.com/slides/mmQgw9DYp2CZDK7xDu69aZ)
+[Open the 27-slide presentation](https://www.figma.com/slides/mmQgw9DYp2CZDK7xDu69aZ)
+
+60 minutes: 35 teaching, 20 practice, 5 setup/help buffer. Six image memes and three additional brainrot moments.
 
 ## 1. Intro to MCP Servers
 
@@ -8,7 +10,9 @@ Presented by Pranav
 
 X
 
-**Presenter notes**
+01 / 27
+
+Presenter notes:
 
 Exact 60-minute allocation:
 - Before the clock: check-in and installation readiness.
@@ -23,9 +27,9 @@ Exact 60-minute allocation:
 
 ## 2. Check-In
 
+02 / 27
 
-
-**Presenter notes**
+Presenter notes:
 
 Before the clock: check-in and installation readiness. Follow README.md. Confirm that Python, the app, and workshop_client.py work. Gemini is optional for the explicit student tests.
 
@@ -45,7 +49,9 @@ IMPLEMENT + TEST
 
 Extend the supplied server with one validated tool.
 
-**Presenter notes**
+03 / 27
+
+Presenter notes:
 
 0–15 minutes: introduction and theory. Outcome: extend an existing Python SDK server; students implement and test one tool.
 
@@ -59,7 +65,9 @@ An MCP server is the program that exposes those capabilities.
 
 Today: extend an existing server using the Python SDK.
 
-**Presenter notes**
+04 / 27
+
+Presenter notes:
 
 Explain the shared interface. The workshop extends an existing server using the Python SDK; it does not build an application or server from scratch.
 
@@ -67,27 +75,33 @@ Explain the shared interface. The workshop extends an existing server using the 
 
 Benefit
 
-What it means in a project
+In your project
 
 Interoperability
 
-Connect compatible hosts to the same server.
+Connect compatible hosts to one server.
 
 Consistency
 
-Use a common discovery and calling interface.
+Use common discovery and calling.
 
 Reusability
 
-Reuse your tools across AI applications.
+Reuse tools across AI applications.
 
 Faster development
 
-Let an SDK handle protocol messages.
+Let the SDK handle protocol messages.
 
-**Presenter notes**
+Me when the next
+compatible AI host
+uses the same server.
 
-0–15 minute theory segment. Common discovery and invocation help compatible hosts reuse capabilities. The SDK handles protocol mechanics; application behavior and permissions remain your responsibility.
+05 / 27
+
+Presenter notes:
+
+Brief theory segment within 0–15 minutes. Common discovery and invocation help compatible hosts reuse capabilities. Chill Guy is a quick visual joke about reuse, not a claim that all hosts support every capability. Source: https://imgflip.com/memetemplate/562547797/Chill-Guy. Original character by Phillip Banks.
 
 ## 6. The roles in an MCP connection
 
@@ -110,7 +124,9 @@ Program that exposes tools, resources, and prompts.
 The model proposes a tool and its arguments.
 The host coordinates the call through its MCP client.
 
-**Presenter notes**
+06 / 27
+
+Presenter notes:
 
 The model proposes a tool and its arguments. The host coordinates the call through its MCP client. The client is a component inside the host.
 
@@ -142,9 +158,16 @@ An MCP tool can call an existing API, Python function, or supported application 
 
 Existing permissions and business rules still apply.
 
-**Presenter notes**
+07 / 27
+
++1000 AURA
+
+Reusing an API you already have.
+
+Presenter notes:
 
 An MCP tool can wrap an existing HTTP API, Python function, or supported application command. Existing permissions and business rules still apply.
+Quick brainrot aside: +1000 AURA — Reusing an API you already have. Tie the joke back to the technical point; keep the existing timing.
 
 ## 8. MCP servers you can use in real projects
 
@@ -189,7 +212,9 @@ Build your own to expose your application’s capabilities.
 
 Available actions depend on the server implementation and granted permissions.
 
-**Presenter notes**
+08 / 27
+
+Presenter notes:
 
 Keep this explanation to approximately one minute. Figma already provides a server for design capabilities. Today, we are learning how to expose a capability from our own application using the same underlying pattern. Do not add another setup exercise.
 
@@ -215,7 +240,9 @@ Example: a review workflow
 
 The server exposes capabilities. The host decides how to use them.
 
-**Presenter notes**
+09 / 27
+
+Presenter notes:
 
 Tools can read or change state. get_state is a read tool. This starter exposes tools; resources and prompts are other MCP capabilities.
 
@@ -236,9 +263,16 @@ The client calls the tool. The server validates, executes, and returns a result.
 set_tempo accepts bpm, an integer.
 Python validation enforces the allowed range.
 
-**Presenter notes**
+10 / 27
+
+TOOL DISCOVERY RIZZ
+
+The host reads the schema before making a move.
+
+Presenter notes:
 
 For the pinned workshop SDK: initialize the connection, list tools, and call a tool. Discovery provides the tool name, description, and input schema. The model proposes; the host coordinates. Explicit clients can call a tool without any model.
+Quick brainrot aside: TOOL DISCOVERY RIZZ — The host reads the schema before making a move. Tie the joke back to the technical point; keep the existing timing.
 
 ## 11. JSON, JSON-RPC, MCP, and the SDK
 
@@ -265,7 +299,9 @@ Handles protocol messages and dispatches tool calls
 You implement behavior, validation, permissions,
 and backend integration.
 
-**Presenter notes**
+11 / 27
+
+Presenter notes:
 
 The SDK handles protocol messages and dispatches tool calls. You implement useful behavior, validation, and backend integration. The SDK does not automatically implement business authorization or make every tool safe.
 
@@ -285,17 +321,24 @@ aistudio.google.com/api-keys
 
 Gemini key: AI demo only. Explicit tool tests need no key.
 
-**Presenter notes**
+12 / 27
+
+Presenter notes:
 
 15–25 minutes: links, demo, architecture, code walkthrough, and exercise briefing. Follow README.md launch commands. Gemini API key is only for the AI host demonstration; workshop_client.py needs no model or key.
 
 ## 13. Watch This
 
+13 / 27
 
+WORDS  →  TOOL CALL  →  MUSIC
 
-**Presenter notes**
+Let the host cook.
+
+Presenter notes:
 
 A transition lasting only a few seconds. Move directly into the approximately three-minute live demo.
+Let Him Cook visual: https://imgflip.com/memetemplate/430535625/Let-Him-Cook. A few-second transition only; the model proposes the call, and the host coordinates it.
 
 ## 14. Demo: an AI controls the music app
 
@@ -307,10 +350,13 @@ A transition lasting only a few seconds. Move directly into the approximately th
 
 3  Call get_state to verify the result.
 
-**Presenter notes**
+14 / 27
+
+Presenter notes:
 
 Approximately three minutes. Start at a tempo other than 120. Show set_tempo with bpm: 120. The model proposes the call; the host coordinates execution. Observe the app, then call get_state. If the AI host fails, use the rehearsed workshop_client.py command from README.md. Save set_swing for the student exercise.
 Optional preparation before the clock: configure GeneralUser GS using README.md. The optional mcp_server_music.py supports instrumental pop arrangements and edits; keep the workshop demo focused on tempo and save swing for students.
+Optional sound demo outside the timed tempo walkthrough: Windows run_music_chat.ps1 starts a background GeneralUser GS player with no visual window. Ask for a 30-second original R&B instrumental with legato and held notes. Type pause, play, stop to control transport locally without API requests. MIDI and WAV export support exact durations. Keep the 60-minute schedule unchanged.
 
 ## 15. Architecture: follow the call
 
@@ -336,7 +382,9 @@ Music application · UI and audio
 
 ↓  Adapter ↔ app: newline-delimited JSON over the local socket
 
-**Presenter notes**
+15 / 27
+
+Presenter notes:
 
 mcp_server_sdk.py is the MCP server. app.py is the music application. The backend socket is separate from MCP. The optional Gemini host calls Google over its API, while the local client-server connection remains MCP over stdio.
 
@@ -364,7 +412,9 @@ Completed reference implementation
 
 MCPJAM · edit the starter, test through the client.
 
-**Presenter notes**
+16 / 27
+
+Presenter notes:
 
 Open these files in the local clone. The completed solution is a reference after attempting the exercise. gemini_host.py is the optional model-driven demo host.
 
@@ -388,34 +438,39 @@ Describes its purpose
 
 Validation and backend execution live in the function body.
 
-**Presenter notes**
+17 / 27
+
+Presenter notes:
 
 Open set_tempo in mcp_server_sdk.py. Point to validation, call_daw(), and the return value. Briefly identify FastMCP server creation and mcp.run(). Keep full code in the repository.
 
 ## 18. A useful tool can act and observe
 
-READ STATE
+1 · READ STATE
 
-Observe the starting value
+Observe the starting value.
 
-PERFORM AN ACTION
+2 · PERFORM AN ACTION
 
-Call a specific tool
+Call a specific tool.
 
-READ STATE AGAIN
+3 · READ STATE AGAIN
 
-Verify the expected result
+Verify the expected result.
 
-→
+Trust “queued”
+or verify the actual state?
 
-→
+A queued or accepted request does not prove
+the action finished. Verify application state.
 
-A queued or accepted request does not prove the action finished.
-Verify the application state.
+Choose the state check.
 
-**Presenter notes**
+18 / 27
 
-The application acknowledges writes when queued. Poll get_state until the expected state is observed; do not assume that an acknowledgement proves completion. Avoid blind retries of actions.
+Presenter notes:
+
+Read state, perform an action, read state again. An acknowledgement can mean queued rather than finished. The two-buttons visual is a quick joke: choose verification. Template: https://imgflip.com/memetemplate/Two-Buttons. Keep within the 15–25 minute walkthrough.
 
 ## 19. Your task: add a swing tool
 
@@ -432,7 +487,9 @@ Return a useful result.
 Use set_tempo as your example.
 Place your tool definition before server startup.
 
-**Presenter notes**
+19 / 27
+
+Presenter notes:
 
 Finish the briefing by minute 25. Students extend the supplied server, not build it from scratch. Do not reveal the reference solution before the attempt. Define the tool before server startup.
 
@@ -440,17 +497,28 @@ Finish the briefing by minute 25. Students extend the supplied server, not build
 
 1  Implement and save your tool.
 
-2  Restart the server or reconnect to load the changes.
+2  Restart or reconnect to load the changes.
 
 3  Confirm discovery and test explicit inputs.
 
 4  Use get_state to verify the change.
 
+LOCKED IN
+
+20 minutes.
+One useful tool.
+
 Edit mcp_server_sdk.py · Test with workshop_client.py
 
 5-minute setup/help buffer  →  20 minutes of protected practice
 
-**Presenter notes**
+20 / 27
+
+NO SCHEMA? NO RIZZ.
+
+Validate inputs. Keep your aura.
+
+Presenter notes:
 
 25–30 minutes: separate five-minute flexible setup/help buffer; ready students begin early.
 30–50 minutes: protect all 20 minutes for student implementation and testing.
@@ -460,6 +528,8 @@ Edit mcp_server_sdk.py · Test with workshop_client.py
 - 4 minutes: test valid, boundary, and invalid inputs.
 - 2 minutes: show a partner the result and explain the implementation.
 Early finishers: natural-language request or optional mute_track. A second tool is not required.
+Locked In Cat visual: https://imgflip.com/memetemplate/579964988/LOCKED-IN-CAT. Keep this slide up during practice; the meme adds no teaching segment.
+Quick brainrot aside: NO SCHEMA? NO RIZZ. — Validate inputs. Keep your aura. Tie the joke back to the technical point; keep the existing timing.
 
 ## 21. What a successful test shows
 
@@ -467,9 +537,9 @@ Test
 
 Expected evidence
 
-Tool discovery
+Discovery
 
-set_swing appears in the available tools
+set_swing appears in available tools
 
 Amount 35
 
@@ -483,12 +553,20 @@ Amount 100
 
 Tool error; application state unchanged
 
+When the valid call
+AND the rejected call
+both behave correctly.
+
+Absolute verification.
+
 Test validation with explicit client arguments.
 The model may refuse or modify an invalid request before calling.
 
-**Presenter notes**
+21 / 27
 
-Success: demonstrate one valid call, one rejected call, and explain the decorator, validation, and backend connection. Use explicit arguments to test validation because a model may refuse or change invalid natural-language requests.
+Presenter notes:
+
+Success: demonstrate one valid call, one rejected call, and explain the decorator, validation, and backend connection. Explicit arguments test validation; a model may refuse or change invalid natural-language requests. Absolute Cinema visual: https://imgflip.com/memetemplate/602369493/Absolute-cinema. This reaction rewards valid AND invalid tests.
 
 ## 22. The security risks behind a tool call
 
@@ -507,9 +585,14 @@ Malicious instructions hidden in documents or tool results.
 Range validation checks the value.
 Authorization checks whether the caller may perform the action.
 
-**Presenter notes**
+22 / 27
+
+“Just give every tool admin access.”
+
+Presenter notes:
 
 50–55 minutes: security risks and defenses. Range validation checks a value. Authorization checks whether this caller may perform the action. The local workshop socket is a trusted-machine demo, not a production authenticated service.
+Quick visual joke: unchecked permissions are a fire, not a shortcut. This Is Fine template via https://imgflip.com/memetemplate/This-Is-Fine; original comic by KC Green. Keep within the five-minute security segment.
 
 ## 23. Tool poisoning and rug pulls
 
@@ -523,7 +606,9 @@ A previously trusted tool changes its description or behavior after approval.
 
 Review what you connect—and review what changes.
 
-**Presenter notes**
+23 / 27
+
+Presenter notes:
 
 These are related risks, not synonyms. A malicious description can influence a model before execution. A rug pull changes a previously trusted tool. Review tool metadata and updates, and keep access controls outside model instructions.
 
@@ -537,7 +622,9 @@ These are related risks, not synonyms. A malicious description can influence a m
 
 ↻  Review code and updates: server sources, dependencies, and tool descriptions.
 
-**Presenter notes**
+24 / 27
+
+Presenter notes:
 
 For protected remote services, validate tokens intended for that service. Do not blindly forward incoming tokens to downstream APIs. Prompt-injection filters can help, but do not replace access controls. Keep secrets out of source code and projected demonstrations.
 
@@ -554,7 +641,9 @@ Timeouts, outcome verification, and careful retries.
 The host can retrieve from one server, call another,
 and save a result through a third. The host coordinates.
 
-**Presenter notes**
+25 / 27
+
+Presenter notes:
 
 55–58 minutes: advanced capabilities, multiple servers, and enterprise overview. Support depends on the host, server, SDK, and protocol version. Servers do not automatically cooperate merely because they use MCP.
 
@@ -588,7 +677,9 @@ Application call →
 
 Entra ID and API Management are examples—not MCP requirements.
 
-**Presenter notes**
+26 / 27
+
+Presenter notes:
 
 55–58 minutes: brief overview, not a complete OAuth tutorial. Entra ID and API Management are examples, not requirements. Identity provider establishes identity; it is not a proxy that every tool request passes through.
 
@@ -609,7 +700,13 @@ Use a supported application interface
 Expose a useful capability, validate the request,
 enforce permissions, and verify the result.
 
-**Presenter notes**
+27 / 27
+
+→
+
+→
+
+Presenter notes:
 
 58–60 minutes: apply the pattern elsewhere, check understanding, and close.
 Ask students:

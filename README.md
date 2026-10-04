@@ -14,6 +14,72 @@ Basic Python functions and dictionaries are assumed.
 The Figma deck is the current workshop. Older PPTX/PDF files in workshop_delivery
 are historical exports and do not reflect this 27-slide revision.
 
+## Copy-and-paste setup and playback
+
+After cloning, run these commands inside **MCPJAM**. The setup scripts create
+the local environment and install the dependencies listed in requirements-audio.txt.
+GeneralUser GS is bundled with its license; FluidSynth supplies its playback engine.
+
+Windows 64-bit / PowerShell:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\setup.ps1
+powershell -ExecutionPolicy Bypass -File .\run_music_chat.ps1
+```
+
+The Windows helper uses an existing Python 3.10–3.13 with Tk or installs Python
+3.13 through winget if necessary. If winget is absent, install 64-bit Python
+3.13 from python.org first.
+
+macOS / Terminal (requires [Homebrew](https://brew.sh)):
+
+```bash
+bash setup.sh
+bash run_app.sh
+```
+
+The Mac helper installs Python 3.13, Tk, FluidSynth, and Python dependencies.
+This repository supports the same application and MCP tools on both platforms;
+Windows has been exercised locally, while macOS execution remains unverified.
+
+Music chat automatically starts a **background audio player with no window**.
+Enter a Gemini key at the hidden prompt, then ask:
+
+> Make a 30-second original R&B instrumental in C at 98 BPM with legato phrases,
+> held notes, and acoustic GeneralUser GS instruments.
+
+Type **pause**, **play** (resume), **stop**, or **exit**. These exact transport
+commands run locally without a Gemini API request. Natural-language requests
+create/edit songs through Gemini and MCP. Pause preserves the position and
+resumes held notes. Exact durations of 5–180 seconds are supported. Articulation
+can be legato, normal, or staccato; styles are pop or rnb.
+
+For the workshop's visual sequencer, run `run_app.ps1` on Windows (or
+`run_app.sh` on Mac) separately. Close it before starting background music chat.
+The player and sequencer share the local backend port; run one at a time.
+
+**Every music playback path requires GeneralUser GS.** There is no built-in DSP
+or default-MIDI fallback. If the soundfont or native engine cannot load, the
+app shows an audio error and disables sound. The default pop preset selects
+piano, acoustic guitar, finger bass, strings, and sampled drums; its former
+synth lead/bass/pad patches have been replaced. Other explicitly selected
+General MIDI patches still come from the same GeneralUser bank.
+
+To start music chat directly:
+
+```powershell
+# Windows
+powershell -ExecutionPolicy Bypass -File .\run_music_chat.ps1
+```
+
+```bash
+# macOS
+bash run_music_chat.sh
+```
+
+Enter your own Gemini API key at the hidden prompt. Keys are not bundled or
+committed. The explicit workshop client needs no key.
+
 ## Files and responsibilities
 
 | File | Purpose |
@@ -53,9 +119,7 @@ cd MCPJAM
 Run inside MCPJAM:
 
 ```powershell
-python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-.\.venv\Scripts\python.exe workshop_preflight.py
+powershell -NoProfile -ExecutionPolicy Bypass -File .\setup.ps1
 ```
 
 Launch the music application from the package's parent directory:
@@ -75,7 +139,8 @@ See [Mac setup](MAC_SETUP.md).
 
 ```bash
 python3.13 -m venv .venv
-./.venv/bin/python -m pip install -r requirements.txt
+brew install fluid-synth
+./.venv/bin/python -m pip install -r requirements-audio.txt
 ./.venv/bin/python workshop_preflight.py
 ./.venv/bin/python -m tkinter
 # Close the Tk test window.

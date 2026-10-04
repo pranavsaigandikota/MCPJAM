@@ -9,7 +9,7 @@ import time
 from mcp.server.fastmcp import FastMCP
 
 from mcp_server_sdk import call_daw
-from music_arranger import INSTRUMENTS, new_project, read_project, save_project, render_wav, arrangement, validate
+from music_arranger import INSTRUMENTS, new_project, read_project, save_project, render_wav, arrangement, validate, song_duration
 
 mcp = FastMCP('mcpjam-music')
 
@@ -31,7 +31,8 @@ def play_project(spec):
     events, _ = arrangement(spec)
     call_daw({'cmd': 'play_midi_raw', 'events': events, 'title': spec['title'],
               'song_id': spec['song_id'], 'revision': spec['revision'], 'bpm': spec['bpm'],
-              'duration_seconds': spec['bars']*4*60/spec['bpm'], 'song_tracks': spec['tracks']})
+              'duration_seconds': song_duration(spec), 'articulation': spec.get('articulation', 'legato'),
+              'song_tracks': spec['tracks']})
     deadline = time.monotonic()+5
     while time.monotonic() < deadline:
         state = get_state()
@@ -42,9 +43,10 @@ def play_project(spec):
 
 
 @mcp.tool()
-def create_pop_song(title: str = 'MCPJAM Pop', bpm: int = 112, key: str = 'C', bars: int = 32) -> dict:
-    """Create and play an original instrumental pop arrangement with intro, verse, chorus, bridge, and outro. Major key note C/D/F#/Bb etc; 8–64 bars, 40–240 BPM. Uses sampled piano, guitar, bass, strings, drums. Returns an editable song_id and MIDI file. Requires running GeneralUser GS app; no vocals are synthesized."""
-    spec = new_project(title, bpm, key, bars)
+def create_pop_song(title: str = 'MCPJAM Pop', bpm: int = 112, key: str = 'C', bars: int = 32,
+                    duration_seconds: float | None = None, articulation: str = 'legato', style: str = 'pop') -> dict:
+    """Create and play original instrumental music with phrases, dynamics, and held notes. Style pop or rnb (minor seventh chords and a syncopated half-time groove). Set duration_seconds (5–180) for exact length, e.g. 30; otherwise bars (8–64). BPM 40–240, tonic C/D/F#/Bb etc. Articulation legato/normal/staccato. Uses GeneralUser GS piano, guitar, bass, strings, drums. Returns editable song_id and MIDI; no vocals."""
+    spec = new_project(title, bpm, key, bars, duration_seconds, articulation, style)
     result = save_project(spec)
     result.update(play_project(spec))
     return result
@@ -52,10 +54,14 @@ def create_pop_song(title: str = 'MCPJAM Pop', bpm: int = 112, key: str = 'C', b
 
 @mcp.tool()
 def edit_song(song_id: str = '', bpm: int | None = None, key: str | None = None,
-              bars: int | None = None, swing: int | None = None, title: str | None = None) -> dict:
-    """Edit the current or supplied song: tempo, major key, length, swing, title. Rebuild the MIDI and restart playback with the changes. Empty song_id means the current app song. Valid ranges: BPM 40–240, bars 8–64, swing 0–75."""
+              bars: int | None = None, swing: int | None = None, title: str | None = None,
+              duration_seconds: float | None = None, articulation: str | None = None, style: str | None = None) -> dict:
+    """Edit song tempo, key, duration_seconds (5–180), bars (8–64), swing (0–75), title, or articulation (legato/normal/staccato). Rebuild MIDI and restart. Empty song_id uses current song. A bars edit clears a prior exact duration; tempo edits preserve exact duration. BPM 40–240."""
     spec = copy.deepcopy(current_project(song_id))
-    for field, value in [('bpm', bpm), ('key', key), ('bars', bars), ('swing', swing), ('title', title)]:
+    if bars is not None and duration_seconds is None:
+        spec['duration_seconds'] = None
+    for field, value in [('bpm', bpm), ('key', key), ('bars', bars), ('swing', swing), ('title', title),
+                         ('duration_seconds', duration_seconds), ('articulation', articulation), ('style', style)]:
         if value is not None:
             spec[field] = value
     validate(spec)
@@ -107,12 +113,41 @@ def stop_song() -> dict:
 
 
 @mcp.tool()
+def pause_song() -> dict:
+    """Pause the current song and silence held notes. Resume with resume_song."""
+    call_daw({'cmd': 'pause'})
+    deadline = time.monotonic() + 5
+    while time.monotonic() < deadline:
+        state = get_state()
+        if state.get('timeline_paused') or not state.get('timeline_active'):
+            return {'paused': True, 'position_seconds': state.get('song_position_seconds', 0)}
+        time.sleep(.05)
+    raise RuntimeError('Pause was not observed')
+
+
+@mcp.tool()
+def resume_song() -> dict:
+    """Resume a paused song at its position, including notes held at the pause."""
+    if not get_state().get('timeline_active'):
+        return play_song()
+    call_daw({'cmd': 'play'})
+    deadline = time.monotonic() + 5
+    while time.monotonic() < deadline:
+        state = get_state()
+        if state.get('timeline_active') and not state.get('timeline_paused'):
+            return {'playing': True, 'position_seconds': state.get('song_position_seconds', 0)}
+        time.sleep(.05)
+    raise RuntimeError('Resume was not observed')
+
+
+@mcp.tool()
 def export_song(song_id: str = '') -> dict:
     """Export the current/supplied arrangement as MIDI and a stereo WAV rendered with GeneralUser GS. Does not change playback. Returns local files."""
     spec = current_project(song_id)
     result = save_project(spec)
-    rendered = subprocess.run([sys.executable, str(Path(__file__).with_name('render_song.py')), spec['song_id']],
-                              capture_output=True, text=True, timeout=60)
+    rendered = subprocess.run([sys.executable, '-u', str(Path(__file__).with_name('render_song.py')), spec['song_id']],
+                              stdin=subprocess.DEVNULL, capture_output=True, text=True,
+                              cwd=Path(__file__).resolve().parent, timeout=60)
     if rendered.returncode:
         raise RuntimeError('WAV render failed: ' + rendered.stderr[-1000:])
     result.update(json.loads(rendered.stdout))

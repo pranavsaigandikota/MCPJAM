@@ -1,5 +1,6 @@
 """Original pop MIDI arrangements, editable projects, and sampled WAV exports."""
 import json
+import math
 from pathlib import Path
 import random
 import uuid
@@ -19,6 +20,15 @@ CHANNELS = {'keys': 0, 'bass': 1, 'pad': 2, 'lead': 3, 'drums': 9}
 
 
 def validate(spec):
+    if spec.get('style', 'pop') not in ('pop', 'rnb'):
+        raise ValueError('style must be pop or rnb')
+    if spec.get('articulation', 'legato') not in ('legato', 'normal', 'staccato'):
+        raise ValueError('articulation must be legato, normal, or staccato')
+    if spec.get('duration_seconds') is not None:
+        duration = spec['duration_seconds']
+        if isinstance(duration, bool) or not isinstance(duration, (int, float)) or not 5 <= duration <= 180:
+            raise ValueError('duration_seconds must be 5–180 seconds')
+        spec['bars'] = max(8, math.ceil(duration * spec['bpm'] / 240))
     if spec['key'] not in PITCHES:
         raise ValueError('key must be a supported note name, such as C, D, F#, or Bb')
     for field, low, high in [('bpm', 40, 240), ('bars', 8, 64), ('swing', 0, 75)]:
@@ -39,9 +49,14 @@ def project_path(song_id):
     return OUTPUT / f'{song_id}.json'
 
 
-def new_project(title='MCPJAM Pop', bpm=112, key='C', bars=32):
+def song_duration(spec):
+    return spec.get('duration_seconds') or spec['bars'] * 240 / spec['bpm']
+
+
+def new_project(title='MCPJAM Pop', bpm=112, key='C', bars=32, duration_seconds=None, articulation='legato', style='pop'):
     spec = {'song_id': uuid.uuid4().hex, 'title': title, 'bpm': bpm, 'key': key,
-            'bars': bars, 'swing': 8, 'revision': 1, 'tracks': {}}
+            'bars': bars, 'duration_seconds': duration_seconds, 'articulation': articulation, 'style': style,
+            'swing': 8, 'revision': 1, 'tracks': {}}
     for track, instrument, volume in [('keys', 'piano', 80), ('bass', 'finger_bass', 90),
                                       ('pad', 'strings', 48), ('lead', 'acoustic_guitar', 82),
                                       ('drums', 'piano', 85)]:
@@ -61,6 +76,9 @@ def arrangement(spec):
     validate(spec)
     rng = random.Random(spec['song_id'])
     root = PITCHES[spec['key']]
+    rnb = spec.get('style', 'pop') == 'rnb'
+    total_beats = song_duration(spec) * spec['bpm'] / 60
+    musical_bars = math.ceil(total_beats / 4)
     events = []
     for track, ch in CHANNELS.items():
         if ch != 9:
@@ -73,38 +91,50 @@ def arrangement(spec):
             return
         swing = spec['swing'] / 100 * .12 if int(beat * 2) % 2 else 0
         onset = max(0, beat + swing + rng.uniform(-.008, .008))
+        if onset >= total_beats:
+            return
+        if track == 'lead':
+            duration *= {'legato': 1.03, 'normal': .9, 'staccato': .48}[spec.get('articulation', 'legato')]
+        duration = min(duration, total_beats - onset)
         vel = max(1, min(127, round((velocity + rng.randint(-5, 5)) * settings['volume'] / 100)))
         events.extend([{'beat': onset, 'type': 'note_on', 'channel': CHANNELS[track], 'note': pitch, 'velocity': vel},
                        {'beat': onset + duration, 'type': 'note_off', 'channel': CHANNELS[track], 'note': pitch, 'velocity': 0}])
 
     sections = []
-    for bar in range(spec['bars']):
-        progress = bar / spec['bars']
-        section = ('outro' if bar == spec['bars']-1 else 'intro' if progress < .125 else 'verse' if progress < .375 else
+    for bar in range(musical_bars):
+        progress = bar / musical_bars
+        section = ('outro' if bar == musical_bars-1 else 'intro' if progress < .125 else 'verse' if progress < .375 else
                    'chorus' if progress < .625 else 'bridge' if progress < .75 else
                    'chorus' if progress < .9375 else 'outro')
         if not sections or sections[-1]['name'] != section:
             sections.append({'name': section, 'start_bar': bar + 1})
         # I–V–vi–IV; a vi–IV–I–V contrast for the bridge.
         progression = [(0, False), (7, False), (9, True), (5, False)]
+        if rnb:
+            progression = [(0, True), (8, False), (10, False), (5, True)]
         if section == 'bridge':
             progression = [progression[i] for i in (2, 3, 0, 1)]
         interval, minor = progression[bar % 4]
         chord_root = 48 + root + interval
         chord = [chord_root, chord_root + (3 if minor else 4), chord_root + 7]
+        if rnb:
+            chord.append(chord_root + (10 if minor else 11))
         beat = bar * 4
-        for onset in (0, 2):
-            for pitch in chord:
-                note('keys', pitch + 12, beat + onset, 1.8, 78 if section == 'chorus' else 65)
+        # Soft rolled piano voicings, longer releases, and a rising chorus.
+        for onset in ((0, 2) if section == 'chorus' else (0,)):
+            for voice, pitch in enumerate(chord):
+                note('keys', pitch + 12, beat + onset + voice * .035,
+                     1.9 if section == 'chorus' else 3.8,
+                     82 if section == 'chorus' else 58 + (bar % 4) * 3)
         if section in ('chorus', 'bridge', 'outro'):
             for pitch in chord:
                 note('pad', pitch, beat, 3.85, 70)
         if section != 'intro':
-            for offset in (0, 1.5, 2, 3.5):
-                note('bass', chord_root - 12, beat + offset, .42 if offset % 1 else .8, 95)
-            for offset in ((0, 1.5, 2, 2.75) if section == 'chorus' else (0, 2)):
+            for offset in ((0, 1.75, 3) if rnb else (0, 1.5, 2, 3.5)):
+                note('bass', chord_root - 12, beat + offset, 1.3 if rnb else (.42 if offset % 1 else .8), 88 if rnb else 95)
+            for offset in ((0, 1.75, 3.5) if rnb else ((0, 1.5, 2, 2.75) if section == 'chorus' else (0, 2))):
                 note('drums', 36, beat + offset, .12, 110)
-            for offset in (1, 3):
+            for offset in ((2,) if rnb else (1, 3)):
                 note('drums', 38, beat + offset, .12, 100)
                 if section == 'chorus':
                     note('drums', 39, beat + offset, .12, 65)
@@ -114,13 +144,23 @@ def arrangement(spec):
                 note('drums', 49, beat, .8, 85)
         if section in ('verse', 'chorus'):
             hook = [0, 4, 7, 4, 2, 4, 7, 9] if not minor else [0, 3, 7, 3, 2, 3, 7, 10]
-            for i, interval in enumerate(hook):
-                if section == 'verse' and i % 2:
-                    continue
-                note('lead', chord_root + 12 + interval, beat + i / 2, .38, 83)
+            # Four-bar question/answer: pickups, breathing space, held endings.
+            phrases = [
+                [(0, 0, .75), (.75, 2, .75), (1.5, 4, 1.25), (3, 7, .75)],
+                [(0, 4, 1.5), (2, 2, .75), (3, 0, .9)],
+                [(0, 0, .5), (.5, 4, .5), (1, 7, 1), (2.5, 9, 1.25)],
+                [(0, 7, .75), (1, 4, .75), (2, 0, 1.85)],
+            ]
+            for i, (offset, interval, length) in enumerate(phrases[bar % 4]):
+                if minor and interval == 4:
+                    interval = 3
+                note('lead', chord_root + 12 + interval, beat + offset, length,
+                     (90 if section == 'chorus' else 72) + (3 if i == 0 else -i * 2))
         if section == 'bridge':
             for i, pitch in enumerate(chord):
-                note('lead', pitch + 12, beat + i, .8, 70)
+                note('lead', pitch + 12, beat + i, 1.8 if i == 2 else .95, 64 + i * 4)
+        if section == 'outro':
+            note('lead', chord_root + 12, beat, min(3.9, total_beats - beat), 62)
         if (bar + 1) % 8 == 0 and section != 'intro':
             for i in range(4):
                 note('drums', 45 + i % 3, beat + 3 + i / 4, .1, 70 + i * 8)
@@ -153,13 +193,14 @@ def save_project(spec):
             kwargs = {'program': event['program']} if event['type'] == 'program_change' else {'note': event['note'], 'velocity': event['velocity']}
             track.append(mido.Message(event['type'], channel=channel, time=tick-previous, **kwargs))
             previous = tick
-        track.append(mido.MetaMessage('end_of_track', time=max(0, spec['bars']*4*480-previous)))
+        track.append(mido.MetaMessage('end_of_track', time=max(0, round(song_duration(spec)*spec['bpm']/60*480)-previous)))
         midi.tracks.append(track)
     midi_path = path.with_suffix('.mid')
     midi.save(midi_path)
     return {'song_id': spec['song_id'], 'title': spec['title'], 'bpm': spec['bpm'], 'key': spec['key'],
             'bars': spec['bars'], 'revision': spec['revision'], 'tracks': spec['tracks'], 'sections': sections,
-            'duration_seconds': round(spec['bars']*4*60/spec['bpm'], 2), 'event_count': len(events), 'midi_path': str(midi_path)}
+            'duration_seconds': round(song_duration(spec), 2), 'articulation': spec.get('articulation', 'legato'), 'style': spec.get('style', 'pop'),
+            'event_count': len(events), 'midi_path': str(midi_path)}
 
 
 def render_wav(spec):
@@ -191,7 +232,7 @@ def render_wav(spec):
                     synth.noteon(ch, event['note'], event['velocity'])
                 else:
                     synth.noteoff(ch, event['note'])
-            samples(round((spec['bars']*4*60/spec['bpm']+2)*44100))
+            samples(round(song_duration(spec)*44100))
     finally:
         synth.delete()
     if peak == 0:

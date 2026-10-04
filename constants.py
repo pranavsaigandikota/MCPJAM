@@ -11,8 +11,8 @@ TRACK_PILLARS = {
     "clap":  "DRUMS",
     "bass":  "BASS",
     "keys":  "HARMONY (MIDS)",
-    "lead":  "SYNTHS",
-    "pad":   "SYNTHS",
+    "lead":  "MELODY",
+    "pad":   "HARMONY",
 }
 
 COLORS = {
@@ -27,14 +27,14 @@ COLORS = {
 }
 
 TRACK_LABELS = {
-    "kick":  "KICK 808",
-    "snare": "POP SNARE",
+    "kick":  "ACOUSTIC KICK",
+    "snare": "ACOUSTIC SNARE",
     "hihat": "HI-HAT 16th",
     "clap":  "CLAP / PERC",
     "bass":  "GROOVE BASS",
     "keys":  "KEYS / CHORDS",
-    "lead":  "SYNTH LEAD",
-    "pad":   "LUSH PAD",
+    "lead":  "MELODY",
+    "pad":   "STRINGS / PAD",
 }
 
 # Musical Pitch & Scale Mathematics (12-Tone Equal Temperament)

@@ -11,7 +11,7 @@ import pygame.midi
 
 from .constants import HOST, PORT, STEPS, TRACKS, TRACK_PILLARS, COLORS, TRACK_LABELS, BASS_FREQS
 from .presets import DYNAMIC_LEVELS, ITALIAN_EXPRESSIONS, GENRE_PRESETS
-from .synth import AUDIO_ENABLED, HighFiSynthesizer, parse_chord_frequencies, parse_note_frequency
+from .music_notes import parse_chord_frequencies, parse_note_frequency
 
 class BeatBoxStudio:
     def __init__(self, root):
@@ -24,7 +24,7 @@ class BeatBoxStudio:
         # Playback & Production State
         self.bpm = 118
         self.swing = 10
-        self.playing = True
+        self.playing = False
         self.metronome = False
         self.master_volume = 0.85
         self.dj_filter = 100
@@ -66,7 +66,6 @@ class BeatBoxStudio:
         self.midi_out = None
         self._init_midi()
 
-        self._init_core_sounds()
         self._load_genre("pop", silent=True)
 
         # Build UI
@@ -82,56 +81,40 @@ class BeatBoxStudio:
         self.root.protocol("WM_DELETE_WINDOW", self._on_close)
 
     def _init_midi(self):
+        """All music uses the bundled GeneralUser GS bank; never use a fallback."""
+        self.audio_engine = 'unavailable'
+        self.soundfont_path = None
+        self.soundfont_error = None
         try:
-            import pygame
-            pygame.init()
-            pygame.midi.init()
-            # -------------------------------------------------
-            # Prefer GeneralUser‑GS bundled soundfont if it exists
-            # -------------------------------------------------
-            import pathlib
             from .soundfont_audio import SOUNDFONT, create_synth
-            local_sf2 = SOUNDFONT
-            self.audio_engine = "default_midi"
-            self.soundfont_path = None
-            self.soundfont_error = None
-            if local_sf2.is_file():
-                try:
-                    self.fs = create_synth(live=True)
-                    class FluidSynthWrapper:
-                        def __init__(self, fs):
-                            self.fs = fs
-                        def note_on(self, pitch, velocity, channel=0):
-                            self.fs.noteon(channel, pitch, velocity)
-                        def note_off(self, pitch, velocity=0, channel=0):
-                            self.fs.noteoff(channel, pitch)
-                        def set_instrument(self, instrument_id, channel=0):
-                            self.fs.program_change(channel, instrument_id)
-                        def close(self):
-                            self.fs.delete()
-                    self.midi_out = FluidSynthWrapper(self.fs)
-                    self.audio_engine = "generaluser_gs"
-                    self.soundfont_path = str(local_sf2)
-                    print(f"[MCPJAM] Loaded GeneralUser GS soundfont from {local_sf2}")
-                    return
-                except Exception as fe:
-                    self.soundfont_error = str(fe)
-                    print(f"[MCPJAM] FluidSynth load failed: {fe}. Run setup_audio.py and install requirements-audio.txt.")
-            # Fallback: use default MIDI output
-            port = pygame.midi.get_default_output_id()
-            if port != -1:
-                self.midi_out = pygame.midi.Output(port, 0)
-                print(f"[BeatBox] Initialized default MIDI output on port {port}")
-            else:
-                self.audio_engine = "dsp"
-                print("[BeatBox] No default MIDI output port found.")
-        except Exception as e:
-            print(f"[BeatBox] Failed to initialize MIDI: {e}")
+            self.fs = create_synth(live=True)
+            class FluidSynthWrapper:
+                def __init__(self, fs):
+                    self.fs = fs
+                def note_on(self, pitch, velocity, channel=0):
+                    self.fs.noteon(channel, pitch, velocity)
+                def note_off(self, pitch, velocity=0, channel=0):
+                    self.fs.noteoff(channel, pitch)
+                def set_instrument(self, instrument_id, channel=0):
+                    self.fs.program_change(channel, instrument_id)
+                def silence(self):
+                    for channel in range(16):
+                        self.fs.cc(channel, 120, 0)
+                def close(self):
+                    self.fs.delete()
+            self.midi_out = FluidSynthWrapper(self.fs)
+            self.audio_engine = 'generaluser_gs'
+            self.soundfont_path = str(SOUNDFONT)
+            print(f'[MCPJAM] GeneralUser GS active: {SOUNDFONT}')
+        except Exception as exc:
+            self.soundfont_error = str(exc)
+            print(f'[MCPJAM] Audio unavailable: {exc}. Run the platform setup script.')
 
     def _schedule_midi_note_off(self, channel, pitch, delay_sec):
+        generation = getattr(self, 'playback_generation', 0)
         def turn_off():
             time.sleep(delay_sec)
-            if self.midi_out:
+            if self.midi_out and generation == getattr(self, 'playback_generation', 0):
                 self.midi_out.note_off(pitch, 127, channel)
         threading.Thread(target=turn_off, daemon=True).start()
 
@@ -152,7 +135,7 @@ class BeatBoxStudio:
     # -------------------------------------------------------------------------
     GM_GENRE_MAP = {
         # genre:         (keys,  lead,  pad,   bass)
-        "pop":          (4,     81,    89,    38),   # EP2, Sawtooth Lead, Warm Pad, Synth Bass 1
+        "pop":          (0,     25,    48,    33),   # Piano, acoustic guitar, strings, finger bass
         "synthpop":     (4,     80,    90,    38),   # EP2, Square Lead, Polysynth Pad, Synth Bass 1
         "lofi":         (5,     11,    88,    33),   # EP2, Vibraphone, New Age Pad, Fingered Bass
         "rnb":          (4,     66,    52,    36),   # EP2, Tenor Sax, Choir Aahs, Slap Bass 1
@@ -161,8 +144,8 @@ class BeatBoxStudio:
         "bolero":       (24,    56,    48,    32),   # Nylon Guitar, Trumpet, String Ensemble, Acoustic Bass
         "latin":        (24,    56,    48,    32),   # Nylon Guitar, Trumpet, String Ensemble, Acoustic Bass
         "orchestra":    (0,     40,    49,    42),   # Grand Piano, Violin, String Ensemble 2, Cello
-        "cinematic":    (0,     44,    95,    42),   # Grand Piano, Tremolo Strings, Halo Pad, Cello
-        "slowballad":   (0,     40,    92,    32),   # Grand Piano, Violin, Bowed Pad, Acoustic Bass
+        "cinematic":    (0,     40,    49,    42),   # Piano, violin, string ensemble, cello
+        "slowballad":   (0,     40,    48,    32),   # Piano, violin, strings, acoustic bass
         "rock":         (19,    29,    50,    34),   # Church Organ, Overdriven Guitar, Synth Strings, Picked Bass
         "edm":          (4,     81,    90,    39),   # EP2, Sawtooth Lead, Polysynth Pad, Synth Bass 2
         "trap":         (4,     82,    90,    39),   # EP2, Calliope Lead, Polysynth Pad, Synth Bass 2
@@ -274,94 +257,9 @@ class BeatBoxStudio:
             return
 
 
-    def _init_core_sounds(self):
-        if not AUDIO_ENABLED:
-            return
-        try:
-            self.timpani_sound = HighFiSynthesizer.generate_timpani(73.41, dynamic="mf")
-            self.drum_sounds = {
-                "kick":  HighFiSynthesizer.generate_kick(),
-                "snare": HighFiSynthesizer.generate_snare(),
-                "hihat": HighFiSynthesizer.generate_hihat_closed(),
-                "clap":  HighFiSynthesizer.generate_clap(),
-            }
-            # Pre-generate 12 chromatic sub bass notes
-            for note, freq in BASS_FREQS.items():
-                self.bass_sounds[note] = HighFiSynthesizer.generate_bass_note(freq)
 
-            # Pre-generate initial lead hook notes
-            synth_type = self._get_lead_type_for_genre(getattr(self, "active_genre", "pop"))
-            for note in ["C4", "D4", "Eb4", "E4", "F4", "F#4", "G4", "Ab4", "A4", "Bb4", "B4",
-                         "C5", "C#5", "D5", "Eb5", "E5", "F5", "F#5", "G5", "Ab5", "A5", "Bb5", "B5", "C6"]:
-                f = parse_note_frequency(note)
-                self.lead_sounds[note] = HighFiSynthesizer.generate_synth_lead(f, synth_type)
-        except Exception as e:
-            print(f"[MCPJAM] Core sounds initialization warning: {e}")
 
-    def get_or_create_chord_sound(self, chord_name, for_pad=False):
-        """Dynamically retrieve or synthesize on-the-fly any chord sound."""
-        if not AUDIO_ENABLED:
-            return None
-        cache = self.pad_cache if for_pad else self.chord_cache
-        clean = chord_name.strip().upper()
-        if clean in cache:
-            return cache[clean]
 
-        try:
-            root, quality, freqs, bass_note = parse_chord_frequencies(clean)
-            if for_pad:
-                if getattr(self, "active_genre", "pop") == "bolero":
-                    snd = HighFiSynthesizer.generate_mariachi_brass_chord(freqs)
-                else:
-                    snd = HighFiSynthesizer.generate_synth_pad(freqs)
-            else:
-                if getattr(self, "active_genre", "pop") == "bolero":
-                    snd = HighFiSynthesizer.generate_nylon_guitar_chord(freqs)
-                else:
-                    snd = HighFiSynthesizer.generate_rhodes_chord(freqs)
-            cache[clean] = snd
-            return snd
-        except Exception as e:
-            print(f"[MCPJAM] Could not synthesize chord '{chord_name}': {e}")
-            return None
-
-    def get_or_create_orchestral_strings_sound(self, chord_name):
-        """Retrieve or synthesize polyphonic bowed string ensemble for the chord."""
-        if not AUDIO_ENABLED:
-            return None
-        clean = chord_name.strip().upper()
-        key = (clean, self.articulation, self.dynamic_level)
-        if key in self.bowed_string_cache:
-            return self.bowed_string_cache[key]
-        try:
-            _, _, freqs, _ = parse_chord_frequencies(clean)
-            snd = HighFiSynthesizer.generate_bowed_string_chord(
-                freqs, articulation=self.articulation, dynamic=self.dynamic_level
-            )
-            self.bowed_string_cache[key] = snd
-            return snd
-        except Exception as e:
-            print(f"[MCPJAM] Could not synthesize string section '{chord_name}': {e}")
-            return self.get_or_create_chord_sound(clean, for_pad=True)
-
-    def get_or_create_bowed_lead_sound(self, note_name):
-        """Retrieve or synthesize physical modeled bowed string solo instrument with vibrato."""
-        if not AUDIO_ENABLED:
-            return None
-        clean = note_name.strip().upper()
-        key = (clean, self.articulation, self.dynamic_level)
-        if key in self.bowed_string_cache:
-            return self.bowed_string_cache[key]
-        try:
-            freq = parse_note_frequency(clean)
-            snd = HighFiSynthesizer.generate_bowed_string(
-                freq, duration=0.7, articulation=self.articulation, dynamic=self.dynamic_level
-            )
-            self.bowed_string_cache[key] = snd
-            return snd
-        except Exception as e:
-            print(f"[MCPJAM] Could not synthesize bowed lead '{note_name}': {e}")
-            return self.get_or_create_lead_sound(clean)
 
     def apply_expression_internal(self, expr_name: str, dynamic_name: str = "mf", apply_progression: bool = True):
         """Apply any Italian musical expression mark and dynamic level."""
@@ -419,22 +317,6 @@ class BeatBoxStudio:
                 text=f"EXPR: {self.active_expression.upper()} [{self.dynamic_level.upper()}] · {self.articulation.upper()}"
             )
 
-    def get_or_create_lead_sound(self, note_name):
-        """Dynamically retrieve or synthesize any synth lead note."""
-        if not AUDIO_ENABLED:
-            return None
-        clean = note_name.strip().upper()
-        if clean in self.lead_sounds:
-            return self.lead_sounds[clean]
-        try:
-            freq = parse_note_frequency(clean)
-            synth_type = self._get_lead_type_for_genre(getattr(self, "active_genre", "pop"))
-            snd = HighFiSynthesizer.generate_synth_lead(freq, synth_type)
-            self.lead_sounds[clean] = snd
-            return snd
-        except Exception as e:
-            print(f"[MCPJAM] Could not synthesize lead note '{note_name}': {e}")
-            return self.lead_sounds.get("E5")
 
     def set_chord_progression_internal(self, chords_list, song_ref=""):
         """Map a list of chord names across the 16 steps."""
@@ -454,24 +336,12 @@ class BeatBoxStudio:
         else:
             self.song_ref_text = " ➔ ".join(self.chord_progression)
 
-        # Pre-synthesize the chords in background thread
-        def _precache_chords():
-            for ch in self.chord_progression:
-                self.get_or_create_chord_sound(ch, for_pad=False)
-                self.get_or_create_chord_sound(ch, for_pad=True)
-        threading.Thread(target=_precache_chords, daemon=True).start()
-
         self._update_chord_hud_ui()
 
     def set_melody_internal(self, notes_list):
         """Set custom lead melody notes across 16 steps."""
         if isinstance(notes_list, list):
             self.step_lead_notes = (list(notes_list) + [""] * STEPS)[:STEPS]
-            def _precache_lead():
-                for n in self.step_lead_notes:
-                    if n:
-                        self.get_or_create_lead_sound(n)
-            threading.Thread(target=_precache_lead, daemon=True).start()
 
     GENRE_ALIASES = {
         "mariokart": "jfusion",
@@ -529,18 +399,6 @@ class BeatBoxStudio:
         "epic": "cinematic",
     }
 
-    def _get_lead_type_for_genre(self, genre):
-        """Map genre to the optimal synth lead tone."""
-        g = genre.strip().lower()
-        if g in ("synthpop", "electronic", "heavyrock"):
-            return "supersaw"
-        elif g in ("anirudh", "funk"):
-            return "funk"
-        elif g in ("slowballad", "lofi"):
-            return "lofi"
-        elif g == "bolero":
-            return "nylon"
-        return "square"
 
 
     def _load_genre(self, genre_name, silent=False):
@@ -567,15 +425,6 @@ class BeatBoxStudio:
             self.lead_sounds.clear()
             self.chord_cache.clear()
             self.pad_cache.clear()
-            
-        # Re-render dynamic acoustic drums/bass
-        if hasattr(self, "drum_sounds") and hasattr(self, "bass_sounds"):
-            try:
-                self.drum_sounds["snare"] = HighFiSynthesizer.generate_snare(genre)
-                for note, freq in BASS_FREQS.items():
-                    self.bass_sounds[note] = HighFiSynthesizer.generate_bass_note(freq, genre)
-            except Exception as e:
-                print(f"[MCPJAM] Failed to switch acoustic drums/bass: {e}")
             
         return genre
 
@@ -734,7 +583,7 @@ class BeatBoxStudio:
 
         self.ai_action_banner = tk.Label(
             mcp_hud,
-            text="AI PRODUCER: Dynamic Pop Chord Engine Active (Ask AI for any song's chords)",
+            text='GeneralUser GS · Piano, acoustic guitar, strings, finger bass · Press Play' if self.audio_engine == 'generaluser_gs' else 'Audio unavailable · Run setup to install GeneralUser GS playback',
             fg="#c0caf5", bg="#111318", font=("Segoe UI", 9, "italic")
         )
         self.ai_action_banner.pack(side="left", padx=10)
@@ -938,12 +787,12 @@ class BeatBoxStudio:
         self.log_text.tag_config("warn", foreground="#ffcb6b")
         self.log_text.tag_config("body", foreground="#c0caf5")
 
-        self.log_event("SYSTEM", "BeatBox Studio Pop DAW active with Dynamic Chord Engine.")
-        if AUDIO_ENABLED:
-            self.log_event("AUDIO", "Polyphonic Rhodes Piano & Synth Pad engine active.")
+        self.log_event("SYSTEM", "MCPJAM ready. Press Play to hear sampled instruments.")
+        if self.audio_engine == 'generaluser_gs':
+            self.log_event("AUDIO", "GeneralUser GS sampled instruments active. No synthesized fallback.")
         else:
-            self.log_event("AUDIO", "Visual mode active (no audio hardware detected).", is_warn=True)
-        self.log_event("MCP", f"Socket listener open on {HOST}:{PORT}. Waiting for my_server.py ...")
+            self.log_event("AUDIO", f"Playback unavailable: {self.soundfont_error}. Run setup first.", is_warn=True)
+        self.log_event("MCP", f"Local backend socket: {HOST}:{PORT}. Connect an MCP server.")
 
         self.root.bind("<space>", lambda e: self.toggle_play())
 
@@ -979,13 +828,32 @@ class BeatBoxStudio:
         self.log_text.delete("1.0", "end")
 
     def toggle_play(self):
+        if self.audio_engine != 'generaluser_gs':
+            self.ai_action_banner.configure(text='GeneralUser GS unavailable. Run setup before playing music.')
+            return
+        if getattr(self, 'timeline_active', False):
+            self.timeline_paused = not getattr(self, 'timeline_paused', False)
+            if self.timeline_paused:
+                self.midi_out.silence()
+            self.btn_play.configure(text='▶ PLAY' if self.timeline_paused else '❚❚ PAUSE')
+            self.ai_action_banner.configure(text=('Paused: ' if self.timeline_paused else 'Playing: ') + getattr(self, 'song_title', 'Music') + ' · GeneralUser GS')
+            return
+        if getattr(self, 'last_song_command', None):
+            self._apply_mcp_cmd(self.last_song_command)
+            return
         self.playing = not self.playing
         if self.playing:
             self.btn_play.configure(text="❚❚ PAUSE", bg="#10c971", fg="#101114")
         else:
+            self.playback_generation = getattr(self, 'playback_generation', 0) + 1
+            self.midi_out.silence()
             self.btn_play.configure(text="▶ PLAY", bg="#ffcb6b", fg="#101114")
 
     def stop_playback(self):
+        self.timeline_active = False
+        self.playback_generation = getattr(self, 'playback_generation', 0) + 1
+        if self.midi_out:
+            self.midi_out.silence()
         self.playing = False
         self.step_i = 0
         self.btn_play.configure(text="▶ PLAY", bg="#ffcb6b", fg="#101114")
@@ -1033,7 +901,7 @@ class BeatBoxStudio:
         new_val = 0 if current else 1
         self.pattern[track][step] = new_val
         self._update_pad_visual(track, step, new_val)
-        if new_val and AUDIO_ENABLED:
+        if new_val and self.midi_out:
             self._trigger_sound(track, step)
 
     def _update_pad_visual(self, track, step, is_on):
@@ -1079,62 +947,16 @@ class BeatBoxStudio:
     # Multi-Pillar & Chord Audio Triggering
     # -----------------------------------------------------------------------
     def _trigger_sound(self, track, step_num, override_chord=None, override_note=None, engine=None, override_program=None):
-        if not AUDIO_ENABLED and self.midi_out is None:
+        # Legacy engine arguments never bypass the required soundfont.
+        if self.audio_engine != 'generaluser_gs' or not self.midi_out:
             return
         any_solo = any(self.track_solo.values())
         if any_solo and not self.track_solo[track]:
             return
         if self.track_muted[track]:
             return
-
-        active_chord = override_chord if override_chord else self.step_chords[step_num % len(self.step_chords)]
-        
-        # Hybrid Routing: MIDI (GeneralUser GS) is now the DEFAULT for all genres.
-        # DSP math engine only used when explicitly engine='dsp' OR midi unavailable.
-        use_midi = engine != "dsp" and self.midi_out is not None
-
-        if use_midi:
-            self._trigger_midi_sound(track, active_chord, override_note, step_num, override_program=override_program)
-            return
-            
-        sound = None
-
-        if track in self.drum_sounds:
-            if track == "kick" and (self.active_genre in ("orchestra", "cinematic") or self.active_expression in ("maestoso", "grave", "furioso")):
-                sound = getattr(self, "timpani_sound", None) or self.drum_sounds.get("kick")
-            else:
-                sound = self.drum_sounds.get(track)
-        elif track == "bass":
-            # Exact 12-tone chromatic auto-harmonization
-            _, _, _, bass_note = parse_chord_frequencies(active_chord)
-            sound = self.bass_sounds.get(bass_note, self.bass_sounds.get("A1"))
-        elif track == "keys":
-            if self.active_genre in ("orchestra", "cinematic"):
-                sound = self.get_or_create_orchestral_strings_sound(active_chord)
-            else:
-                sound = self.get_or_create_chord_sound(active_chord, for_pad=False)
-        elif track == "pad":
-            if self.active_genre in ("orchestra", "cinematic"):
-                sound = self.get_or_create_orchestral_strings_sound(active_chord)
-            else:
-                sound = self.get_or_create_chord_sound(active_chord, for_pad=True)
-        elif track == "lead":
-            if override_note:
-                active_note = override_note
-            else:
-                step_note = self.step_lead_notes[step_num % len(self.step_lead_notes)]
-                active_note = step_note if step_note else self.current_lead_note
-
-            if self.active_genre in ("orchestra", "cinematic"):
-                sound = self.get_or_create_bowed_lead_sound(active_note)
-            else:
-                sound = self.get_or_create_lead_sound(active_note)
-
-        if sound:
-            filt_factor = self.dj_filter / 100.0
-            vol = self.master_volume * self.track_volumes.get(track, 1.0) * filt_factor
-            sound.set_volume(max(0.0, min(1.0, vol)))
-            sound.play()
+        active_chord = override_chord or self.step_chords[step_num % len(self.step_chords)]
+        self._trigger_midi_sound(track, active_chord, override_note, step_num, override_program=override_program)
 
     def _sequencer_loop(self):
         while self.running:
@@ -1183,6 +1005,8 @@ class BeatBoxStudio:
                 continue
                 
             now = time.time() - start_time
+
+            self.song_position_seconds = now
             
             while lyric_idx < len(all_lyrics) and now >= all_lyrics[lyric_idx]['time_sec']:
                 text = all_lyrics[lyric_idx]['text']
@@ -1234,14 +1058,28 @@ class BeatBoxStudio:
 
         start_time = time.time()
         event_idx = 0
+        held_notes = {}
+        was_paused = False
+        last_status = -1
 
         while self.running and getattr(self, "timeline_active", False) and generation == getattr(self, 'playback_generation', 0) and event_idx < len(all_events):
             if getattr(self, "timeline_paused", False):
+                if not was_paused:
+                    self.midi_out.silence()
+                    was_paused = True
                 time.sleep(0.05)
                 start_time += 0.05
                 continue
+            if was_paused:
+                for (channel, pitch), velocity in held_notes.items():
+                    self.midi_out.note_on(pitch, velocity, channel)
+                was_paused = False
 
             now = time.time() - start_time
+            self.song_position_seconds = now
+            if now - last_status >= .25:
+                self.cmd_queue.put({'_internal': 'song_status', 'position': now})
+                last_status = now
 
             while event_idx < len(all_events) and now >= all_events[event_idx]['time_sec']:
                 ev = all_events[event_idx]
@@ -1256,9 +1094,13 @@ class BeatBoxStudio:
                         self.midi_out.set_instrument(prog, ch)
                     elif ev_type == 'note_on':
                         vol = int(vel * self.master_volume)
-                        self.midi_out.note_on(note, max(1, min(127, vol)), ch)
+                        if vol > 0:
+                            velocity = min(127, vol)
+                            self.midi_out.note_on(note, velocity, ch)
+                            held_notes[(ch, note)] = velocity
                     elif ev_type == 'note_off':
                         self.midi_out.note_off(note, 0, ch)
+                        held_notes.pop((ch, note), None)
                 except Exception as e:
                     pass  # silently skip bad events
 
@@ -1277,7 +1119,7 @@ class BeatBoxStudio:
         except Exception:
             pass
 
-        self.cmd_queue.put({"_internal": "update_banner", "text": "🎵 MIDI File Playback Complete"})
+        self.cmd_queue.put({"_internal": "song_finished", "generation": generation})
         self.timeline_active = False
 
     def _update_playhead_ui(self, active_step, hits=None):
@@ -1344,6 +1186,15 @@ class BeatBoxStudio:
                     self._update_playhead_ui(item["step"], item.get("hits"))
                 elif item.get("_internal") == "update_banner":
                     self.ai_action_banner.configure(text=item["text"])
+                elif item.get('_internal') == 'song_status':
+                    if getattr(self, 'timeline_active', False) and not getattr(self, 'timeline_paused', False):
+                        title = getattr(self, 'song_title', 'Music')
+                        duration = getattr(self, 'song_duration_seconds', 0)
+                        self.ai_action_banner.configure(text=f'GeneralUser GS · {title} · {item["position"]:.1f} / {duration:.1f}s')
+                elif item.get('_internal') == 'song_finished':
+                    if item['generation'] == getattr(self, 'playback_generation', 0):
+                        self.btn_play.configure(text='▶ PLAY')
+                        self.ai_action_banner.configure(text='Playback complete · GeneralUser GS · Press Play to replay')
                 else:
                     try:
                         self._apply_mcp_cmd(item)
@@ -1415,7 +1266,6 @@ class BeatBoxStudio:
         elif kind == "set_lead_note":
             note = cmd.get("note", "E5").upper()
             self.current_lead_note = note
-            self.get_or_create_lead_sound(note)
             self.ai_action_banner.configure(text=f"AI PRODUCER: Lead pitch set to {note}")
 
         elif kind == "set_swing":
@@ -1440,6 +1290,9 @@ class BeatBoxStudio:
                 self.clear_all()
 
         elif kind == "play":
+            if self.audio_engine != 'generaluser_gs':
+                self.ai_action_banner.configure(text='GeneralUser GS unavailable. Run setup before playing music.')
+                return
             if getattr(self, "timeline_active", False):
                 self.timeline_paused = False
             else:
@@ -1448,6 +1301,8 @@ class BeatBoxStudio:
             self.ai_action_banner.configure(text="AI PRODUCER: Started playback ▶")
 
         elif kind == "pause":
+            if self.midi_out:
+                self.midi_out.silence()
             if getattr(self, "timeline_active", False):
                 self.timeline_paused = True
             else:
@@ -1513,6 +1368,9 @@ class BeatBoxStudio:
             threading.Thread(target=self._timeline_loop, args=(events, lyrics), daemon=True).start()
 
         elif kind == "play_midi_raw":
+            if self.audio_engine != 'generaluser_gs':
+                self.ai_action_banner.configure(text='GeneralUser GS unavailable. Run setup before playing music.')
+                return
             # Faithful MIDI file playback — direct note_on/off to GM synth
             self.playback_generation = getattr(self, 'playback_generation', 0) + 1
             if self.midi_out:
@@ -1530,6 +1388,9 @@ class BeatBoxStudio:
             self.song_duration_seconds = cmd.get('duration_seconds', 0)
             self.song_event_count = len(raw_events)
             self.song_tracks = cmd.get('song_tracks', {})
+            self.song_position_seconds = 0
+            self.last_song_command = dict(cmd)
+            self.btn_play.configure(text='❚❚ PAUSE')
             if 'bpm' in cmd:
                 self.set_bpm(cmd['bpm'])
             self.ai_action_banner.configure(text=f"🎵 Playing: {title}")
@@ -1578,8 +1439,8 @@ class BeatBoxStudio:
             "muted": dict(self.track_muted),
             "solo": dict(self.track_solo),
             "patterns": {t: list(self.pattern[t]) for t in TRACKS},
-            "audio_enabled": AUDIO_ENABLED or self.midi_out is not None,
-            "audio_engine": getattr(self, "audio_engine", "dsp"),
+            "audio_enabled": self.audio_engine == 'generaluser_gs' and self.midi_out is not None,
+            "audio_engine": self.audio_engine,
             "soundfont_path": getattr(self, "soundfont_path", None),
             "soundfont_error": getattr(self, "soundfont_error", None),
             "timeline_active": getattr(self, "timeline_active", False),
@@ -1589,13 +1450,17 @@ class BeatBoxStudio:
             "song_revision": getattr(self, "song_revision", 0),
             "song_tracks": getattr(self, "song_tracks", {}),
             "song_duration_seconds": getattr(self, "song_duration_seconds", 0),
-            "song_event_count": getattr(self, "song_event_count", 0)
+            "song_event_count": getattr(self, "song_event_count", 0),
+            "song_position_seconds": getattr(self, "song_position_seconds", 0)
         }
 
     def _start_socket_server(self):
         def serve():
             srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            if sys.platform == 'win32':
+                srv.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
+            else:
+                srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             try:
                 srv.bind((HOST, PORT))
                 srv.listen(5)
@@ -1664,6 +1529,12 @@ class BeatBoxStudio:
 
 
 def main():
+    try:
+        with socket.create_connection((HOST, PORT), timeout=0.5):
+            print('MCPJAM is already running. Use the existing app window.')
+            return
+    except OSError:
+        pass
     root = tk.Tk()
     BeatBoxStudio(root)
     root.mainloop()

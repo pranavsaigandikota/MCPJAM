@@ -45,7 +45,8 @@ From inside the cloned or extracted folder:
 
 ```bash
 python3.13 -m venv .venv
-./.venv/bin/python -m pip install -r requirements.txt
+brew install fluid-synth
+./.venv/bin/python -m pip install -r requirements-audio.txt
 ./.venv/bin/python workshop_preflight.py
 ./.venv/bin/python -m tkinter
 ```
@@ -64,10 +65,11 @@ cd ..
 
 Keep the Terminal window and DAW open. Run the package this way because the
 application uses relative imports. `__main__.py` supplies the entry point.
-No Windows executable, PowerShell, MIDI keyboard, external soundfont or
-FluidSynth installation is required for the core workshop. Without MIDI, the
-code uses its built-in synthesizer. If audio initialization fails, the app
-reports visual-only mode; verify tool changes in the UI and with `get_state`.
+Every playback path uses the bundled GeneralUser GS SoundFont through FluidSynth.
+Install FluidSynth before starting. There is no built-in synthesized fallback:
+if audio initialization fails, the app reports an audio error and cannot play.
+For automated Homebrew setup, run `bash setup.sh` inside MCPJAM, then
+`bash run_app.sh`. Windows has been tested; Mac runtime still needs verification.
 
 ## 4. Connect a host using your Mac's paths
 

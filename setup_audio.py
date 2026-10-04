@@ -30,7 +30,16 @@ def main():
             target = (destination / item.filename).resolve()
             if not target.is_relative_to(destination.resolve()):
                 raise RuntimeError('Archive contains an unsafe path')
-        archive.extractall(destination)
+        for item in archive.infolist():
+            target = destination / item.filename
+            if not item.is_dir() and target.is_file():
+                # Safe to rerun while the app has its native audio DLL loaded.
+                if target.read_bytes() == archive.read(item):
+                    continue
+            try:
+                archive.extract(item, destination)
+            except PermissionError as exc:
+                raise RuntimeError('Close MCPJAM before replacing an outdated FluidSynth runtime, then rerun setup.') from exc
     print(f'PASS: verified runtime installed in {destination}')
 
 
