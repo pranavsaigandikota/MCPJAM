@@ -9,11 +9,16 @@ import socket
 from typing import Any
 
 from mcp.server.fastmcp import FastMCP
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from instrument_catalog import register_instrument_catalog
 
 HOST = "127.0.0.1"
 PORT = 8765
 
 mcp = FastMCP("mcpjam-workshop")
+register_instrument_catalog(mcp)
 
 
 def call_daw(command: dict[str, Any]) -> dict[str, Any]:

@@ -10,10 +10,7 @@ import mido
 
 ROOT = Path(__file__).resolve().parent
 OUTPUT = ROOT / 'generated_music'
-INSTRUMENTS = {'piano': 0, 'electric_piano': 4, 'nylon_guitar': 24, 'acoustic_guitar': 25,
-               'electric_guitar': 27, 'finger_bass': 33, 'synth_bass': 38,
-               'strings': 48, 'choir': 52, 'trumpet': 56, 'saxophone': 65,
-               'flute': 73, 'synth_lead': 81, 'warm_pad': 89}
+from instrument_catalog import INSTRUMENTS
 PITCHES = {'C': 0, 'C#': 1, 'Db': 1, 'D': 2, 'Eb': 3, 'E': 4, 'F': 5,
            'F#': 6, 'Gb': 6, 'G': 7, 'Ab': 8, 'A': 9, 'Bb': 10, 'B': 11}
 CHANNELS = {'keys': 0, 'bass': 1, 'pad': 2, 'lead': 3, 'drums': 9}

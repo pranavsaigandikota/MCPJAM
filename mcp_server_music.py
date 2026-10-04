@@ -7,11 +7,13 @@ import sys
 import time
 
 from mcp.server.fastmcp import FastMCP
+from instrument_catalog import register_instrument_catalog
 
 from mcp_server_sdk import call_daw
 from music_arranger import INSTRUMENTS, new_project, read_project, save_project, render_wav, arrangement, validate, song_duration
 
 mcp = FastMCP('mcpjam-music')
+register_instrument_catalog(mcp)
 
 
 @mcp.tool()

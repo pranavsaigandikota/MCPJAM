@@ -435,3 +435,23 @@ bass 40. Existing saved projects retain their settings until edited.
 
 Use `set_song_track(track="bass", volume=30)` for low bass or volume 45 for
 medium bass. Perceived loudness also depends on instrument and arrangement.
+# Instrument catalog MCP resource
+
+The SDK workshop, solution, and music servers expose the read-only JSON resource
+`music://instruments/catalog`. It lists the 14 GeneralUser GS presets supported by
+the song editor, their exact instrument IDs and zero-based MIDI programs. It is
+not a complete list of every preset in the SoundFont. It also documents drum
+channel behavior and the optional modern808 sample override. Reading it does not
+start audio or change a song, and needs no new dependencies.
+
+From the repository directory with the virtual environment active:
+
+```sh
+python workshop_client.py --list-resources
+python workshop_client.py --resource music://instruments/catalog
+python workshop_client.py --server mcp_server_music.py --resource music://instruments/catalog
+```
+
+Reconnect any existing MCP client after updating to discover the resource.
+Hosts choose when to read resources; publishing one does not automatically add
+it to a model's context. `get_state` remains a tool.
