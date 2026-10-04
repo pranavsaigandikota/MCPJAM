@@ -24,5 +24,8 @@ else
   .venv/bin/python -m pip install --disable-pip-version-check -r requirements-audio.txt
 fi
 .venv/bin/python workshop_preflight.py
+if ! $core_only; then
+  .venv/bin/python -c 'from soundfont_audio import create_synth; s=create_synth(live=False); s.delete(); print("GeneralUser GS and FluidSynth verified.")'
+fi
 echo 'Setup complete. App: bash run_app.sh'
 echo 'Music chat: bash run_music_chat.sh'

@@ -129,3 +129,24 @@ The protocol code is shared across platforms. Windows protocol and slide checks
 do not replace a native Mac rehearsal. Before class, run this guide on a Mac
 used by participants, demonstrate 120 BPM, and verify valid and invalid swing
 calls. Preflight checks imports and SDK version, not GUI/audio or host behavior.
+
+
+## Chat-only music and live Mac verification
+
+With Homebrew installed, from the cloned MCPJAM folder:
+
+```bash
+bash setup.sh
+bash verify_mac.sh
+bash run_music_chat.sh
+```
+
+Close any running MCPJAM instance before verify_mac.sh. The check starts its own
+background CoreAudio player and tests GeneralUser GS, exact duration, held notes,
+pause/resume, edits, invalid-input rejection, and WAV export without an API key.
+Music chat starts a background player automatically. Type pause, play, stop, or
+exit; no visual window is required. Generation requires your Gemini API key.
+
+The Mac scripts and library discovery have been reviewed on Windows. A passing
+verify_mac.sh run on the target Mac is still required to confirm actual audio
+hardware and runtime compatibility.
