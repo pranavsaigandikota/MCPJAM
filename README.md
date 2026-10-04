@@ -58,7 +58,7 @@ For the workshop's visual sequencer, run `run_app.ps1` on Windows (or
 `run_app.sh` on Mac) separately. Close it before starting background music chat.
 The player and sequencer share the local backend port; run one at a time.
 
-**Every music playback path requires GeneralUser GS.** There is no built-in DSP
+**Acoustic playback uses GeneralUser GS; modern808 mode uses WAV samples for bass/drums and GS for piano/strings.** There is no built-in DSP
 or default-MIDI fallback. If the soundfont or native engine cannot load, the
 app shows an audio error and disables sound. The default pop preset selects
 piano, acoustic guitar, finger bass, strings, and sampled drums; its former
@@ -394,3 +394,17 @@ density; variation changes deterministic melodic accents. This is a MIDI arrange
 not a model that copies recordings or produces vocals.
 
 `verify_music.py` includes EDM structure and invalid-energy rejection checks.
+
+
+## Modern sample-based 808 mode
+
+Ask music chat: "Use create_808_song to make a serious 30-second dark beat at
+128 BPM." This replaces GS bass/drums with the bundled hard-trap WAV sample kit,
+removes the bright lead, and uses restrained GS piano/strings over a minor drone.
+There is no oscillator fallback. The background player uses the rendered mix for
+playback, so its sound matches the WAV export; pause, resume and live edits work.
+The MIDI export contains note data and does not embed the sample pack.
+
+Source: https://github.com/Boochi44/free-drum-samples (CC0 as declared by its author).
+Original licensing statement and per-file source URLs/checksums are bundled in
+samples/modern808. Importing a different private pack is not yet exposed as an MCP tool.

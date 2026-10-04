@@ -1,0 +1,34 @@
+{
+  "bass": {
+    "source": "https://raw.githubusercontent.com/Boochi44/free-drum-samples/main/drum-samples/01-hard-trap/808s/808-bass-sub.wav",
+    "sha256": "669c62e3528026b0789856be711354d0388f5c2f528cff9487188dfb938bd85f"
+  },
+  "kick": {
+    "source": "https://raw.githubusercontent.com/Boochi44/free-drum-samples/main/drum-samples/01-hard-trap/kicks/hard-kick-01.wav",
+    "sha256": "75ab3c2b179c47c718a740dbae97f792442b739ca28df9e2ab59aea6c26b0496"
+  },
+  "snare": {
+    "source": "https://raw.githubusercontent.com/Boochi44/free-drum-samples/main/drum-samples/01-hard-trap/snares/hard-snare-01.wav",
+    "sha256": "117e5a78df3ffa0735f18b5889793f95080dfeffe574b742607a02de6183d497"
+  },
+  "clap": {
+    "source": "https://raw.githubusercontent.com/Boochi44/free-drum-samples/main/drum-samples/01-hard-trap/claps/clap-01.wav",
+    "sha256": "4f5b72674791ce133a2ad3bd40c9a0e628bad9062eb8f04de27f59dcc8ce5d46"
+  },
+  "hat": {
+    "source": "https://raw.githubusercontent.com/Boochi44/free-drum-samples/main/drum-samples/01-hard-trap/hi-hats/hi-hat-closed-01.wav",
+    "sha256": "c9f30ff2b4d73b03f41960e504e03c54e9a59697af666fe4d155bab9cd1ccae6"
+  },
+  "open_hat": {
+    "source": "https://raw.githubusercontent.com/Boochi44/free-drum-samples/main/drum-samples/01-hard-trap/open-hats/open-hat-01.wav",
+    "sha256": "cde0aec2ca84358067859f52bac7d55b875f30d2baea700923e25e21307803e9"
+  },
+  "tom": {
+    "source": "https://raw.githubusercontent.com/Boochi44/free-drum-samples/main/drum-samples/01-hard-trap/percs/perc-low-tom.wav",
+    "sha256": "17386b1ed8d6eb2820fa217bfd86109c0d5178eda256557bcc0e849a903476b9"
+  },
+  "crash": {
+    "source": "https://raw.githubusercontent.com/Boochi44/free-drum-samples/main/drum-samples/01-hard-trap/fx/fx-cymbal.wav",
+    "sha256": "d1806c3878815fcc3816dcef4ab870c67eb67bf27f2dd140f5c25178749525be"
+  }
+}

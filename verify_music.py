@@ -30,7 +30,7 @@ async def main():
         async with ClientSession(read, write) as session:
             await session.initialize()
             assert {t.name for t in (await session.list_tools()).tools} == {
-                'get_state', 'create_pop_song', 'create_edm_song', 'edit_song', 'set_song_track', 'play_song', 'stop_song', 'export_song', 'pause_song', 'resume_song'}
+                'get_state', 'create_pop_song', 'create_edm_song', 'create_808_song', 'edit_song', 'set_song_track', 'play_song', 'stop_song', 'export_song', 'pause_song', 'resume_song'}
             checks += 1
             state = state_from(await session.call_tool('get_state', {}))
             assert state['audio_engine'] == 'generaluser_gs' and not state['soundfont_error']

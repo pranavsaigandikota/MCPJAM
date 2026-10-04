@@ -1,9 +1,12 @@
 """Background GeneralUser GS player: no window, controlled by the music MCP tools."""
 import json
+import io
 import socket
 import sys
 import threading
 import time
+from pathlib import Path
+import pygame
 
 from .constants import HOST, PORT
 from .soundfont_audio import SOUNDFONT, create_synth
@@ -14,6 +17,7 @@ class AudioPlayer:
         self.synth = create_synth(live=True)
         self.lock = threading.RLock()
         self.generation = 0
+        self.wav_playback = False
         self.state = {'ok': True, 'audio_engine': 'generaluser_gs', 'audio_enabled': True,
                       'soundfont_path': str(SOUNDFONT), 'soundfont_error': None,
                       'playing': False, 'timeline_active': False, 'timeline_paused': False,
@@ -30,7 +34,28 @@ class AudioPlayer:
             kind = cmd.get('cmd')
             if kind == 'get_state':
                 return dict(self.state)
-            if kind == 'play_midi_raw':
+            if kind == 'play_wav':
+                path = Path(cmd['wav_path']).resolve()
+                output = Path(__file__).resolve().parent / 'generated_music'
+                if path.parent != output.resolve() or path.suffix != '.wav':
+                    raise ValueError('Only generated project WAVs can be played')
+                self.generation += 1
+                self.silence()
+                if not pygame.mixer.get_init():
+                    pygame.mixer.init(frequency=44100)
+                self.wav_buffer = io.BytesIO(path.read_bytes())
+                pygame.mixer.music.load(self.wav_buffer, 'wav')
+                pygame.mixer.music.play()
+                self.wav_playback = True
+                self.state.update(playing=True,timeline_active=True,timeline_paused=False,
+                                  song_position_seconds=0,song_id=cmd['song_id'],song_revision=cmd['revision'],
+                                  song_title=cmd['title'],song_duration_seconds=cmd['duration_seconds'],
+                                  song_tracks=cmd['song_tracks'],bpm=cmd['bpm'],song_engine=cmd['song_engine'])
+                threading.Thread(target=self.wav_status,args=(self.generation,),daemon=True).start()
+            elif kind == 'play_midi_raw':
+                if self.wav_playback:
+                    pygame.mixer.music.stop()
+                    self.wav_playback = False
                 self.generation += 1
                 self.silence()
                 self.state.update(playing=True, timeline_active=True, timeline_paused=False,
@@ -45,17 +70,39 @@ class AudioPlayer:
                 if self.state['timeline_active']:
                     self.state.update(timeline_paused=True, playing=False)
                     self.silence()
+                    if self.wav_playback:
+                        pygame.mixer.music.pause()
             elif kind == 'play':
                 if self.state['timeline_active']:
                     self.state.update(timeline_paused=False, playing=True)
+                    if self.wav_playback:
+                        pygame.mixer.music.unpause()
             elif kind == 'stop':
                 self.generation += 1
                 self.silence()
+                if self.wav_playback:
+                    pygame.mixer.music.stop()
+                    self.wav_playback = False
                 self.state.update(timeline_active=False, timeline_paused=False, playing=False,
                                   song_position_seconds=0)
             else:
                 return {'ok': False, 'error': 'Use the music MCP server for this background player.'}
             return {'ok': True}
+
+    def wav_status(self, generation):
+        previous = time.monotonic()
+        while True:
+            now = time.monotonic()
+            with self.lock:
+                if generation != self.generation or not self.state['timeline_active']:
+                    return
+                if not self.state['timeline_paused']:
+                    self.state['song_position_seconds'] += now-previous
+                    if not pygame.mixer.music.get_busy():
+                        self.state.update(playing=False,timeline_active=False)
+                        return
+            previous = now
+            time.sleep(.01)
 
     def play(self, events, generation):
         events = sorted(events, key=lambda e: e['time_sec'])

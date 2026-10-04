@@ -29,6 +29,21 @@ def play_project(spec):
     if state.get('audio_engine') != 'generaluser_gs':
         raise RuntimeError('GeneralUser GS is not active. Install requirements-audio.txt, run setup_audio.py, then restart the app.')
     events, _ = arrangement(spec)
+    if spec.get('sample_pack') == 'modern808':
+        rendered = subprocess.run([sys.executable, '-u', str(Path(__file__).with_name('render_song.py')), spec['song_id']],
+                                  stdin=subprocess.DEVNULL, capture_output=True, text=True,
+                                  cwd=Path(__file__).resolve().parent, timeout=60)
+        if rendered.returncode:
+            raise RuntimeError('Sample render failed: ' + rendered.stderr[-1000:])
+        audio = json.loads(rendered.stdout)
+        call_daw({'cmd':'play_wav','wav_path':audio['wav_path'],'title':spec['title'],
+                  'song_id':spec['song_id'],'revision':spec['revision'],
+                  'duration_seconds':song_duration(spec),'bpm':spec['bpm'],
+                  'song_tracks':spec['tracks'],'song_engine':audio['audio_engine']})
+        state = get_state()
+        if state.get('song_id') != spec['song_id'] or not state.get('timeline_active'):
+            raise RuntimeError('Sample playback was not observed. Use background music chat.')
+        return {'playback':'observed','audio_engine':audio['audio_engine'],'song_id':spec['song_id'],'revision':spec['revision']}
     call_daw({'cmd': 'play_midi_raw', 'events': events, 'title': spec['title'],
               'song_id': spec['song_id'], 'revision': spec['revision'], 'bpm': spec['bpm'],
               'duration_seconds': song_duration(spec), 'articulation': spec.get('articulation', 'legato'),
@@ -47,6 +62,21 @@ def create_pop_song(title: str = 'MCPJAM Pop', bpm: int = 112, key: str = 'C', b
                     duration_seconds: float | None = None, articulation: str = 'legato', style: str = 'pop') -> dict:
     """Create and play original instrumental music with phrases, dynamics, and held notes. Style pop or rnb (minor seventh chords and a syncopated half-time groove). Set duration_seconds (5–180) for exact length, e.g. 30; otherwise bars (8–64). BPM 40–240, tonic C/D/F#/Bb etc. Articulation legato/normal/staccato. Uses GeneralUser GS piano, guitar, bass, strings, drums. Returns editable song_id and MIDI; no vocals."""
     spec = new_project(title, bpm, key, bars, duration_seconds, articulation, style)
+    result = save_project(spec)
+    result.update(play_project(spec))
+    return result
+
+
+@mcp.tool()
+def create_808_song(title: str = 'Blackout', bpm: int = 128, key: str = 'D',
+                    duration_seconds: float = 30, energy: int = 80) -> dict:
+    """Create a restrained dark dance beat using the modern808 hard-trap WAV pack for tuned sub bass and drums, with GS piano/strings atmosphere. No GS synth lead or electric-guitar lead. Requires background player. Duration 5–180, energy 0–100, BPM 40–240. Live playback and export use the same rendered sample mix."""
+    spec = new_project(title,bpm,key,32,duration_seconds,'normal','edm')
+    spec.update(sample_pack='modern808',energy=energy,variation=0,swing=0)
+    spec['tracks']['lead']['muted'] = True
+    spec['tracks']['keys']['volume'] = 38
+    spec['tracks']['pad']['volume'] = 30
+    validate(spec)
     result = save_project(spec)
     result.update(play_project(spec))
     return result

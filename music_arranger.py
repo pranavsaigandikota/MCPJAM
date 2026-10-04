@@ -113,7 +113,7 @@ def arrangement(spec):
                        'breakdown' if progress < .74 else 'final_drop')
             if not sections or sections[-1]['name'] != section:
                 sections.append({'name': section, 'start_bar': bar + 1})
-            edm_bar(note, bar, root, section, spec.get('energy', 80), rng)
+            edm_bar(note, bar, root, section, spec.get('energy', 80), rng, spec.get('sample_pack') == 'modern808')
             continue
         section = ('outro' if bar == musical_bars-1 else 'intro' if progress < .125 else 'verse' if progress < .375 else
                    'chorus' if progress < .625 else 'bridge' if progress < .75 else
@@ -183,12 +183,12 @@ def arrangement(spec):
     return events, sections
 
 
-def edm_bar(note, bar, root, section, energy, rng):
+def edm_bar(note, bar, root, section, energy, rng, modern=False):
     """Original minor-key cinematic dance groove with builds and drum answers."""
     beat = bar * 4
     drop = section in ('drop', 'final_drop')
-    chord_root = 48 + root + (0, 0, 8, 10)[bar % 4]
-    minor = bar % 4 < 2
+    chord_root = 48 + root + (0 if modern else (0, 0, 8, 10)[bar % 4])
+    minor = modern or bar % 4 < 2
     chord = [chord_root, chord_root + (3 if minor else 4), chord_root + 7]
     intensity = .55 + energy / 220
     # Sustained strings supply atmosphere; piano adds clear sampled attacks.
@@ -211,9 +211,13 @@ def edm_bar(note, bar, root, section, energy, rng):
         note('drums', 42, beat + i * spacing, .06, 72 if i % 2 == 0 else 45)
     for offset in (.5, 1.5, 2.5, 3.5):
         note('drums', 46, beat + offset, .22, 62)
-        note('bass', chord_root - 12, beat + offset, .32, 108)
+        if not modern:
+            note('bass', chord_root - 12, beat + offset, .32, 108)
+    if modern:
+        for offset in (0, 1.75, 3):
+            note('bass', chord_root - 24, beat + offset, 1.15, 112)
     # A separate tom/percussion response gives the beat a cinematic pulse.
-    for i, offset in enumerate((.75, 1.75, 2.75, 3.25, 3.5)):
+    for i, offset in enumerate((2.75,) if modern else (.75, 1.75, 2.75, 3.25, 3.5)):
         note('drums', (41, 45, 47, 43, 50)[i], beat + offset, .18, 82 + i * 4)
     if section == 'build':
         count = 8 if bar % 2 == 0 else 16
@@ -269,6 +273,9 @@ def save_project(spec):
 
 
 def render_wav(spec):
+    if spec.get('sample_pack') == 'modern808':
+        from sample_audio import render_sample_song
+        return render_sample_song(spec)
     from soundfont_audio import create_synth
     synth = create_synth(live=False)
     path = project_path(spec['song_id']).with_suffix('.wav')
