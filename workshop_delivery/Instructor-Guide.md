@@ -2,7 +2,7 @@
 
 [Open the 27-slide presentation](https://www.figma.com/slides/mmQgw9DYp2CZDK7xDu69aZ)
 
-60 minutes: 35 teaching, 20 practice, 5 setup/help buffer. Six image memes and three additional brainrot moments.
+60 minutes: 35 teaching, 20 practice, 5 setup/help buffer. Six image memes, three additional brainrot captions, and a dancing GIF on slide 14. A still-image fallback keeps exports readable; check GIF animation in Present mode before class.
 
 ## 1. Intro to MCP Servers
 
@@ -352,11 +352,15 @@ Let Him Cook visual: https://imgflip.com/memetemplate/430535625/Let-Him-Cook. A 
 
 14 / 27
 
+WHEN get_state
+CONFIRMS THE VIBE
+
 Presenter notes:
 
 Approximately three minutes. Start at a tempo other than 120. Show set_tempo with bpm: 120. The model proposes the call; the host coordinates execution. Observe the app, then call get_state. If the AI host fails, use the rehearsed workshop_client.py command from README.md. Save set_swing for the student exercise.
 Optional preparation before the clock: configure GeneralUser GS using README.md. The optional mcp_server_music.py supports instrumental pop arrangements and edits; keep the workshop demo focused on tempo and save swing for students.
 Optional sound demo outside the timed tempo walkthrough: Windows run_music_chat.ps1 starts a background GeneralUser GS player with no visual window. Ask for a 30-second original R&B instrumental with legato and held notes. Type pause, play, stop to control transport locally without API requests. MIDI and WAV export support exact durations. Keep the 60-minute schedule unchanged.
+Dancing GIF: Pedro Pascal, via Tenor https://tenor.com/view/pedro-pascal-dancing-crazy-gif-27595667. Brief visual joke after verifying the tempo; do not add a new teaching segment.
 
 ## 15. Architecture: follow the call
 
