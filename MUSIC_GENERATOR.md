@@ -6,7 +6,9 @@ The optional full music server now has **two composition paths**:
   dynamics and sections as structured note data. No fixed melody or chord progression
   is inserted. A genre is a description, not a pop/rnb/edm enum.
 - The older `create_pop_song`, funk, bossa, EDM and orchestral tools use coded
-  arrangement patterns. They remain useful for fast, repeatable demonstrations.
+  arrangement patterns. They remain available to explicit clients for fast, repeatable demonstrations.
+  Music chat excludes these preset creation tools; its compositions use the free
+  score interface and caller-selected sounds, with no default instrument palette.
 
 The beginner workshop still uses workshop/starter/mcp_server_sdk.py. Keep this
 richer music demonstration outside the protected student exercise.

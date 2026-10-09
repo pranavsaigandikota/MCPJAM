@@ -1,0 +1,4549 @@
+{
+  "title": "Voltage Run \u2014 Original Rock",
+  "bpm": 132,
+  "duration_seconds": 30,
+  "genre": "energetic riff-driven rock with short guitar solo",
+  "tracks": [
+    {
+      "name": "riff",
+      "channel": 0,
+      "instrument": "gs_0_30",
+      "volume": 69
+    },
+    {
+      "name": "guitar_solo",
+      "channel": 1,
+      "instrument": "gs_0_29",
+      "volume": 78
+    },
+    {
+      "name": "bass",
+      "channel": 2,
+      "instrument": "gs_0_34",
+      "volume": 78
+    },
+    {
+      "name": "drums",
+      "channel": 9,
+      "instrument": "gs_128_16",
+      "volume": 87
+    }
+  ],
+  "notes": [
+    {
+      "track": "riff",
+      "pitch": 52,
+      "beat": 0,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 59,
+      "beat": 0,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 40,
+      "beat": 0.5,
+      "duration": 0.22,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 47,
+      "beat": 0.5,
+      "duration": 0.22,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 40,
+      "beat": 1,
+      "duration": 0.35,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 47,
+      "beat": 1,
+      "duration": 0.35,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 52,
+      "beat": 1.75,
+      "duration": 0.18,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 59,
+      "beat": 1.75,
+      "duration": 0.18,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 40,
+      "beat": 2,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 47,
+      "beat": 2,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 40,
+      "beat": 2.5,
+      "duration": 0.23,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 47,
+      "beat": 2.5,
+      "duration": 0.23,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 52,
+      "beat": 3,
+      "duration": 0.3,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 59,
+      "beat": 3,
+      "duration": 0.3,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 40,
+      "beat": 3.5,
+      "duration": 0.27,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 47,
+      "beat": 3.5,
+      "duration": 0.27,
+      "velocity": 86
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 0,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 0.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 1,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 1.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 2,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 2.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 35,
+      "beat": 3,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 38,
+      "beat": 3.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 0,
+      "duration": 0.12,
+      "velocity": 115
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 1.5,
+      "duration": 0.12,
+      "velocity": 94
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 2,
+      "duration": 0.12,
+      "velocity": 115
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 2.75,
+      "duration": 0.12,
+      "velocity": 94
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 1,
+      "duration": 0.12,
+      "velocity": 114
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 3,
+      "duration": 0.12,
+      "velocity": 114
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 0.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 0.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 1.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 1.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 2.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 2.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 3.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 3.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 49,
+      "beat": 0,
+      "duration": 0.35,
+      "velocity": 108
+    },
+    {
+      "track": "riff",
+      "pitch": 52,
+      "beat": 4,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 59,
+      "beat": 4,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 40,
+      "beat": 4.5,
+      "duration": 0.22,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 47,
+      "beat": 4.5,
+      "duration": 0.22,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 40,
+      "beat": 5,
+      "duration": 0.35,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 47,
+      "beat": 5,
+      "duration": 0.35,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 52,
+      "beat": 5.75,
+      "duration": 0.18,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 59,
+      "beat": 5.75,
+      "duration": 0.18,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 40,
+      "beat": 6,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 47,
+      "beat": 6,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 40,
+      "beat": 6.5,
+      "duration": 0.23,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 47,
+      "beat": 6.5,
+      "duration": 0.23,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 52,
+      "beat": 7,
+      "duration": 0.3,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 59,
+      "beat": 7,
+      "duration": 0.3,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 40,
+      "beat": 7.5,
+      "duration": 0.27,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 47,
+      "beat": 7.5,
+      "duration": 0.27,
+      "velocity": 86
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 4,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 4.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 5,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 5.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 6,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 6.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 35,
+      "beat": 7,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 38,
+      "beat": 7.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 4,
+      "duration": 0.12,
+      "velocity": 115
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 5.5,
+      "duration": 0.12,
+      "velocity": 94
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 6,
+      "duration": 0.12,
+      "velocity": 115
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 6.75,
+      "duration": 0.12,
+      "velocity": 94
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 5,
+      "duration": 0.12,
+      "velocity": 114
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 7,
+      "duration": 0.12,
+      "velocity": 114
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 4.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 4.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 5.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 5.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 6.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 6.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 7.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 7.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "riff",
+      "pitch": 60,
+      "beat": 8,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 67,
+      "beat": 8,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 48,
+      "beat": 8.5,
+      "duration": 0.22,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 55,
+      "beat": 8.5,
+      "duration": 0.22,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 48,
+      "beat": 9,
+      "duration": 0.35,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 55,
+      "beat": 9,
+      "duration": 0.35,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 60,
+      "beat": 9.75,
+      "duration": 0.18,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 67,
+      "beat": 9.75,
+      "duration": 0.18,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 48,
+      "beat": 10,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 55,
+      "beat": 10,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 48,
+      "beat": 10.5,
+      "duration": 0.23,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 55,
+      "beat": 10.5,
+      "duration": 0.23,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 60,
+      "beat": 11,
+      "duration": 0.3,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 67,
+      "beat": 11,
+      "duration": 0.3,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 48,
+      "beat": 11.5,
+      "duration": 0.27,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 55,
+      "beat": 11.5,
+      "duration": 0.27,
+      "velocity": 86
+    },
+    {
+      "track": "bass",
+      "pitch": 36,
+      "beat": 8,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 36,
+      "beat": 8.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 36,
+      "beat": 9,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 36,
+      "beat": 9.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 36,
+      "beat": 10,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 36,
+      "beat": 10.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 43,
+      "beat": 11,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 46,
+      "beat": 11.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 8,
+      "duration": 0.12,
+      "velocity": 115
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 9.5,
+      "duration": 0.12,
+      "velocity": 94
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 10,
+      "duration": 0.12,
+      "velocity": 115
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 10.75,
+      "duration": 0.12,
+      "velocity": 94
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 9,
+      "duration": 0.12,
+      "velocity": 114
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 11,
+      "duration": 0.12,
+      "velocity": 114
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 8.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 8.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 9.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 9.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 10.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 10.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 11.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 11.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "riff",
+      "pitch": 55,
+      "beat": 12,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 62,
+      "beat": 12,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 43,
+      "beat": 12.5,
+      "duration": 0.22,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 50,
+      "beat": 12.5,
+      "duration": 0.22,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 43,
+      "beat": 13,
+      "duration": 0.35,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 50,
+      "beat": 13,
+      "duration": 0.35,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 55,
+      "beat": 13.75,
+      "duration": 0.18,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 62,
+      "beat": 13.75,
+      "duration": 0.18,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 43,
+      "beat": 14,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 50,
+      "beat": 14,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 43,
+      "beat": 14.5,
+      "duration": 0.23,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 50,
+      "beat": 14.5,
+      "duration": 0.23,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 55,
+      "beat": 15,
+      "duration": 0.3,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 62,
+      "beat": 15,
+      "duration": 0.3,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 43,
+      "beat": 15.5,
+      "duration": 0.27,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 50,
+      "beat": 15.5,
+      "duration": 0.27,
+      "velocity": 86
+    },
+    {
+      "track": "bass",
+      "pitch": 31,
+      "beat": 12,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 31,
+      "beat": 12.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 31,
+      "beat": 13,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 31,
+      "beat": 13.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 31,
+      "beat": 14,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 31,
+      "beat": 14.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 38,
+      "beat": 15,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 41,
+      "beat": 15.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 12,
+      "duration": 0.12,
+      "velocity": 115
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 13.5,
+      "duration": 0.12,
+      "velocity": 94
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 14,
+      "duration": 0.12,
+      "velocity": 115
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 14.75,
+      "duration": 0.12,
+      "velocity": 94
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 13,
+      "duration": 0.12,
+      "velocity": 114
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 15,
+      "duration": 0.12,
+      "velocity": 114
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 12.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 12.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 13.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 13.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 14.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 14.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 15.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 15.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 15.125,
+      "duration": 0.08,
+      "velocity": 84
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 15.25,
+      "duration": 0.08,
+      "velocity": 88
+    },
+    {
+      "track": "drums",
+      "pitch": 48,
+      "beat": 15.375,
+      "duration": 0.08,
+      "velocity": 92
+    },
+    {
+      "track": "drums",
+      "pitch": 47,
+      "beat": 15.5,
+      "duration": 0.08,
+      "velocity": 96
+    },
+    {
+      "track": "drums",
+      "pitch": 45,
+      "beat": 15.625,
+      "duration": 0.08,
+      "velocity": 100
+    },
+    {
+      "track": "drums",
+      "pitch": 43,
+      "beat": 15.75,
+      "duration": 0.08,
+      "velocity": 104
+    },
+    {
+      "track": "riff",
+      "pitch": 52,
+      "beat": 16,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 59,
+      "beat": 16,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 40,
+      "beat": 16.5,
+      "duration": 0.22,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 47,
+      "beat": 16.5,
+      "duration": 0.22,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 40,
+      "beat": 17,
+      "duration": 0.35,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 47,
+      "beat": 17,
+      "duration": 0.35,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 52,
+      "beat": 17.75,
+      "duration": 0.18,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 59,
+      "beat": 17.75,
+      "duration": 0.18,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 40,
+      "beat": 18,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 47,
+      "beat": 18,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 40,
+      "beat": 18.5,
+      "duration": 0.23,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 47,
+      "beat": 18.5,
+      "duration": 0.23,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 52,
+      "beat": 19,
+      "duration": 0.3,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 59,
+      "beat": 19,
+      "duration": 0.3,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 40,
+      "beat": 19.5,
+      "duration": 0.27,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 47,
+      "beat": 19.5,
+      "duration": 0.27,
+      "velocity": 86
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 16,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 16.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 17,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 17.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 18,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 18.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 35,
+      "beat": 19,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 38,
+      "beat": 19.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 16,
+      "duration": 0.12,
+      "velocity": 115
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 17.5,
+      "duration": 0.12,
+      "velocity": 94
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 18,
+      "duration": 0.12,
+      "velocity": 115
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 18.75,
+      "duration": 0.12,
+      "velocity": 94
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 17,
+      "duration": 0.12,
+      "velocity": 114
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 19,
+      "duration": 0.12,
+      "velocity": 114
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 16.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 16.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 17.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 17.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 18.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 18.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 19.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 19.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 49,
+      "beat": 16,
+      "duration": 0.35,
+      "velocity": 108
+    },
+    {
+      "track": "riff",
+      "pitch": 52,
+      "beat": 20,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 59,
+      "beat": 20,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 40,
+      "beat": 20.5,
+      "duration": 0.22,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 47,
+      "beat": 20.5,
+      "duration": 0.22,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 40,
+      "beat": 21,
+      "duration": 0.35,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 47,
+      "beat": 21,
+      "duration": 0.35,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 52,
+      "beat": 21.75,
+      "duration": 0.18,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 59,
+      "beat": 21.75,
+      "duration": 0.18,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 40,
+      "beat": 22,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 47,
+      "beat": 22,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 40,
+      "beat": 22.5,
+      "duration": 0.23,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 47,
+      "beat": 22.5,
+      "duration": 0.23,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 52,
+      "beat": 23,
+      "duration": 0.3,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 59,
+      "beat": 23,
+      "duration": 0.3,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 40,
+      "beat": 23.5,
+      "duration": 0.27,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 47,
+      "beat": 23.5,
+      "duration": 0.27,
+      "velocity": 86
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 20,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 20.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 21,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 21.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 22,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 22.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 35,
+      "beat": 23,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 38,
+      "beat": 23.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 20,
+      "duration": 0.12,
+      "velocity": 115
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 21.5,
+      "duration": 0.12,
+      "velocity": 94
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 22,
+      "duration": 0.12,
+      "velocity": 115
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 22.75,
+      "duration": 0.12,
+      "velocity": 94
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 21,
+      "duration": 0.12,
+      "velocity": 114
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 23,
+      "duration": 0.12,
+      "velocity": 114
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 20.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 20.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 21.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 21.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 22.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 22.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 23.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 23.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "riff",
+      "pitch": 60,
+      "beat": 24,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 67,
+      "beat": 24,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 48,
+      "beat": 24.5,
+      "duration": 0.22,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 55,
+      "beat": 24.5,
+      "duration": 0.22,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 48,
+      "beat": 25,
+      "duration": 0.35,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 55,
+      "beat": 25,
+      "duration": 0.35,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 60,
+      "beat": 25.75,
+      "duration": 0.18,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 67,
+      "beat": 25.75,
+      "duration": 0.18,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 48,
+      "beat": 26,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 55,
+      "beat": 26,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 48,
+      "beat": 26.5,
+      "duration": 0.23,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 55,
+      "beat": 26.5,
+      "duration": 0.23,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 60,
+      "beat": 27,
+      "duration": 0.3,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 67,
+      "beat": 27,
+      "duration": 0.3,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 48,
+      "beat": 27.5,
+      "duration": 0.27,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 55,
+      "beat": 27.5,
+      "duration": 0.27,
+      "velocity": 86
+    },
+    {
+      "track": "bass",
+      "pitch": 36,
+      "beat": 24,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 36,
+      "beat": 24.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 36,
+      "beat": 25,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 36,
+      "beat": 25.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 36,
+      "beat": 26,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 36,
+      "beat": 26.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 43,
+      "beat": 27,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 46,
+      "beat": 27.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 24,
+      "duration": 0.12,
+      "velocity": 115
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 25.5,
+      "duration": 0.12,
+      "velocity": 94
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 26,
+      "duration": 0.12,
+      "velocity": 115
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 26.75,
+      "duration": 0.12,
+      "velocity": 94
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 25,
+      "duration": 0.12,
+      "velocity": 114
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 27,
+      "duration": 0.12,
+      "velocity": 114
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 24.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 24.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 25.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 25.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 26.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 26.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 27.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 27.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "riff",
+      "pitch": 50,
+      "beat": 28,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 57,
+      "beat": 28,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 38,
+      "beat": 28.5,
+      "duration": 0.22,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 45,
+      "beat": 28.5,
+      "duration": 0.22,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 38,
+      "beat": 29,
+      "duration": 0.35,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 45,
+      "beat": 29,
+      "duration": 0.35,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 50,
+      "beat": 29.75,
+      "duration": 0.18,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 57,
+      "beat": 29.75,
+      "duration": 0.18,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 38,
+      "beat": 30,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 45,
+      "beat": 30,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 38,
+      "beat": 30.5,
+      "duration": 0.23,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 45,
+      "beat": 30.5,
+      "duration": 0.23,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 50,
+      "beat": 31,
+      "duration": 0.3,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 57,
+      "beat": 31,
+      "duration": 0.3,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 38,
+      "beat": 31.5,
+      "duration": 0.27,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 45,
+      "beat": 31.5,
+      "duration": 0.27,
+      "velocity": 86
+    },
+    {
+      "track": "bass",
+      "pitch": 26,
+      "beat": 28,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 26,
+      "beat": 28.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 26,
+      "beat": 29,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 26,
+      "beat": 29.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 26,
+      "beat": 30,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 26,
+      "beat": 30.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 33,
+      "beat": 31,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 36,
+      "beat": 31.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 28,
+      "duration": 0.12,
+      "velocity": 115
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 29.5,
+      "duration": 0.12,
+      "velocity": 94
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 30,
+      "duration": 0.12,
+      "velocity": 115
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 30.75,
+      "duration": 0.12,
+      "velocity": 94
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 29,
+      "duration": 0.12,
+      "velocity": 114
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 31,
+      "duration": 0.12,
+      "velocity": 114
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 28.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 28.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 29.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 29.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 30.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 30.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 31.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 31.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 31.125,
+      "duration": 0.08,
+      "velocity": 84
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 31.25,
+      "duration": 0.08,
+      "velocity": 88
+    },
+    {
+      "track": "drums",
+      "pitch": 48,
+      "beat": 31.375,
+      "duration": 0.08,
+      "velocity": 92
+    },
+    {
+      "track": "drums",
+      "pitch": 47,
+      "beat": 31.5,
+      "duration": 0.08,
+      "velocity": 96
+    },
+    {
+      "track": "drums",
+      "pitch": 45,
+      "beat": 31.625,
+      "duration": 0.08,
+      "velocity": 100
+    },
+    {
+      "track": "drums",
+      "pitch": 43,
+      "beat": 31.75,
+      "duration": 0.08,
+      "velocity": 104
+    },
+    {
+      "track": "riff",
+      "pitch": 52,
+      "beat": 32,
+      "duration": 0.8,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 59,
+      "beat": 32,
+      "duration": 0.8,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 40,
+      "beat": 33.5,
+      "duration": 0.35,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 47,
+      "beat": 33.5,
+      "duration": 0.35,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 40,
+      "beat": 34.5,
+      "duration": 0.5,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 47,
+      "beat": 34.5,
+      "duration": 0.5,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 52,
+      "beat": 35.5,
+      "duration": 0.3,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 59,
+      "beat": 35.5,
+      "duration": 0.3,
+      "velocity": 86
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 32,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 32.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 33,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 33.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 34,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 34.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 35,
+      "beat": 35,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 38,
+      "beat": 35.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 32,
+      "duration": 0.12,
+      "velocity": 115
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 33.5,
+      "duration": 0.12,
+      "velocity": 94
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 34,
+      "duration": 0.12,
+      "velocity": 115
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 34.75,
+      "duration": 0.12,
+      "velocity": 94
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 33,
+      "duration": 0.12,
+      "velocity": 114
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 35,
+      "duration": 0.12,
+      "velocity": 114
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 32.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 32.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 33.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 33.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 34.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 34.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 35.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 35.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 49,
+      "beat": 32,
+      "duration": 0.35,
+      "velocity": 108
+    },
+    {
+      "track": "riff",
+      "pitch": 60,
+      "beat": 36,
+      "duration": 0.8,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 67,
+      "beat": 36,
+      "duration": 0.8,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 48,
+      "beat": 37.5,
+      "duration": 0.35,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 55,
+      "beat": 37.5,
+      "duration": 0.35,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 48,
+      "beat": 38.5,
+      "duration": 0.5,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 55,
+      "beat": 38.5,
+      "duration": 0.5,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 60,
+      "beat": 39.5,
+      "duration": 0.3,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 67,
+      "beat": 39.5,
+      "duration": 0.3,
+      "velocity": 86
+    },
+    {
+      "track": "bass",
+      "pitch": 36,
+      "beat": 36,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 36,
+      "beat": 36.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 36,
+      "beat": 37,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 36,
+      "beat": 37.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 36,
+      "beat": 38,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 36,
+      "beat": 38.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 43,
+      "beat": 39,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 46,
+      "beat": 39.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 36,
+      "duration": 0.12,
+      "velocity": 115
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 37.5,
+      "duration": 0.12,
+      "velocity": 94
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 38,
+      "duration": 0.12,
+      "velocity": 115
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 38.75,
+      "duration": 0.12,
+      "velocity": 94
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 37,
+      "duration": 0.12,
+      "velocity": 114
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 39,
+      "duration": 0.12,
+      "velocity": 114
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 36.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 36.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 37.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 37.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 38.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 38.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 39.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 39.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "riff",
+      "pitch": 55,
+      "beat": 40,
+      "duration": 0.8,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 62,
+      "beat": 40,
+      "duration": 0.8,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 43,
+      "beat": 41.5,
+      "duration": 0.35,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 50,
+      "beat": 41.5,
+      "duration": 0.35,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 43,
+      "beat": 42.5,
+      "duration": 0.5,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 50,
+      "beat": 42.5,
+      "duration": 0.5,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 55,
+      "beat": 43.5,
+      "duration": 0.3,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 62,
+      "beat": 43.5,
+      "duration": 0.3,
+      "velocity": 86
+    },
+    {
+      "track": "bass",
+      "pitch": 31,
+      "beat": 40,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 31,
+      "beat": 40.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 31,
+      "beat": 41,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 31,
+      "beat": 41.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 31,
+      "beat": 42,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 31,
+      "beat": 42.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 38,
+      "beat": 43,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 41,
+      "beat": 43.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 40,
+      "duration": 0.12,
+      "velocity": 115
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 41.5,
+      "duration": 0.12,
+      "velocity": 94
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 42,
+      "duration": 0.12,
+      "velocity": 115
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 42.75,
+      "duration": 0.12,
+      "velocity": 94
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 41,
+      "duration": 0.12,
+      "velocity": 114
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 43,
+      "duration": 0.12,
+      "velocity": 114
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 40.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 40.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 41.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 41.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 42.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 42.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 43.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 43.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "riff",
+      "pitch": 50,
+      "beat": 44,
+      "duration": 0.8,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 57,
+      "beat": 44,
+      "duration": 0.8,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 38,
+      "beat": 45.5,
+      "duration": 0.35,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 45,
+      "beat": 45.5,
+      "duration": 0.35,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 38,
+      "beat": 46.5,
+      "duration": 0.5,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 45,
+      "beat": 46.5,
+      "duration": 0.5,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 50,
+      "beat": 47.5,
+      "duration": 0.3,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 57,
+      "beat": 47.5,
+      "duration": 0.3,
+      "velocity": 86
+    },
+    {
+      "track": "bass",
+      "pitch": 26,
+      "beat": 44,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 26,
+      "beat": 44.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 26,
+      "beat": 45,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 26,
+      "beat": 45.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 26,
+      "beat": 46,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 26,
+      "beat": 46.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 33,
+      "beat": 47,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 36,
+      "beat": 47.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 44,
+      "duration": 0.12,
+      "velocity": 115
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 45.5,
+      "duration": 0.12,
+      "velocity": 94
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 46,
+      "duration": 0.12,
+      "velocity": 115
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 46.75,
+      "duration": 0.12,
+      "velocity": 94
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 45,
+      "duration": 0.12,
+      "velocity": 114
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 47,
+      "duration": 0.12,
+      "velocity": 114
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 44.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 44.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 45.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 45.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 46.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 46.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 47.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 47.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 47.125,
+      "duration": 0.08,
+      "velocity": 84
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 47.25,
+      "duration": 0.08,
+      "velocity": 88
+    },
+    {
+      "track": "drums",
+      "pitch": 48,
+      "beat": 47.375,
+      "duration": 0.08,
+      "velocity": 92
+    },
+    {
+      "track": "drums",
+      "pitch": 47,
+      "beat": 47.5,
+      "duration": 0.08,
+      "velocity": 96
+    },
+    {
+      "track": "drums",
+      "pitch": 45,
+      "beat": 47.625,
+      "duration": 0.08,
+      "velocity": 100
+    },
+    {
+      "track": "drums",
+      "pitch": 43,
+      "beat": 47.75,
+      "duration": 0.08,
+      "velocity": 104
+    },
+    {
+      "track": "riff",
+      "pitch": 52,
+      "beat": 48,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 59,
+      "beat": 48,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 40,
+      "beat": 48.5,
+      "duration": 0.22,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 47,
+      "beat": 48.5,
+      "duration": 0.22,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 40,
+      "beat": 49,
+      "duration": 0.35,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 47,
+      "beat": 49,
+      "duration": 0.35,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 52,
+      "beat": 49.75,
+      "duration": 0.18,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 59,
+      "beat": 49.75,
+      "duration": 0.18,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 40,
+      "beat": 50,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 47,
+      "beat": 50,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 40,
+      "beat": 50.5,
+      "duration": 0.23,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 47,
+      "beat": 50.5,
+      "duration": 0.23,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 52,
+      "beat": 51,
+      "duration": 0.3,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 59,
+      "beat": 51,
+      "duration": 0.3,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 40,
+      "beat": 51.5,
+      "duration": 0.27,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 47,
+      "beat": 51.5,
+      "duration": 0.27,
+      "velocity": 86
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 48,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 48.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 49,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 49.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 50,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 50.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 35,
+      "beat": 51,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 38,
+      "beat": 51.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 48,
+      "duration": 0.12,
+      "velocity": 115
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 49.5,
+      "duration": 0.12,
+      "velocity": 94
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 50,
+      "duration": 0.12,
+      "velocity": 115
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 50.75,
+      "duration": 0.12,
+      "velocity": 94
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 49,
+      "duration": 0.12,
+      "velocity": 114
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 51,
+      "duration": 0.12,
+      "velocity": 114
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 48.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 48.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 49.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 49.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 50.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 50.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 51.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 51.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 49,
+      "beat": 48,
+      "duration": 0.35,
+      "velocity": 108
+    },
+    {
+      "track": "riff",
+      "pitch": 60,
+      "beat": 52,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 67,
+      "beat": 52,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 48,
+      "beat": 52.5,
+      "duration": 0.22,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 55,
+      "beat": 52.5,
+      "duration": 0.22,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 48,
+      "beat": 53,
+      "duration": 0.35,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 55,
+      "beat": 53,
+      "duration": 0.35,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 60,
+      "beat": 53.75,
+      "duration": 0.18,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 67,
+      "beat": 53.75,
+      "duration": 0.18,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 48,
+      "beat": 54,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 55,
+      "beat": 54,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 48,
+      "beat": 54.5,
+      "duration": 0.23,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 55,
+      "beat": 54.5,
+      "duration": 0.23,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 60,
+      "beat": 55,
+      "duration": 0.3,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 67,
+      "beat": 55,
+      "duration": 0.3,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 48,
+      "beat": 55.5,
+      "duration": 0.27,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 55,
+      "beat": 55.5,
+      "duration": 0.27,
+      "velocity": 86
+    },
+    {
+      "track": "bass",
+      "pitch": 36,
+      "beat": 52,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 36,
+      "beat": 52.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 36,
+      "beat": 53,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 36,
+      "beat": 53.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 36,
+      "beat": 54,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 36,
+      "beat": 54.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 43,
+      "beat": 55,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 46,
+      "beat": 55.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 52,
+      "duration": 0.12,
+      "velocity": 115
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 53.5,
+      "duration": 0.12,
+      "velocity": 94
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 54,
+      "duration": 0.12,
+      "velocity": 115
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 54.75,
+      "duration": 0.12,
+      "velocity": 94
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 53,
+      "duration": 0.12,
+      "velocity": 114
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 55,
+      "duration": 0.12,
+      "velocity": 114
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 52.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 52.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 53.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 53.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 54.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 54.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 55.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 55.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "riff",
+      "pitch": 55,
+      "beat": 56,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 62,
+      "beat": 56,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 43,
+      "beat": 56.5,
+      "duration": 0.22,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 50,
+      "beat": 56.5,
+      "duration": 0.22,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 43,
+      "beat": 57,
+      "duration": 0.35,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 50,
+      "beat": 57,
+      "duration": 0.35,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 55,
+      "beat": 57.75,
+      "duration": 0.18,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 62,
+      "beat": 57.75,
+      "duration": 0.18,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 43,
+      "beat": 58,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 50,
+      "beat": 58,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 43,
+      "beat": 58.5,
+      "duration": 0.23,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 50,
+      "beat": 58.5,
+      "duration": 0.23,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 55,
+      "beat": 59,
+      "duration": 0.3,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 62,
+      "beat": 59,
+      "duration": 0.3,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 43,
+      "beat": 59.5,
+      "duration": 0.27,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 50,
+      "beat": 59.5,
+      "duration": 0.27,
+      "velocity": 86
+    },
+    {
+      "track": "bass",
+      "pitch": 31,
+      "beat": 56,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 31,
+      "beat": 56.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 31,
+      "beat": 57,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 31,
+      "beat": 57.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 31,
+      "beat": 58,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 31,
+      "beat": 58.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 38,
+      "beat": 59,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 41,
+      "beat": 59.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 56,
+      "duration": 0.12,
+      "velocity": 115
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 57.5,
+      "duration": 0.12,
+      "velocity": 94
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 58,
+      "duration": 0.12,
+      "velocity": 115
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 58.75,
+      "duration": 0.12,
+      "velocity": 94
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 57,
+      "duration": 0.12,
+      "velocity": 114
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 59,
+      "duration": 0.12,
+      "velocity": 114
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 56.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 56.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 57.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 57.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 58.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 58.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 59.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 59.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "riff",
+      "pitch": 50,
+      "beat": 60,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 57,
+      "beat": 60,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 38,
+      "beat": 60.5,
+      "duration": 0.22,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 45,
+      "beat": 60.5,
+      "duration": 0.22,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 38,
+      "beat": 61,
+      "duration": 0.35,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 45,
+      "beat": 61,
+      "duration": 0.35,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 50,
+      "beat": 61.75,
+      "duration": 0.18,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 57,
+      "beat": 61.75,
+      "duration": 0.18,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 38,
+      "beat": 62,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 45,
+      "beat": 62,
+      "duration": 0.38,
+      "velocity": 99
+    },
+    {
+      "track": "riff",
+      "pitch": 38,
+      "beat": 62.5,
+      "duration": 0.23,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 45,
+      "beat": 62.5,
+      "duration": 0.23,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 50,
+      "beat": 63,
+      "duration": 0.3,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 57,
+      "beat": 63,
+      "duration": 0.3,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 38,
+      "beat": 63.5,
+      "duration": 0.27,
+      "velocity": 86
+    },
+    {
+      "track": "riff",
+      "pitch": 45,
+      "beat": 63.5,
+      "duration": 0.27,
+      "velocity": 86
+    },
+    {
+      "track": "bass",
+      "pitch": 26,
+      "beat": 60,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 26,
+      "beat": 60.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 26,
+      "beat": 61,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 26,
+      "beat": 61.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 26,
+      "beat": 62,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 26,
+      "beat": 62.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "bass",
+      "pitch": 33,
+      "beat": 63,
+      "duration": 0.39,
+      "velocity": 100
+    },
+    {
+      "track": "bass",
+      "pitch": 36,
+      "beat": 63.5,
+      "duration": 0.39,
+      "velocity": 83
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 60,
+      "duration": 0.12,
+      "velocity": 115
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 61.5,
+      "duration": 0.12,
+      "velocity": 94
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 62,
+      "duration": 0.12,
+      "velocity": 115
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 62.75,
+      "duration": 0.12,
+      "velocity": 94
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 61,
+      "duration": 0.12,
+      "velocity": 114
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 63,
+      "duration": 0.12,
+      "velocity": 114
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 60.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 60.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 61.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 61.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 62.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 62.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 63.0,
+      "duration": 0.09,
+      "velocity": 89
+    },
+    {
+      "track": "drums",
+      "pitch": 42,
+      "beat": 63.5,
+      "duration": 0.09,
+      "velocity": 64
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 63.125,
+      "duration": 0.08,
+      "velocity": 84
+    },
+    {
+      "track": "drums",
+      "pitch": 38,
+      "beat": 63.25,
+      "duration": 0.08,
+      "velocity": 88
+    },
+    {
+      "track": "drums",
+      "pitch": 48,
+      "beat": 63.375,
+      "duration": 0.08,
+      "velocity": 92
+    },
+    {
+      "track": "drums",
+      "pitch": 47,
+      "beat": 63.5,
+      "duration": 0.08,
+      "velocity": 96
+    },
+    {
+      "track": "drums",
+      "pitch": 45,
+      "beat": 63.625,
+      "duration": 0.08,
+      "velocity": 100
+    },
+    {
+      "track": "drums",
+      "pitch": 43,
+      "beat": 63.75,
+      "duration": 0.08,
+      "velocity": 104
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 64,
+      "beat": 32,
+      "duration": 0.35,
+      "velocity": 94
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 67,
+      "beat": 32.5,
+      "duration": 0.35,
+      "velocity": 94
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 69,
+      "beat": 33,
+      "duration": 0.7,
+      "velocity": 108
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 71,
+      "beat": 34,
+      "duration": 0.35,
+      "velocity": 94
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 69,
+      "beat": 34.5,
+      "duration": 0.35,
+      "velocity": 94
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 67,
+      "beat": 35,
+      "duration": 0.75,
+      "velocity": 108
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 72,
+      "beat": 36,
+      "duration": 0.7,
+      "velocity": 108
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 71,
+      "beat": 37,
+      "duration": 0.35,
+      "velocity": 94
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 67,
+      "beat": 37.5,
+      "duration": 0.35,
+      "velocity": 94
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 64,
+      "beat": 38,
+      "duration": 0.35,
+      "velocity": 94
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 62,
+      "beat": 38.5,
+      "duration": 0.35,
+      "velocity": 94
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 64,
+      "beat": 39,
+      "duration": 0.8,
+      "velocity": 108
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 67,
+      "beat": 40,
+      "duration": 0.2,
+      "velocity": 94
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 69,
+      "beat": 40.25,
+      "duration": 0.2,
+      "velocity": 94
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 71,
+      "beat": 40.5,
+      "duration": 0.2,
+      "velocity": 94
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 74,
+      "beat": 40.75,
+      "duration": 0.7,
+      "velocity": 108
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 76,
+      "beat": 42,
+      "duration": 0.8,
+      "velocity": 108
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 74,
+      "beat": 43,
+      "duration": 0.7,
+      "velocity": 108
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 71,
+      "beat": 44,
+      "duration": 0.35,
+      "velocity": 94
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 69,
+      "beat": 44.5,
+      "duration": 0.35,
+      "velocity": 94
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 67,
+      "beat": 45,
+      "duration": 0.7,
+      "velocity": 108
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 66,
+      "beat": 46,
+      "duration": 0.35,
+      "velocity": 94
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 62,
+      "beat": 46.5,
+      "duration": 0.35,
+      "velocity": 94
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 64,
+      "beat": 47,
+      "duration": 0.8,
+      "velocity": 108
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 76,
+      "beat": 48,
+      "duration": 0.7,
+      "velocity": 103
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 74,
+      "beat": 49,
+      "duration": 0.35,
+      "velocity": 103
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 71,
+      "beat": 49.5,
+      "duration": 0.35,
+      "velocity": 103
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 69,
+      "beat": 50,
+      "duration": 0.7,
+      "velocity": 103
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 67,
+      "beat": 51,
+      "duration": 0.7,
+      "velocity": 103
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 64,
+      "beat": 56,
+      "duration": 1.3,
+      "velocity": 103
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 67,
+      "beat": 58,
+      "duration": 0.6,
+      "velocity": 103
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 71,
+      "beat": 59,
+      "duration": 0.6,
+      "velocity": 103
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 76,
+      "beat": 60,
+      "duration": 1.5,
+      "velocity": 103
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 74,
+      "beat": 62,
+      "duration": 0.6,
+      "velocity": 103
+    },
+    {
+      "track": "guitar_solo",
+      "pitch": 71,
+      "beat": 63,
+      "duration": 0.7,
+      "velocity": 103
+    },
+    {
+      "track": "riff",
+      "pitch": 40,
+      "beat": 64,
+      "duration": 1.8,
+      "velocity": 108
+    },
+    {
+      "track": "riff",
+      "pitch": 47,
+      "beat": 64,
+      "duration": 1.8,
+      "velocity": 108
+    },
+    {
+      "track": "riff",
+      "pitch": 52,
+      "beat": 64,
+      "duration": 1.8,
+      "velocity": 108
+    },
+    {
+      "track": "bass",
+      "pitch": 28,
+      "beat": 64,
+      "duration": 1.8,
+      "velocity": 109
+    },
+    {
+      "track": "drums",
+      "pitch": 49,
+      "beat": 64,
+      "duration": 1.0,
+      "velocity": 110
+    },
+    {
+      "track": "drums",
+      "pitch": 36,
+      "beat": 64,
+      "duration": 0.2,
+      "velocity": 120
+    }
+  ]
+}
