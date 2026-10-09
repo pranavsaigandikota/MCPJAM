@@ -26,7 +26,3 @@ score demo. [Music guide](../MUSIC_GENERATOR.md) explains the full score tools.
 [Tempo-Code-Snippet.png](Tempo-Code-Snippet.png) is the exact code screenshot on slide 20.
 The copyable version is in the root README → Student exercise. Run
 `python verify_tempo_lab.py` after full audio setup to check the real MP3 activity.
-
-[Tempo-Code-Snippet.png](Tempo-Code-Snippet.png) is the exact code screenshot on slide 20.
-The copyable version is in the root README → Student exercise. Run
-`python verify_tempo_lab.py` after full audio setup to check the real MP3 activity.

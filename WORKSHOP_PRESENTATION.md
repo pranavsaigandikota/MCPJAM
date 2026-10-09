@@ -21,10 +21,6 @@ AI testing without MCP, and a concrete hackathon use. Slide 19 compares direct C
 filesystem and Jira still need adapters, while MCP standardizes discovery and calls.
 Figma/GitHub share the protocol but differ in capabilities and may use different transports.
 JSON-RPC is the message format; stdio and Streamable HTTP are standard transports.
-Slide 19 compares direct CLI/API adapters with the shared MCP contract: a database,
-filesystem and Jira still need adapters, while MCP standardizes discovery and calls.
-Figma/GitHub share the protocol but differ in capabilities and may use different transports.
-JSON-RPC is the message format; stdio and Streamable HTTP are standard transports.
 Slide 11 compares SDKs,
 standalone FastMCP, Zapier MCP and the adjacent Databutton app-builder category.
 
