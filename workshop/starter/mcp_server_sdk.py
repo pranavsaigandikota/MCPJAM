@@ -17,6 +17,9 @@ from pathlib import Path
 # Find shared app helpers from either Windows or Mac, even when the host starts here.
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from instrument_catalog import register_instrument_catalog
+from music_score import ScoreTrack, ScoreNote
+from music_prompts import register_music_prompts
+from workshop_music import create_default_song, song_state, change_tempo
 
 # Local app backend: this socket speaks app JSON, not MCP. Keep it on loopback.
 HOST = "127.0.0.1"
@@ -26,9 +29,20 @@ PORT = 8765
 mcp = FastMCP("mcpjam-workshop")
 # Resources provide read-only context; tools below expose actions.
 register_instrument_catalog(mcp)
+register_music_prompts(mcp, default_bpm=120)
 
 
 def call_daw(command: dict[str, Any]) -> dict[str, Any]:
+    # A generated song is rendered to MP3; the GUI socket remains the core-only fallback.
+    state = song_state()
+    if state is not None and command['cmd'] == 'get_state':
+        return state
+    if state is not None and command['cmd'] == 'set_tempo':
+        return change_tempo(command['bpm'])
+    return call_app(command)
+
+
+def call_app(command: dict[str, Any]) -> dict[str, Any]:
     # The adapter sends a validated command to the app; MCP transport stays separate.
     # Production pattern: bound waiting time and reply size instead of trusting a backend.
     with socket.create_connection((HOST, PORT), timeout=5) as connection:
@@ -49,27 +63,40 @@ def call_daw(command: dict[str, Any]) -> dict[str, Any]:
 # Its name, annotations and docstring form the tool contract the host sees.
 @mcp.tool()
 def get_state() -> dict[str, Any]:
-    """Read the current tempo, playback state, chords, and patterns."""
+    """Read the generated workshop song's tempo and MP3 path, or the running app state."""
     return call_daw({"cmd": "get_state"})
 
 
 @mcp.tool()
-def set_tempo(bpm: int) -> str:
-    """Set tempo from 40 to 240 BPM."""
-    # Enforce the range in code: a description alone cannot prevent an unsafe input.
-    if not 40 <= bpm <= 240:
-        raise ValueError("bpm must be between 40 and 240")
-    # A write acknowledgement can mean queued, so read actual state afterwards.
-    result = call_daw({"cmd": "set_tempo", "bpm": bpm})
-    return f"Tempo command queued for {bpm} BPM: {result}. Read get_state to verify."
+def get_instrument_catalog(query: str = '', kind: str = 'all', offset: int = 0, limit: int = 40) -> dict:
+    """Find actual available instrument ids; choose sounds for the user's description."""
+    from mcp_server_music import get_instrument_catalog as search
+    return search(query, kind, offset, limit)
 
 
-# YOUR EDIT GOES HERE: add set_swing(amount: int), above the startup block.
-# 1. Use @mcp.tool() and a short docstring explaining the 0–75 range.
+@mcp.tool()
+def create_song_from_score(title: str, tracks: list[ScoreTrack], notes: list[ScoreNote],
+                           genre: str = 'original', time_signature_numerator: int = 4,
+                           time_signature_denominator: int = 4) -> dict:
+    """Render an original 30-second MP3 at the default 120 BPM. Choose tracks and notes;
+    no fixed melody or instrument palette is inserted. There is no tempo input yet.
+    All notes must fit within 60 quarter-note beats. Never autoplay the result.
+    """
+    return create_default_song(title, tracks, notes, genre,
+                               time_signature_numerator, time_signature_denominator)
+
+
+# YOUR EDIT GOES HERE: add set_tempo(bpm: int), above the startup block.
+# BEFORE YOUR EDIT: get_state works, but set_tempo is absent from discovery.
+# An explicit set_tempo call must fail because the tool has not been registered.
+# 1. Use @mcp.tool() and a short docstring explaining the 40–240 BPM range.
 # 2. Reject invalid input with ValueError BEFORE calling the app.
-# 3. call_daw({"cmd": "set_swing", "amount": amount}), then return its acknowledgement.
-# 4. Test 35, 0, 75 and invalid 100; use get_state to verify the outcome.
-# Optional extension: add {"cmd": "mute_track", "track": track, "muted": muted}.
+# 3. call_daw({"cmd": "set_tempo", "bpm": bpm}), then return its acknowledgement.
+# AFTER YOUR EDIT: save, restart the MCP server, and discover set_tempo.
+# 4. Repeat the SAME call with bpm=150; get_state must report bpm=150.
+# 5. Test boundaries 40 and 240 and invalid 300; invalid input must not reach the app.
+# Production pattern: validate inputs and verify state instead of trusting "queued".
+# Optional extension: add set_swing with amount 0–75 after completing tempo.
 
 
 # The host launches this file and talks over stdin/stdout (stdio).

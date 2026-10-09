@@ -65,11 +65,11 @@ cd ..
 Keep the Terminal window and DAW open. Run the package this way because the
 application uses relative imports. `__main__.py` supplies the entry point.
 Every playback path uses the bundled GeneralUser GS SoundFont through FluidSynth.
-For optional audio, run `brew install fluid-synth` and install
+For the lab MP3 renderer, run `brew install fluid-synth` and install
 `requirements-audio.txt`. Core-only participants verify state visually.
 There is no built-in synthesized fallback:
 if audio initialization fails, the app reports an audio error and cannot play.
-For automated Homebrew setup, run `bash setup.sh --core-only` inside MCPJAM, then
+For automated Homebrew setup, run `bash setup.sh` inside MCPJAM, then
 `bash run_app.sh`. Windows has been tested; Mac runtime still needs verification.
 
 ## 4. Connect a host using your Mac's paths
@@ -95,21 +95,24 @@ With the DAW running, from inside `MCPJAM`:
 
 ```bash
 ./.venv/bin/python workshop_client.py
-./.venv/bin/python workshop_client.py --tool set_tempo --arguments '{"bpm":120}'
+./.venv/bin/python workshop_client.py --tool set_tempo --arguments '{"bpm":150}'
 ./.venv/bin/python workshop_client.py --tool get_state
 ```
 
-After implementing `set_swing` in `workshop/starter/mcp_server_sdk.py`:
+The first set_tempo call above must fail: it is intentionally missing. After implementing `set_tempo` in `workshop/starter/mcp_server_sdk.py`:
 
 ```bash
-./.venv/bin/python workshop_client.py --tool set_swing --arguments '{"amount":35}'
+./.venv/bin/python workshop_client.py --tool set_tempo --arguments '{"bpm":150}'
 ./.venv/bin/python workshop_client.py --tool get_state
-./.venv/bin/python workshop_client.py --tool set_swing --arguments '{"amount":100}'
+./.venv/bin/python workshop_client.py --tool set_tempo --arguments '{"bpm":300}'
 ```
 
 The invalid call should print `isError: true` and exit with code 1. Writes are
 queued; allow the UI to process them before checking state. The starter has
-two tools; swing and mute are student additions. To run the completed solution,
+get_state, get_instrument_catalog and create_song_from_score. It creates 30-second
+MP3s at 120 BPM after full audio setup. Students add set_tempo; swing and mute
+are optional extensions. With a generated workshop song, tempo changes render a
+new MP3 rather than using the GUI queue. To run the completed solution,
 add `--server workshop/solutions/mcp_server_solution.py` to the client command.
 
 ## Mac troubleshooting

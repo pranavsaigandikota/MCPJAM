@@ -1,7 +1,72 @@
+## Student exercise: add set_tempo
+
+The supplied starter can generate an original **30-second MP3 at 120 BPM**.
+It already exposes get_instrument_catalog, create_song_from_score and get_state,
+plus compose_music instructions. The tempo input is absent from creation;
+set_tempo is intentionally unregistered. AI still selects sounds and writes notes.
+
+Full audio setup is required for MP3 rendering: run setup.ps1 without -CoreOnly
+on Windows or bash setup.sh without --core-only on Mac. Prepare before class
+where possible. Core-only learners can use the running app to verify the same
+tempo tool without rendering; pair them with an audio-ready learner for the MP3.
+
+1. Start the starter connection in VS Code. Use / → compose_music with an
+   original genre description. Request a 30-second song; creation uses 120 BPM.
+   Return the MP3 path, without autoplay. Use get_state to confirm bpm=120.
+2. Ask: **“Use only MCPJAM tools to set this song to 150 BPM. Do not edit code,
+   use the terminal, another server, or regenerate it. Then verify with get_state.”**
+   Copilot should explain that set_tempo is unavailable. An explicit call below
+   must return a tool error/exit 1. This expected failure proves missing capability.
+3. Edit workshop/starter/mcp_server_sdk.py at YOUR EDIT GOES HERE. Add:
+
+```python
+@mcp.tool()
+def set_tempo(bpm: int) -> dict:
+    """Change tempo from 40 to 240 BPM."""
+    if not 40 <= bpm <= 240:
+        raise ValueError("Use 40–240 BPM")
+    return call_daw({"cmd": "set_tempo", "bpm": bpm})
+```
+
+4. Save. Run MCP: List Servers → mcpjam → Restart and refresh/enable tools.
+   Confirm set_tempo appears. Repeat the **same 150 BPM request**.
+5. get_state must now report bpm=150. For a rendered song, use the returned new
+   MP3 path; the file is re-rendered, not merely relabeled. No autoplay.
+6. Test 40 and 240, then invalid 300. Invalid input must fail before the backend
+   changes. Explain registration, schema, validation, adapter and verification.
+
+For a song, slower tempo crops notes beyond the 30-second endpoint; faster tempo
+can leave a longer outro. Pitches and beat spacing stay unchanged. The original
+notes are retained so a later tempo increase can restore them. The supplied
+adapter routes song edits to rendering, or to the local GUI for the core-only lab.
+
+Windows, **before adding the tool**, with the app/song ready:
+
+```powershell
+Set-Content -LiteralPath tempo-input.json -Value '{"bpm":150}' -Encoding UTF8
+.\.venv\Scripts\python.exe workshop_client.py --tool set_tempo --arguments-file tempo-input.json
+```
+
+Expect exit 1. Run that exact command again after adding the function: expect
+success. Read state with `.\.venv\Scripts\python.exe workshop_client.py --tool get_state`.
+
+Mac:
+
+```bash
+./.venv/bin/python workshop_client.py --tool set_tempo --arguments '{"bpm":150}'
+./.venv/bin/python workshop_client.py --tool get_state
+```
+
+The explicit client starts a fresh server each invocation; VS Code requires a
+restart after edits. Test invalid 300 with the explicit client, since an LLM may
+refuse without actually invoking validation. Compare workshop/solutions only
+after your attempt. Swing and mute are optional extensions, not the required lab.
+
+
 # Intro to MCP Servers: instructor guide
 
-Present [MCPJAM-Workshop-Copilot.pptx](MCPJAM-Workshop-Copilot.pptx) or its PDF.
-The live Figma deck includes these Copilot updates and the client response example on slide 16.
+Present [the live Figma deck](https://www.figma.com/slides/mmQgw9DYp2CZDK7xDu69aZ/MCP-Servers-Slides).
+PowerPoint/PDF files are archived snapshots; this guide matches the maintained Figma activity.
 The 29-slide deck teaches standard MCP using custom music tools; students extend
 an existing server rather than build the music app from scratch.
 
@@ -20,9 +85,10 @@ an existing server rather than build the music app from scratch.
 
 Start installers while students check in. Fresh Python/Homebrew installs can run
 long; ask students to prepare in advance and pair blocked learners before minute 25.
-Use core-only setup for the lab. VS Code Copilot is the AI host; sampled audio
-is instructor preparation; explicit tool tests need no API key and visual state can be verified
-without audio. The check-in QR is an event QR; README/GitHub is the setup reference.
+Use full audio setup for the lab MP3. VS Code Copilot is the AI host; explicit
+tool tests need no API key. Core-only learners can verify tempo through the GUI
+and pair with an audio-ready learner. The check-in QR is an event QR;
+README/GitHub is the setup reference.
 
 Keep the existing visual diagrams and two-column comparisons. Pair the read/act/observe concept on slide 17 with the maze illustration on slide 18.
 Keep them to 20 and 30 seconds; the standalone transition was removed.
@@ -53,12 +119,12 @@ Reference answers are in workshop/solutions.
 | 22–23 | MCP TEST: discover, call explicit inputs, verify via get_state |
 
 Use README for exact Windows/Mac commands. Restart persistent hosts after edits;
-workshop_client.py starts a fresh server per run. Test 35, 0, 75 and invalid 100.
+workshop_client.py starts a fresh server per run. Test 150, 40, 240 and invalid 300.
 Rejected input must leave state unchanged. Queued acknowledgement alone is insufficient.
 AI-generated code is allowed; each learner should explain what it exposes and checks.
 
 Interactive moments are inside each segment: readiness vote; classify tool/resource/
-prompt; choose a custom SDK versus managed actions; predict set_swing(100); discuss
+prompt; choose a custom SDK versus managed actions; predict set_tempo(300); discuss
 malicious tool-result instructions; discuss retrying a timed-out write; give a partner
 one hackathon tool with input, permission and evidence of success.
 
@@ -102,11 +168,11 @@ Presenter notes:
 
 - Windows
 
-- setup.ps1 -CoreOnly
+- setup.ps1
 
 - Mac
 
-- bash setup.sh --core-only
+- bash setup.sh
 
 - Pair if blocked
 
@@ -115,7 +181,7 @@ Presenter notes:
 
 Presenter notes:
 
-00–08 min: installation starts now. Windows: powershell -NoProfile -ExecutionPolicy Bypass -File .\setup.ps1 -CoreOnly. Mac: bash setup.sh --core-only, with Homebrew available. Open README for clone and manual Python/Tk instructions. Core-only supports visual verification. Copilot agent chat is the workshop route; full audio is instructor preparation. Ask who is ready, installing, or blocked. Continue setup during theory, check readiness before minute 25, and pair blocked learners. Fresh Python/Homebrew installs may run long. Reserve 55–60 for spare time.
+00–08 min: installation starts now. Windows: powershell -NoProfile -ExecutionPolicy Bypass -File .\setup.ps1. Mac: bash setup.sh, with Homebrew available. Open README for clone and manual Python/Tk instructions. Core-only supports visual verification. Copilot agent chat is the workshop route; full audio is required for the lab MP3. Ask who is ready, installing, or blocked. Continue setup during theory, check readiness before minute 25, and pair blocked learners. Fresh Python/Homebrew installs may run long. Reserve 55–60 for spare time.
 
 
 
@@ -234,7 +300,7 @@ Presenter notes:
 
 - Built with SDK FastMCP
 
-- get_state + set_tempo; you add set_swing
+- Generate at 120 BPM + get_state; you add set_tempo
 
 - Model ≠ host: the selected model reasons; VS Code coordinates the calls.
 
@@ -469,61 +535,41 @@ Presenter notes:
 
 Presenter notes:
 
-00–08 setup, continue installs during theory. Windows: setup.ps1 -CoreOnly; Mac: bash setup.sh --core-only (Homebrew required). Open the whole repository, sign into GitHub Copilot with agent/MCP access and use the tools picker. Run run_app.ps1/run_app.sh for visual lab verification. The supplied .vscode/mcp.json prompts for an absolute interpreter path; use workshop_preflight.py --vscode-config to find it. Explicit workshop_client.py tests work if Copilot access is blocked. Full audio setup is instructor preparation for slide 27, not an added lab requirement.
+00–08 setup, continue installs during theory. Windows: setup.ps1; Mac: bash setup.sh (Homebrew required). Open the whole repository, sign into GitHub Copilot with agent/MCP access and use the tools picker. Run run_app.ps1/run_app.sh for visual lab verification. The supplied .vscode/mcp.json prompts for an absolute interpreter path; use workshop_preflight.py --vscode-config to find it. Explicit workshop_client.py tests work if Copilot access is blocked. Full audio setup is instructor preparation for slide 27, not an added lab requirement.
 
 
 
-### Slide 13: Copilot demo: tempo + verified state
+### Slide 13: Before the lab: create a song at 120 BPM
 
-- Copilot demo: tempo + verified state
+- “Make an original 30-second rock track.”
 
-- “Set tempo to 120, then verify it.”
+- Open Copilot agent and enable MCPJAM tools.
 
-- 1  Open Copilot agent chat; enable MCPJAM tools.
+- Use compose_music; creation defaults to 120 BPM.
 
-- 2  Inspect set_tempo(bpm=120) and its result.
-
-- 3  Call get_state; check bpm is actually 120.
-
+- Read get_state; then try the missing set_tempo.
 
 Presenter notes:
 
-18–25 demo block. Start mcpjam from MCP: List Servers, open a tool-enabled Copilot agent chat and enable MCPJAM tools. Ask: Use set_tempo to set 120 BPM, then use get_state to verify. Inspect the actual call and bpm field; queued is not completed. This uses Copilot account access, not a Gemini API key. If account access fails, run the explicit CLI fallback. Source: https://code.visualstudio.com/docs/agents/run/tools .
-
-
+18–25 demo. Full audio setup generates a 30-second MP3 at fixed 120 BPM. Then ask for 150 BPM using only MCP tools: no code edits, terminal commands, other server or regeneration. The missing set_tempo tool is the expected failure; students add it in the activity. Return the MP3 path without autoplay. Pair slow installs with audio-ready learners.
 
 ### Slide 14: MCP ACTIVITY · trace the call
 
-- MCP ACTIVITY · trace the call
+- Host + MCP client: VS Code Copilot
 
-- Host + MCP client
+- starter/mcp_server_sdk.py: FastMCP definitions
 
-- VS Code Copilot · built-in MCP client
+- call_daw(): backend adapter
 
-- starter/mcp_server_sdk.py
+- Music backend: MP3 renderer / optional GUI fallback
 
-- Tool definitions and the Python SDK
+- Client ↔ server: MCP over stdio
 
-- call_daw()
-
-- Backend adapter
-
-- app.py
-
-- Music Application · UI and audio
-
-- ↓  Client ↔ server: MCP over stdio
-
-- ↓  Tool function → adapter: Python function call
-
-- ↓  Adapter ↔ app: newline-delimited JSON over the local socket
-
+- Adapter → renderer; GUI fallback uses local JSON
 
 Presenter notes:
 
-Trace Copilot/VS Code MCP client → workshop/starter/mcp_server_sdk.py → call_daw → app.py. The first link is MCP stdio; the adapter socket is application JSON. Host choice changes the first box, not the tool contract.
-
-
+MCP goes from the host client to the starter server. workshop_music.py wraps the prepared renderer; app.py is a GUI fallback over a separate local JSON socket. Students add the thin tempo capability and reuse rendering.
 
 ### Slide 15: Activity map: where we edit
 
@@ -560,15 +606,19 @@ Student edit: workshop/starter/mcp_server_sdk.py. Keep the root compatibility la
 
 ### Slide 16: What the MCP client sees
 
-- Discovery: tool name and inputSchema, including bpm as an integer.
-- Result: content containing a text acknowledgement.
-- HOST: coordinates the LLM and permissions.
-- CLIENT: discovers tools, sends calls, reads responses.
-- SERVER: executes tools and returns actual data.
+- Discovery after lab: tools/list returns set_tempo with an integer bpm schema.
+
+- Result: structuredContent includes bpm 150, ok true and the MP3 path.
+
+- HOST coordinates the LLM and permissions.
+
+- CLIENT discovers, calls and reads responses.
+
+- SERVER runs tools and returns actual data.
 
 Presenter notes:
 
-Spend about one minute within the existing 18–25 demo block. These are abbreviated payloads; JSON-RPC envelopes and other metadata are omitted. tools/list returns a tools array containing names, descriptions and schemas. FastMCP derives metadata from decorators, type annotations and docstrings. tools/call returns content, structured data or errors. The host uses an LLM, often through a remote service, and controls conversation and permissions; its MCP client handles the protocol. The host supplies selected results to the model. A queued tempo command is an acknowledgement: call get_state to verify completion. Other result content can include images, audio and resource links.
+About one minute in 18–25. Abbreviated payloads omit JSON-RPC envelopes and other fields. set_tempo appears only after the activity registers it. The host supplies selected descriptions/results to its model; the client handles protocol communication. Verify get_state and the MP3, rather than trusting chat prose. GUI fallback queued acknowledgement still needs observation.
 
 ### Slide 17: A useful tool can act and observe
 
@@ -631,7 +681,7 @@ Presenter notes:
 
 - WORKSHOP CONNECTION
 
-- Move tool ↔ set_swing
+- Move tool ↔ set_tempo
 
 - get_maze_state ↔ get_state
 
@@ -648,83 +698,38 @@ Presenter notes:
 
 ### Slide 19: Is this different from a “normal MCP”?
 
-- Is this different from a “normal MCP”?
+- Same MCP contract: music, Figma, GitHub. Different capabilities.
 
-- Same MCP protocol. Our custom server exposes music capabilities.
+- CODING AGENT: CLI can be efficient for local tests; DB/files/Jira need adapters; SDKs can supply schemas and errors; a prompt alone adds no capabilities.
 
-- CODING AGENT · builds and tests
+- YOUR APP + MCP: same discovery/call format; different domain tools; reusable across compatible hosts; production validation and authorization.
 
-- • Shell, browser or API tools
-
-- • Can test an app without MCP
-
-- • Prompt alone adds no capabilities
-
-- • Verify with actual evidence
-
-- YOUR APP + MCP · reusable controls
-
-- • Expose focused tools + schemas
-
-- • Reuse across compatible hosts
-
-- • Production: validate + authorize
-
-- • Read state to verify the result
-
-- MCP is an integration choice. A direct API is enough for one fixed client.
-
-- Use MCP when multiple compatible hosts need live, reusable app capabilities.
-
+- Adapters still connect each service. MCP standardizes the host-facing contract.
 
 Presenter notes:
 
-18–25 segment, about 45 seconds. MCPJAM uses standard MCP with domain-specific music tools. There is no special protocol called normal versus our MCP. Coding agents can already use shell/browser/API capabilities to test apps. Expose your app through MCP when compatible hosts need reusable discoverable actions and live state. Direct API remains reasonable for one fixed client. Prompt quality and tool connectivity solve different needs.
+About 60 seconds within 18–25. Without MCP, integrate each service’s connection/auth, operations, tool descriptions/schemas and errors. SDKs/function-calling frameworks can supply some work. MCP standardizes the host boundary while service adapters remain. Figma/GitHub share protocol structure, not tool behavior or necessarily transports. JSON-RPC 2.0 is the message format; stdio and Streamable HTTP are standard transports. HTTP+SSE is legacy. CLI cost/token benefits depend on implementation. MCP does not automatically make actions safe: enforce scopes, authorization, input validation and write approvals. Sources: https://modelcontextprotocol.io/specification/2025-06-18/basic/transports and https://modelcontextprotocol.io/specification/2025-06-18/server/tools .
 
+### Slide 20: MCP BUILD · add set_tempo
 
+- Large screenshot: Tempo-Code-Snippet.png.
 
-### Slide 20: MCP BUILD · six parts, one tool
+- Edit workshop/starter/mcp_server_sdk.py above if __name__.
 
-- MCP BUILD · six parts, one tool
-
-- EDIT: workshop/starter/mcp_server_sdk.py
-
-- Register set_swing(amount: int).
-
-- Describe its purpose and 0–75 range.
-
-- Validate before calling the app.
-
-- call_daw: cmd=set_swing, amount=input.
-
-- Return the acknowledgement.
-
-- Read get_state to verify.
-
-- SERVER
-
-- Reuse the supplied FastMCP instance.
-
-- TOOL CONTRACT
-
-- Decorator + name + type + description.
-
-- VALIDATION + ADAPTER
-
-- Check the range; send the app command.
-
-- RESULT + TRANSPORT
-
-- Verify queued work. Keep stdio startup.
-
-- Add above “if __name__”. Save → restart the MCP server → verify discovery.
-
+- Copyable code: README → Student exercise. Save → Restart MCP → retry 150 BPM.
 
 Presenter notes:
 
-25–40 build/test. Three-minute guided review plus twelve minutes student testing/adaptation. Add @mcp.tool def set_swing(amount:int), validate 0–75, send call_daw({cmd:set_swing,amount:amount}), return acknowledgement, and verify state. Add above startup in workshop/starter/mcp_server_sdk.py. Compare workshop/solutions only after attempting.
+25–40 protected activity: three minutes guided build and twelve minutes audience testing. Explain the decorator, integer input schema, descriptive docstring, range validation and prepared adapter. The backend renders a new 30-second MP3 at the requested tempo without playback. Verify discovery and get_state.
 
-
+```python
+@mcp.tool()
+def set_tempo(bpm: int) -> dict:
+    """Change tempo from 40 to 240 BPM."""
+    if not 40 <= bpm <= 240:
+        raise ValueError("Use 40–240 BPM")
+    return call_daw({"cmd": "set_tempo", "bpm": bpm})
+```
 
 ### Slide 21: Copilot connection: .vscode/mcp.json
 
@@ -755,85 +760,39 @@ Presenter notes:
 
 Presenter notes:
 
-This is the existing servers.mcpjam entry inside the supplied JSON, not the entire file: keep its inputs array and servers wrapper. command uses the mcpjamPython input. Enter the absolute venv interpreter for Windows or Mac. args identifies the MCP server, not app.py. Run MCP: List Servers, start mcpjam and inspect the tools. After adding set_swing restart the server, then re-enable/refresh tools. CLI fallback: workshop_client.py lists the canonical starter tools. Source: https://code.visualstudio.com/docs/agent-customization/mcp-servers .
+This is the existing servers.mcpjam entry inside the supplied JSON, not the entire file: keep its inputs array and servers wrapper. command uses the mcpjamPython input. Enter the absolute venv interpreter for Windows or Mac. args identifies the MCP server, not app.py. Run MCP: List Servers, start mcpjam and inspect the tools. After adding set_tempo restart the server, then re-enable/refresh tools. CLI fallback: workshop_client.py lists the canonical starter tools. Source: https://code.visualstudio.com/docs/agent-customization/mcp-servers .
 
 
 
 ### Slide 22: MCP TEST · discover, call, verify
 
-- MCP TEST · discover, call, verify
+- Save your tool in workshop/starter/.
 
-- 1  Save your tool in workshop/starter/.
+- MCP: List Servers → mcpjam → Restart.
 
-- 2  MCP: List Servers → mcpjam → Restart.
+- Enable tools; confirm set_tempo appears.
 
-- 3  Enable tools; confirm set_swing appears.
+- Retry tempo 150; verify state + new MP3.
 
-- 4  Ask for swing 35; verify with get_state.
-
-- 15 minutes.
-
-- Test and adapt.
-
-- 25–40 min · build, reconnect, test, then explain to a partner
-
-- 2 / 3 · PRIZE QUESTION  ·  Hands up!
-
-- Should set_swing(100) succeed?
-
-- A  Yes       B  No
-
+- Should set_tempo(300) succeed? No: reject it before changing state.
 
 Presenter notes:
 
-After saving, restart mcpjam in MCP: List Servers and check discovery. In Copilot ask: Use set_swing with amount 35, then get_state. Test boundaries 0 and 75 and invalid 100. Inspect calls and state, not just the chat text. Explicit CLI tests remain the deterministic fallback. Do not add extra exercise time.
-
-
+Retry the same 150 BPM request that failed before adding the tool. Keep the starter connection and restrict the host to MCP tools so it does not bypass the lesson by editing files or regenerating the song. Test 40/240 and invalid 300. No autoplay. Stay within the existing activity time.
 
 ### Slide 23: MCP TEST · evidence of success
 
-- MCP TEST · evidence of success
+- Before adding tool: missing tool → expected error.
 
-- Test
+- After adding tool: 150 BPM + new MP3 verified.
 
-- Expected evidence
+- BPM 40 and 240: boundary values accepted.
 
-- Discovery
-
-- set_swing appears in available tools
-
-- Amount 35
-
-- Accepted and verified through get_state
-
-- Amount 0 and 75
-
-- Boundary values accepted
-
-- Amount 100
-
-- Tool error; Application state unchanged
-
-- When the valid call
-
-- AND the rejected call
-
-- both behave correctly.
-
-- Absolute verification.
-
-- 3 / 3 · PRIZE QUESTION  ·  Hands up!
-
-- Does “queued” prove the music changed?
-
-- A  Yes       B  No
-
+- BPM 300: tool error; state unchanged.
 
 Presenter notes:
 
-25–40 activity checkpoint. Discovery shows set_swing schema. Valid 35 and boundaries 0/75 succeed; get_state confirms actual state. 100 returns tool error and state stays unchanged. Prize question: queued does not prove the effect. Partner explains decorator, validation, adapter, result and state check. Success means both valid behavior and rejected behavior are correct.
-
-
+Verify both the accepted call and rejected call. The generated song state reports BPM, revision and MP3 path. A missing tool error before the edit is different from a validation error after the edit. Partner explains discovery, input schema, validation, adapter and evidence.
 
 ### Slide 24: The security risks behind a tool call
 

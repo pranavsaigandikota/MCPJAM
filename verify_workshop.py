@@ -1,8 +1,10 @@
 """Integration check: real stdio MCP SDK against a controlled mock DAW."""
 import asyncio
 import json
+import os
 import socketserver
 import sys
+import tempfile
 import threading
 from pathlib import Path
 
@@ -31,15 +33,24 @@ class Backend(socketserver.StreamRequestHandler):
 async def check():
     global reject
     checks = 0
-    for server, names in [('workshop/starter/mcp_server_sdk.py', {'get_state','set_tempo'}),
-                          ('workshop/solutions/mcp_server_solution.py', {'get_state','set_tempo','set_swing','mute_track'}),
-                          ('mcp_server_sdk.py', {'get_state','set_tempo'}),
-                          ('workshop_delivery/mcp_server_solution.py', {'get_state','set_tempo','set_swing','mute_track'})]:
-        params = StdioServerParameters(command=sys.executable, args=[str(Path(server).resolve())])
+    music = {'get_instrument_catalog', 'create_song_from_score'}
+    for server, names in [('workshop/starter/mcp_server_sdk.py', {'get_state'} | music),
+                          ('workshop/solutions/mcp_server_solution.py', {'get_state','set_tempo','set_swing','mute_track'} | music),
+                          ('mcp_server_sdk.py', {'get_state'} | music),
+                          ('workshop_delivery/mcp_server_solution.py', {'get_state','set_tempo','set_swing','mute_track'} | music)]:
+        # Mock DAW tests must not accidentally use a learner's rendered song.
+        params = StdioServerParameters(command=sys.executable, args=[str(Path(server).resolve())],
+            env={**os.environ, 'MCPJAM_WORKSHOP_SONG_POINTER': str(Path(tempfile.gettempdir())/'mcpjam-mock-unused'/'song.json')})
         async with stdio_client(params) as (read, write):
             async with ClientSession(read, write) as session:
                 await session.initialize()
                 assert {t.name for t in (await session.list_tools()).tools} == names; checks += 1
+                if 'set_tempo' not in names:
+                    count = len(received)
+                    assert (await session.call_tool('set_tempo', {'bpm':150})).isError
+                    assert len(received) == count; checks += 1
+                    assert not (await session.call_tool('get_state', {})).isError; checks += 1
+                    continue
                 for bpm in [40,120,240]:
                     result = await session.call_tool('set_tempo', {'bpm':bpm})
                     assert not result.isError and state['bpm']==bpm; checks += 1

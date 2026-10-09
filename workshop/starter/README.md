@@ -1,7 +1,5 @@
 # Student workspace
 
-Edit **mcp_server_sdk.py** here. Add set_swing at YOUR EDIT GOES HERE, above
-startup. Launch the app separately. Run workshop_client.py from the repository
-root; it connects to this starter by default. Reconnect your AI host after edits.
+Create a song at the default 120 BPM with the supplied tools. set_tempo is missing: try it and observe the expected tool error. Then add set_tempo at YOUR EDIT GOES HERE in mcp_server_sdk.py, restart the host, and repeat the same 150 BPM call. Verify with get_state and the new MP3 path. Never autoplay.
 
-Follow [the live lab](../README.md). Reference answers are in ../solutions.
+Follow [the live lab](../README.md). Reference code is in ../solutions.

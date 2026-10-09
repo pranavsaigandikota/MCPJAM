@@ -1,9 +1,9 @@
 # Intro to MCP Servers with MCPJAM
 
-Use the [current 29-slide Copilot PowerPoint](workshop_delivery/MCPJAM-Workshop-Copilot.pptx)
+Use the [current Figma deck](https://www.figma.com/slides/mmQgw9DYp2CZDK7xDu69aZ/MCP-Servers-Slides)
 and [matching instructor guide](workshop_delivery/Instructor-Guide.md).
 
-Students extend the supplied Python SDK server with one swing tool.
+Students generate a song at default 120 BPM, observe the missing set_tempo capability, then add it and verify the same 150 BPM request succeeds.
 Plan 55 minutes and reserve minutes 55–60 for delays or Q&A.
 Start installation at minute 1: 0–8 setup, 8–18 theory and MCP choices,
 18–25 demo and activity map, 25–40 hands-on build/test, 40–47 security,
@@ -17,14 +17,22 @@ the client’s discovery metadata and returned tool result, with separate host/c
 show discovery, explicit tests, and get_state verification. Slide 15 maps these steps.
 Slides 17–18 pair the read/act/observe concept with the maze example; keep each brief.
 FAQ slides 5, 19 and 29 cover prompts, standard MCP versus custom tools,
-AI testing without MCP, and a concrete hackathon use. Slide 11 compares SDKs,
+AI testing without MCP, and a concrete hackathon use. Slide 19 compares direct CLI/API adapters with the shared MCP contract: a database,
+filesystem and Jira still need adapters, while MCP standardizes discovery and calls.
+Figma/GitHub share the protocol but differ in capabilities and may use different transports.
+JSON-RPC is the message format; stdio and Streamable HTTP are standard transports.
+Slide 19 compares direct CLI/API adapters with the shared MCP contract: a database,
+filesystem and Jira still need adapters, while MCP standardizes discovery and calls.
+Figma/GitHub share the protocol but differ in capabilities and may use different transports.
+JSON-RPC is the message format; stdio and Streamable HTTP are standard transports.
+Slide 11 compares SDKs,
 standalone FastMCP, Zapier MCP and the adjacent Databutton app-builder category.
 
 [README.md](README.md) is the maintained setup, VS Code Copilot connection, and exercise reference.
-GeneralUser GS sampled playback and mcp_server_music.py are optional instructor
-showcase capabilities; keep the core demo at set_tempo and save set_swing for students.
+Full GeneralUser GS/FluidSynth setup is required for the lab MP3. The separate
+mcp_server_music.py is an optional instructor showcase; the supplied song generator works at 120 BPM; students add set_tempo.
 Slide 27 shows the separate music server and compose_music prompt, producing a 30-second MP3 without autoplay. Copilot supplies web access when available. Use .vscode/mcp.music.example.json for this connection; keep the starter connection for the lab.
 
 Follow the [live FastMCP/configuration walkthrough](workshop/README.md) for starter/solution folders, VS Code JSON and the existing-server demo.
 
-The live Figma deck and linked PowerPoint now include the Copilot revisions. Slide 16 shows abbreviated discovery/result payloads and distinguishes the host from the client. No Gemini API key is required for the workshop route.
+The live Figma deck is maintained; PowerPoint/PDF exports are archived snapshots. Slide 16 shows abbreviated discovery/result payloads and distinguishes the host from the client. No Gemini API key is required for the workshop route.

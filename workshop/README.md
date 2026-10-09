@@ -11,7 +11,7 @@ Windows / PowerShell:
 ```powershell
 git clone https://github.com/pranavsaigandikota/MCPJAM.git
 Set-Location MCPJAM
-powershell -NoProfile -ExecutionPolicy Bypass -File .\setup.ps1 -CoreOnly
+powershell -NoProfile -ExecutionPolicy Bypass -File .\setup.ps1
 powershell -ExecutionPolicy Bypass -File .\run_app.ps1
 ```
 
@@ -20,7 +20,7 @@ Mac / Terminal with Homebrew:
 ```bash
 git clone https://github.com/pranavsaigandikota/MCPJAM.git
 cd MCPJAM
-bash setup.sh --core-only
+bash setup.sh
 bash run_app.sh
 ```
 
@@ -100,44 +100,77 @@ The checked-in version uses `${input:mcpjamPython}` for `command` and
 Open the whole MCPJAM folder in VS Code. Use **MCP: List Servers**, start
 `mcpjam`, and inspect its output/tools. Complete the host's trust/approval
 flow after reviewing the server. In an MCP-capable agent chat, enable this
-server's tools and ask: “Read MCPJAM state, set tempo to 120, then read state
-again to verify.” Check the tool-call UI and actual BPM, not just the answer.
+server's tools. Generate a song using compose_music at default 120 BPM, then
+try the missing set_tempo tool before implementing it. See the activity below.
 The host starts the server; you start the music app separately.
 
 Other hosts can use different schemas. `--host-config` prints an `mcpServers`
 example; it is **not** the same schema as VS Code's `servers` file. Do not copy
 JSON between hosts without checking their documentation.
 
-## 4. Add and test one tool (15 minutes total)
+## 4. Add and test set_tempo (15 minutes total)
 
-Add `set_swing(amount: int)` in `workshop/starter/mcp_server_sdk.py` at the
-commented exercise area, above startup. Use the existing tempo tool as a pattern:
-register it; describe its purpose; validate 0–75; send `cmd=set_swing` and
-`amount`; return the acknowledgement. Reconnect/restart the host after edits.
+The supplied starter can generate an original **30-second MP3 at 120 BPM**.
+It already exposes get_instrument_catalog, create_song_from_score and get_state,
+plus compose_music instructions. The tempo input is absent from creation;
+set_tempo is intentionally unregistered. AI still selects sounds and writes notes.
 
-For deterministic tests, use the second terminal (no AI key needed):
+Full audio setup is required for MP3 rendering: run setup.ps1 without -CoreOnly
+on Windows or bash setup.sh without --core-only on Mac. Prepare before class
+where possible. Core-only learners can use the running app to verify the same
+tempo tool without rendering; pair them with an audio-ready learner for the MP3.
 
-```powershell
-# Windows
-.\.venv\Scripts\python.exe workshop_client.py
-'{"amount":35}' | Set-Content -Encoding utf8 swing-input.json
-.\.venv\Scripts\python.exe workshop_client.py --tool set_swing --arguments-file swing-input.json
-.\.venv\Scripts\python.exe workshop_client.py --tool get_state
+1. Start the starter connection in VS Code. Use / → compose_music with an
+   original genre description. Request a 30-second song; creation uses 120 BPM.
+   Return the MP3 path, without autoplay. Use get_state to confirm bpm=120.
+2. Ask: **“Use only MCPJAM tools to set this song to 150 BPM. Do not edit code,
+   use the terminal, another server, or regenerate it. Then verify with get_state.”**
+   Copilot should explain that set_tempo is unavailable. An explicit call below
+   must return a tool error/exit 1. This expected failure proves missing capability.
+3. Edit workshop/starter/mcp_server_sdk.py at YOUR EDIT GOES HERE. Add:
+
+```python
+@mcp.tool()
+def set_tempo(bpm: int) -> dict:
+    """Change tempo from 40 to 240 BPM."""
+    if not 40 <= bpm <= 240:
+        raise ValueError("Use 40–240 BPM")
+    return call_daw({"cmd": "set_tempo", "bpm": bpm})
 ```
 
+4. Save. Run MCP: List Servers → mcpjam → Restart and refresh/enable tools.
+   Confirm set_tempo appears. Repeat the **same 150 BPM request**.
+5. get_state must now report bpm=150. For a rendered song, use the returned new
+   MP3 path; the file is re-rendered, not merely relabeled. No autoplay.
+6. Test 40 and 240, then invalid 300. Invalid input must fail before the backend
+   changes. Explain registration, schema, validation, adapter and verification.
+
+For a song, slower tempo crops notes beyond the 30-second endpoint; faster tempo
+can leave a longer outro. Pitches and beat spacing stay unchanged. The original
+notes are retained so a later tempo increase can restore them. The supplied
+adapter routes song edits to rendering, or to the local GUI for the core-only lab.
+
+Windows, **before adding the tool**, with the app/song ready:
+
+```powershell
+Set-Content -LiteralPath tempo-input.json -Value '{"bpm":150}' -Encoding UTF8
+.\.venv\Scripts\python.exe workshop_client.py --tool set_tempo --arguments-file tempo-input.json
+```
+
+Expect exit 1. Run that exact command again after adding the function: expect
+success. Read state with `.\.venv\Scripts\python.exe workshop_client.py --tool get_state`.
+
+Mac:
+
 ```bash
-# Mac
-./.venv/bin/python workshop_client.py
-./.venv/bin/python workshop_client.py --tool set_swing --arguments '{"amount":35}'
+./.venv/bin/python workshop_client.py --tool set_tempo --arguments '{"bpm":150}'
 ./.venv/bin/python workshop_client.py --tool get_state
 ```
 
-Discovery initially lists `get_state` and `set_tempo`; after your edit it also
-lists `set_swing`. Repeat for 0, 75 and invalid 100. A rejected 100 must return
-`isError: true`/exit 1 and leave swing unchanged. Writes are queued; read state
-after the app processes them. Discovery can work while the app is closed;
-action calls need the app running. Compare with the solution using
-`--server workshop/solutions/mcp_server_solution.py`.
+The explicit client starts a fresh server each invocation; VS Code requires a
+restart after edits. Test invalid 300 with the explicit client, since an LLM may
+refuse without actually invoking validation. Compare workshop/solutions only
+after your attempt. Swing and mute are optional extensions, not the required lab.
 
 ## 5. Connect an existing MCP server (instructor demonstration)
 

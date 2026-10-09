@@ -15,7 +15,7 @@ no Gemini API key is needed for the lab or music showcase.
 - [Student quick start](workshop_delivery/Student-Quick-Start.md)
 - [Description-driven music generator and all sounds](MUSIC_GENERATOR.md)
 
-Use MCPJAM-Workshop-Copilot.pptx (and its PDF) in workshop_delivery. The live Figma deck is updated for Copilot. Older exports are archived. The workshop follows
+Use the [live Figma deck](https://www.figma.com/slides/mmQgw9DYp2CZDK7xDu69aZ/MCP-Servers-Slides) for the current set_tempo activity. PowerPoint/PDF exports are archived snapshots. The workshop follows
 [the VS Code connection walkthrough](workshop/README.md). Use the supplied
 .vscode/mcp.json for the student lab, and .vscode/mcp.music.example.json for
 the instructor music showcase. The standalone Gemini host is an optional
@@ -34,7 +34,7 @@ Python from https://www.python.org/downloads/ and run the commands again.
 ```powershell
 git clone https://github.com/pranavsaigandikota/MCPJAM.git
 Set-Location MCPJAM
-powershell -NoProfile -ExecutionPolicy Bypass -File .\setup.ps1 -CoreOnly
+powershell -NoProfile -ExecutionPolicy Bypass -File .\setup.ps1
 ```
 
 Core-only setup creates `.venv`, installs `requirements.txt`, checks Tk, and
@@ -57,12 +57,12 @@ Run only one of those applications at a time because both use local port 8765.
 ### macOS
 
 Prerequisite for the automated Mac route: Homebrew. The helper installs Python
-3.13 and matching Tk. Audio output/FluidSynth is optional for the core lab.
+3.13 and matching Tk. FluidSynth is required to render the lab MP3; core-only setup is a GUI-state fallback.
 
 ```bash
 git clone https://github.com/pranavsaigandikota/MCPJAM.git
 cd MCPJAM
-bash setup.sh --core-only
+bash setup.sh
 bash run_app.sh
 ```
 
@@ -94,9 +94,9 @@ FastMCP, connect through `.vscode/mcp.json`, add one tool, and connect an existi
 - **Path helper:** run your .venv Python with `workshop_preflight.py --vscode-config`.
 - **No AI account needed for tests:** run `workshop_client.py`; its default is the starter.
 
-Use `setup.ps1 -CoreOnly` (Windows) or `bash setup.sh --core-only` (Mac) for the
-classroom lab, then launch `run_app.ps1`/`run_app.sh`. See the walkthrough for
-exact commands. Full music chat/audio commands below are optional showcases.
+Use full `setup.ps1` (Windows) or `bash setup.sh` (Mac) for classroom MP3 generation.
+Core-only setup is a fallback for testing tempo against the GUI state. See the
+walkthrough for exact commands; the separate full music server is an optional showcase.
 The root server files are compatibility launchers for older slides/commands;
 edit the file inside `workshop/starter`.
 
@@ -179,7 +179,7 @@ committed. The explicit workshop client needs no key.
 |---|---|
 | README.md | Setup, launch commands, and exercises |
 | app.py | Music application, UI, audio, and local backend socket |
-| workshop/starter/mcp_server_sdk.py | Starter MCP server with get_state, set_tempo, and call_daw |
+| workshop/starter/mcp_server_sdk.py | Starter with default-tempo music creation, get_state, and a missing set_tempo exercise |
 | workshop_client.py | Discover tools and test explicit arguments without a model |
 | workshop/solutions/mcp_server_solution.py | Completed reference implementation |
 | gemini_host.py | Optional Gemini AI host with an MCP client |
@@ -274,11 +274,11 @@ macOS:
 ./.venv/bin/python workshop_client.py --tool get_state
 ```
 
-Expect discovery of get_state and set_tempo. Start the demo at a tempo other
-than 120. A successful write says **queued**: read get_state to verify bpm=120.
+Before the exercise, set_tempo is missing: the tempo call above must fail.
+After adding it, repeat the call and verify the BPM using get_state.
 If it still shows the previous value, read again after the UI processes the queue.
 
-## Gemini AI demo
+## Optional Gemini host (outside the classroom route)
 
 The supplied gemini_host.py discovers the MCP tools, sends their definitions
 to Gemini, prints the model's selected tool and arguments, executes through
@@ -308,7 +308,7 @@ Do not enable billing merely to complete this workshop. On quota, network, or
 model errors, use the explicit client commands above.
 
 The model proposes a call; the host coordinates it. Keep this demo to about
-three minutes and save set_swing for student work.
+three minutes. Read state before the exercise; students add set_tempo.
 
 Other MCP hosts can use the configuration printed by:
 
@@ -319,54 +319,70 @@ Other MCP hosts can use the configuration printed by:
 On macOS, use ./.venv/bin/python instead. The printed mcpServers JSON is a
 host-specific example, not an MCP standard. Use the actual absolute paths.
 
-## Student exercise: add a swing tool
+## Student exercise: add set_tempo
 
-Edit workshop/starter/mcp_server_sdk.py. Use the existing set_tempo function as the example:
+The supplied starter can generate an original **30-second MP3 at 120 BPM**.
+It already exposes get_instrument_catalog, create_song_from_score and get_state,
+plus compose_music instructions. The tempo input is absent from creation;
+set_tempo is intentionally unregistered. AI still selects sounds and writes notes.
 
-- Define set_swing(amount: int) and register it with @mcp.tool().
-- Give the tool a clear description.
-- Accept integers from 0 to 75 and reject out-of-range values.
-- Call the existing adapter with command set_swing and field amount.
-- Return a useful result; distinguish queued from completed.
-- Put the tool definition before the server startup block.
+Full audio setup is required for MP3 rendering: run setup.ps1 without -CoreOnly
+on Windows or bash setup.sh without --core-only on Mac. Prepare before class
+where possible. Core-only learners can use the running app to verify the same
+tempo tool without rendering; pair them with an audio-ready learner for the MP3.
 
-Save, restart/reconnect the client, and confirm set_swing appears in discovery.
-Then test explicit values and read get_state:
+1. Start the starter connection in VS Code. Use / → compose_music with an
+   original genre description. Request a 30-second song; creation uses 120 BPM.
+   Return the MP3 path, without autoplay. Use get_state to confirm bpm=120.
+2. Ask: **“Use only MCPJAM tools to set this song to 150 BPM. Do not edit code,
+   use the terminal, another server, or regenerate it. Then verify with get_state.”**
+   Copilot should explain that set_tempo is unavailable. An explicit call below
+   must return a tool error/exit 1. This expected failure proves missing capability.
+3. Edit workshop/starter/mcp_server_sdk.py at YOUR EDIT GOES HERE. Add:
 
-| Test | Expected evidence |
-|---|---|
-| Discovery | set_swing appears in available tools |
-| 35 | Accepted; get_state reports swing=35 |
-| 0 and 75 | Both boundary values accepted and observed |
-| 100 | Tool error; application state unchanged |
-
-Windows test, after implementing the tool:
-
-```powershell
-.\.venv\Scripts\python.exe workshop_client.py
-Set-Content -LiteralPath swing-input.json -Value '{"amount":35}' -Encoding UTF8
-.\.venv\Scripts\python.exe workshop_client.py --tool set_swing --arguments-file swing-input.json
-.\.venv\Scripts\python.exe workshop_client.py --tool get_state
-# Repeat with amount 0, 75, and 100. For 100, expect exit code 1.
+```python
+@mcp.tool()
+def set_tempo(bpm: int) -> dict:
+    """Change tempo from 40 to 240 BPM."""
+    if not 40 <= bpm <= 240:
+        raise ValueError("Use 40–240 BPM")
+    return call_daw({"cmd": "set_tempo", "bpm": bpm})
 ```
 
-macOS:
+4. Save. Run MCP: List Servers → mcpjam → Restart and refresh/enable tools.
+   Confirm set_tempo appears. Repeat the **same 150 BPM request**.
+5. get_state must now report bpm=150. For a rendered song, use the returned new
+   MP3 path; the file is re-rendered, not merely relabeled. No autoplay.
+6. Test 40 and 240, then invalid 300. Invalid input must fail before the backend
+   changes. Explain registration, schema, validation, adapter and verification.
+
+For a song, slower tempo crops notes beyond the 30-second endpoint; faster tempo
+can leave a longer outro. Pitches and beat spacing stay unchanged. The original
+notes are retained so a later tempo increase can restore them. The supplied
+adapter routes song edits to rendering, or to the local GUI for the core-only lab.
+
+Windows, **before adding the tool**, with the app/song ready:
+
+```powershell
+Set-Content -LiteralPath tempo-input.json -Value '{"bpm":150}' -Encoding UTF8
+.\.venv\Scripts\python.exe workshop_client.py --tool set_tempo --arguments-file tempo-input.json
+```
+
+Expect exit 1. Run that exact command again after adding the function: expect
+success. Read state with `.\.venv\Scripts\python.exe workshop_client.py --tool get_state`.
+
+Mac:
 
 ```bash
-./.venv/bin/python workshop_client.py --tool set_swing --arguments '{"amount":35}'
+./.venv/bin/python workshop_client.py --tool set_tempo --arguments '{"bpm":150}'
 ./.venv/bin/python workshop_client.py --tool get_state
 ```
 
-A model may refuse or modify an invalid natural-language request, so use
-explicit client arguments to test validation. Success means showing one valid
-call, one rejected call, and explaining registration, validation, and the backend.
+The explicit client starts a fresh server each invocation; VS Code requires a
+restart after edits. Test invalid 300 with the explicit client, since an LLM may
+refuse without actually invoking validation. Compare workshop/solutions only
+after your attempt. Swing and mute are optional extensions, not the required lab.
 
-After attempting the exercise, compare with workshop/solutions/mcp_server_solution.py.
-To rehearse the reference version, add --server workshop/solutions/mcp_server_solution.py to a
-client command. Do not overwrite the starter with the solution for students.
-
-Early finishers may try a natural-language request or optionally implement
-mute_track(track: str, muted: bool). A second tool is not required.
 
 ## Exact 60-minute plan
 
@@ -407,7 +423,7 @@ With the music app **running**, run the real application checks:
 Use ./.venv/bin/python on macOS. The live check temporarily changes tempo,
 swing, and kick mute, tests invalid inputs, and restores those settings.
 It checks both the starter and completed reference. Run it before students
-add set_swing to the starter, because it checks the starter's two-tool inventory.
+add set_tempo to the starter, because it checks its three-tool inventory.
 Audio-enabled status confirms device initialization; listen during rehearsal
 to confirm the selected output is audible.
 
@@ -472,7 +488,7 @@ such as `play_song` require a separately running app and an explicit playback re
 These are original instrumental arrangements with an intro, verse, chorus,
 bridge, and outro. They do not generate sung vocals or reproduce commercial
 recordings. This optional music server does not change the workshop starter:
-students still implement only set_swing in workshop/starter/mcp_server_sdk.py.
+students implement only set_tempo in workshop/starter/mcp_server_sdk.py.
 
 Any compatible local MCP host can launch mcp_server_music.py with the same
 virtual-environment Python. Use that server path for a music demo, or

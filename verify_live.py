@@ -4,8 +4,10 @@ Run with MCPJAM open. This changes tempo, swing, and kick mute temporarily,
 then restores those values. No Gemini key is required.
 """
 import asyncio
+import os
 from pathlib import Path
 import sys
+import tempfile
 
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
@@ -17,15 +19,18 @@ ROOT = Path(__file__).resolve().parent
 
 async def check_server(filename, expected):
     checks = 0
-    params = StdioServerParameters(command=sys.executable, args=[str(ROOT / filename)])
+    # This verification targets GUI/socket behavior, not a saved MP3 project.
+    params = StdioServerParameters(command=sys.executable, args=[str(ROOT / filename)],
+        env={**os.environ, 'MCPJAM_WORKSHOP_SONG_POINTER': str(Path(tempfile.gettempdir())/'mcpjam-gui-unused'/'song.json')})
     async with stdio_client(params) as (read, write):
         async with ClientSession(read, write) as session:
             await session.initialize()
             tools = {tool.name: tool for tool in (await session.list_tools()).tools}
             assert set(tools) == expected, (filename, set(tools))
             checks += 1
-            assert tools['set_tempo'].inputSchema['properties']['bpm']['type'] == 'integer'
-            checks += 1
+            if 'set_tempo' in tools:
+                assert tools['set_tempo'].inputSchema['properties']['bpm']['type'] == 'integer'
+                checks += 1
             original = state_from(await session.call_tool('get_state', {}))
             assert original['ok'] is True
             checks += 1
@@ -47,6 +52,10 @@ async def check_server(filename, expected):
                 after = state_from(await session.call_tool('get_state', {}))
                 assert before == after, (name, arguments, 'state changed after rejected call')
 
+            if 'set_tempo' not in tools:
+                await rejected('set_tempo', {'bpm': 150})
+                print(f'PASS: {filename}: missing tempo tool fails; state unchanged.')
+                return checks + 1
             try:
                 for bpm in (40, 120, 240):
                     await accepted('set_tempo', {'bpm': bpm})
@@ -80,8 +89,9 @@ async def check_server(filename, expected):
 
 
 async def main():
-    count = await check_server('mcp_server_sdk.py', {'get_state', 'set_tempo'})
-    count += await check_server('mcp_server_solution.py', {'get_state', 'set_tempo', 'set_swing', 'mute_track'})
+    music = {'get_instrument_catalog', 'create_song_from_score'}
+    count = await check_server('mcp_server_sdk.py', {'get_state'} | music)
+    count += await check_server('mcp_server_solution.py', {'get_state', 'set_tempo', 'set_swing', 'mute_track'} | music)
     print(f'PASS: {count} live checks (GUI + audio status + MCP stdio + backend socket).')
 
 
