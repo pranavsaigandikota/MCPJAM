@@ -13,7 +13,7 @@ of audience testing/adaptation. Pair blocked learners before the activity.
 Fresh Python/Homebrew installs may exceed the setup window; advance preparation helps.
 
 Activity navigation: slide 14 traces MCP versus the backend; slide 16 explains
-the tool contract; slide 20 shows the edit in workshop/starter/mcp_server_sdk.py; slide 21 shows the Copilot JSON; slides 22–23
+the client’s discovery metadata and returned tool result, with separate host/client/server roles; slide 20 shows the edit in workshop/starter/mcp_server_sdk.py; slide 21 shows the Copilot JSON; slides 22–23
 show discovery, explicit tests, and get_state verification. Slide 15 maps these steps.
 Slides 17–18 pair the read/act/observe concept with the maze example; keep each brief.
 FAQ slides 5, 19 and 29 cover prompts, standard MCP versus custom tools,
@@ -27,4 +27,4 @@ Slide 27 shows the separate music server and compose_music prompt, producing a 3
 
 Follow the [live FastMCP/configuration walkthrough](workshop/README.md) for starter/solution folders, VS Code JSON and the existing-server demo.
 
-The Figma file is the earlier presentation; the Copilot revisions are in the linked PowerPoint while browser editing is unavailable. No Gemini API key is required for the workshop route.
+The live Figma deck and linked PowerPoint now include the Copilot revisions. Slide 16 shows abbreviated discovery/result payloads and distinguishes the host from the client. No Gemini API key is required for the workshop route.

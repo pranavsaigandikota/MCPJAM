@@ -15,8 +15,7 @@ no Gemini API key is needed for the lab or music showcase.
 - [Student quick start](workshop_delivery/Student-Quick-Start.md)
 - [Description-driven music generator and all sounds](MUSIC_GENERATOR.md)
 
-Use MCPJAM-Workshop-Copilot.pptx (and its PDF) in workshop_delivery. The Figma
-file and older exports predate the Copilot revision. The workshop follows
+Use MCPJAM-Workshop-Copilot.pptx (and its PDF) in workshop_delivery. The live Figma deck is updated for Copilot. Older exports are archived. The workshop follows
 [the VS Code connection walkthrough](workshop/README.md). Use the supplied
 .vscode/mcp.json for the student lab, and .vscode/mcp.music.example.json for
 the instructor music showcase. The standalone Gemini host is an optional

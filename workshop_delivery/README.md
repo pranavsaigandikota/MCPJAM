@@ -1,6 +1,6 @@
 # MCPJAM workshop delivery
 
-Use the [29-slide Copilot PowerPoint](MCPJAM-Workshop-Copilot.pptx) and [PDF](MCPJAM-Workshop-Copilot.pdf). The Figma file and previous exports predate this Copilot revision.
+Use the [29-slide Copilot PowerPoint](MCPJAM-Workshop-Copilot.pptx) and [PDF](MCPJAM-Workshop-Copilot.pdf). The live Figma deck is updated for Copilot and includes the client response example on slide 16. Previous exports are archived.
 Plan 55 minutes, including 15 minutes audience build/test, with 5 minutes spare.
 Installation starts near the beginning; security, enterprise and production practices
 are part of the live workshop.

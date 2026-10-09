@@ -1,7 +1,7 @@
 # Intro to MCP Servers: instructor guide
 
 Present [MCPJAM-Workshop-Copilot.pptx](MCPJAM-Workshop-Copilot.pptx) or its PDF.
-The Figma file predates these Copilot updates.
+The live Figma deck includes these Copilot updates and the client response example on slide 16.
 The 29-slide deck teaches standard MCP using custom music tools; students extend
 an existing server rather than build the music app from scratch.
 
@@ -558,34 +558,17 @@ Student edit: workshop/starter/mcp_server_sdk.py. Keep the root compatibility la
 
 
 
-### Slide 16: MCP ACTIVITY · understand the contract
+### Slide 16: What the MCP client sees
 
-- MCP ACTIVITY · understand the contract
-
-- @mcp.tool()
-
-- def set_tempo(bpm: int) -> str:
-
--     """Set tempo from 40 to 240 BPM."""
-
-- DECORATOR
-
-- Registers the tool
-
-- TYPE ANNOTATION
-
-- Describes the input
-
-- DOCSTRING
-
-- Describes its purpose
-
+- Discovery: tool name and inputSchema, including bpm as an integer.
+- Result: content containing a text acknowledgement.
+- HOST: coordinates the LLM and permissions.
+- CLIENT: discovers tools, sends calls, reads responses.
+- SERVER: executes tools and returns actual data.
 
 Presenter notes:
 
-18–25 segment. Three lines are enough to understand registration, input type and purpose. AI can generate implementation, but students must judge the contract, validation, permission and outcome. Existing set_tempo has 40–240 range validation in its body.
-
-
+Spend about one minute within the existing 18–25 demo block. These are abbreviated payloads; JSON-RPC envelopes and other metadata are omitted. tools/list returns a tools array containing names, descriptions and schemas. FastMCP derives metadata from decorators, type annotations and docstrings. tools/call returns content, structured data or errors. The host uses an LLM, often through a remote service, and controls conversation and permissions; its MCP client handles the protocol. The host supplies selected results to the model. A queued tempo command is an acknowledgement: call get_state to verify completion. Other result content can include images, audio and resource links.
 
 ### Slide 17: A useful tool can act and observe
 
