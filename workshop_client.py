@@ -10,7 +10,8 @@ from mcp.client.stdio import stdio_client
 
 
 async def run(server: str, tool: str | None, arguments: str,
-              list_resources: bool = False, resource: str | None = None) -> None:
+              list_resources: bool = False, resource: str | None = None,
+              list_prompts: bool = False, prompt: str | None = None) -> None:
     params = StdioServerParameters(command=sys.executable,
                                    args=[str(Path(server).resolve())])
     async with stdio_client(params) as (read, write):
@@ -18,6 +19,12 @@ async def run(server: str, tool: str | None, arguments: str,
             await session.initialize()
             tools = await session.list_tools()
             print('Tools:', ', '.join(t.name for t in tools.tools))
+            if list_prompts:
+                prompts = await session.list_prompts()
+                print('Prompts:', ', '.join(p.name for p in prompts.prompts))
+            if prompt:
+                result = await session.get_prompt(prompt, json.loads(arguments))
+                print(result.model_dump_json(indent=2))
             if list_resources:
                 resources = await session.list_resources()
                 print('Resources:', ', '.join(str(r.uri) for r in resources.resources))
@@ -39,9 +46,12 @@ if __name__ == '__main__':
     parser.add_argument('--tool')
     parser.add_argument('--list-resources', action='store_true')
     parser.add_argument('--resource', help='Read an MCP resource URI without changing the app')
+    parser.add_argument('--list-prompts', action='store_true')
+    parser.add_argument('--prompt', help='Retrieve an MCP prompt template; does not run tools or a model')
     parser.add_argument('--arguments', default='{}')
     parser.add_argument('--arguments-file', help='Read input JSON from a file to avoid shell quoting issues')
     args = parser.parse_args()
     if args.arguments_file:
         args.arguments = Path(args.arguments_file).read_text(encoding='utf-8-sig')
-    asyncio.run(run(args.server, args.tool, args.arguments, args.list_resources, args.resource))
+    asyncio.run(run(args.server, args.tool, args.arguments, args.list_resources, args.resource,
+                    args.list_prompts, args.prompt))

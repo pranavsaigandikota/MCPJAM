@@ -610,3 +610,11 @@ See [MUSIC_GENERATOR.md](MUSIC_GENERATOR.md). create_song_from_score accepts the
 AI's actual notes and tracks rather than selecting a fixed genre arrangement.
 get_instrument_catalog searches all bundled presets; replace_song_notes rewrites
 the composition. The older create_* tools retain their coded patterns.
+
+### Reusable music prompt
+
+The optional music server exposes `compose_music`, a reusable MCP prompt for
+description → online instrumentation research → catalog matching → original
+30-second score → MP3 link. It records the user’s stated permissions separately
+from composition rights and never autoplays. See [Music guide](MUSIC_GENERATOR.md)
+for prompt discovery, optional Gemini Google Search and Windows/Mac commands.

@@ -195,3 +195,10 @@ Sources: [VS Code setup](https://code.visualstudio.com/docs/agent-customization/
 See [MUSIC_GENERATOR.md](../MUSIC_GENERATOR.md) for 30-second AI-authored scores,
 all 287 SoundFont presets, editable notes, and description-driven prompts.
 Keep this outside the beginner lab so setup and student practice fit the hour.
+
+The full music server also exposes the optional `compose_music` MCP prompt.
+Use `workshop_client.py --server mcp_server_music.py --list-prompts` to demonstrate
+prompt discovery, then `--prompt compose_music --arguments-file
+workshop/examples/music-prompt.json` to retrieve its reusable instructions.
+Retrieval alone runs no AI or audio. This is an optional instructor example;
+the protected starter lab remains focused on tools. See [Music guide](../MUSIC_GENERATOR.md).

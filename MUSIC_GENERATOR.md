@@ -1,5 +1,51 @@
 # Description-driven music through MCP
 
+## Reusable MCP prompt: compose_music
+
+The full music server exposes `compose_music` through `prompts/list` and
+`prompts/get`. Select it in a prompt-capable host, then provide:
+
+- `description` (required): genre, mood, instruments and structure.
+- `reference_song` (optional): song/artist for researched instrumentation and broad traits.
+- `rights_context` (optional): the user's stated permissions. Permission to play
+  a song is recorded as performance permission, not assumed permission to reproduce
+  its composition. Exact user-supplied notes can be used for owned, authorized or
+  public-domain material; commercial references otherwise guide an original piece.
+
+The workflow is research → catalog matching → caller-authored score → 30-second
+MP3 file link, without playback. It has no default instrument palette. A prompt
+returns instructions; selecting it does not by itself search or generate audio.
+External hosts need their own web-search capability.
+
+The bundled Gemini host supports an explicit search pass using Google Search
+grounding. It requires a valid key, a search-enabled model and API quota. It
+rejects responses without search queries and web sources before any composition
+tool runs. Source notes and full grounding metadata are saved under
+`generated_music/research-*.json`; final music replies contain only the MP3 path.
+
+```powershell
+.\.venv\Scripts\python.exe gemini_host.py "Original energetic rock with crunchy guitars, bass, drums and a short solo" --server mcp_server_music.py --ask-key --prompt-template compose_music --research --rights-context "I have permission to play my reference song in class"
+```
+
+```bash
+./.venv/bin/python gemini_host.py "Original energetic rock with crunchy guitars, bass, drums and a short solo" --server mcp_server_music.py --ask-key --prompt-template compose_music --research --rights-context "I have permission to play my reference song in class"
+```
+
+Add `--reference-song "Title by Artist"` for broad musical reference research.
+For follow-up edits, ordinary music chat can use the tools directly; there is
+no need to research every edit. The standard launchers keep research optional.
+
+To demonstrate prompt discovery without a model key or web access:
+
+```bash
+python workshop_client.py --server mcp_server_music.py --list-prompts
+python workshop_client.py --server mcp_server_music.py --prompt compose_music --arguments-file workshop/examples/music-prompt.json
+```
+
+`verify_prompts.py` checks real MCP prompt discovery and rendering plus mocked
+grounding responses. A live search-to-composition run still needs API access;
+it has not been verified in the keyless test environment.
+
 The optional full music server now has **two composition paths**:
 
 - `create_song_from_score`: the AI authors pitches, rhythm, chords, orchestration,

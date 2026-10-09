@@ -18,6 +18,8 @@ from music_arranger import INSTRUMENTS, new_project, read_project, save_project,
 mcp = FastMCP('mcpjam-music')
 register_instrument_catalog(mcp)
 register_music_theory(mcp)
+from music_prompts import register_music_prompts
+register_music_prompts(mcp)
 from music_score import ScoreTrack, ScoreNote
 
 
