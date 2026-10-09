@@ -8,7 +8,8 @@ cd MCPJAM
 ```
 
 Basic Python is assumed; no MCP knowledge is required.
-Complete setup before class. Mac users should first follow [MAC_SETUP.md](../MAC_SETUP.md)
+Prepare before class if possible; installation also starts near the beginning.
+Mac users should first follow [MAC_SETUP.md](../MAC_SETUP.md)
 for Python with Tk, certificates, and host configuration. Both platforms use the
 same Python files, tool names, validations, and exercises.
 
@@ -17,9 +18,8 @@ same Python files, tool names, validations, and exercises.
 From inside MCPJAM:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\setup.ps1
-powershell -ExecutionPolicy Bypass -File .
-un_app.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File .\setup.ps1 -CoreOnly
+powershell -ExecutionPolicy Bypass -File .\run_app.ps1
 ```
 
 ## macOS / Terminal setup
@@ -27,12 +27,13 @@ un_app.ps1
 With Homebrew installed, from inside MCPJAM:
 
 ```bash
-bash setup.sh
+bash setup.sh --core-only
 bash run_app.sh
 ```
 
-Setup installs Python dependencies and FluidSynth. GeneralUser GS and its license
-are bundled. Every song uses GS; playback shows an error if it cannot load.
+Core-only setup installs the workshop dependencies; verify changes in the app UI
+and through get_state. For optional sampled audio, omit the core-only flag to also
+configure FluidSynth. GeneralUser GS and its license are bundled.
 Use Play/Pause, Stop, or Space in the desktop app. It starts paused.
 Windows has been tested; Mac runtime has not yet been verified.
 Create a new virtual environment on each computer.
@@ -51,7 +52,11 @@ register it, describe it, validate 0–75, send the set_swing backend command,
 return the actual acknowledgement. Restart the host connection and rediscover.
 AI may generate the short function. You must explain the contract, scope,
 validation and outcome checks. The main workshop emphasizes theory and application;
-full implementations remain in the repository. The 27-slide presentation has no appendix.
+full implementations remain in the repository. The current presentation has 29 slides.
+Slide 15 maps the activity: 14 traces MCP versus the backend, 16 explains the
+contract, 20–21 are MCP BUILD, and 22–23 are MCP TEST. Edit mcp_server_sdk.py;
+test with workshop_client.py and verify actual state with get_state.
+The protected activity is 15 minutes, including a short guided build.
 See the repository README.md for the exact 60-minute schedule and optional Gemini demo.
 
 Call 35, 0, 75, and 100 explicitly. Invalid 100 must produce a tool error before

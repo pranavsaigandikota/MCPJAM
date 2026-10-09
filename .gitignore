@@ -18,3 +18,4 @@ workshop_delivery/slide-code-verification.json
 generated_music/
 
 .workshop-*.json
+.workshop_slide_edit/

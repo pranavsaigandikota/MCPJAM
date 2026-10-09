@@ -10,13 +10,14 @@ Students do not need MIDI hardware. Audio uses the bundled GeneralUser GS
 soundfont and FluidSynth. Gemini is only needed for natural-language music
 chat; explicit MCP tests do not need an API key.
 
-- [Current 27-slide Figma presentation](https://www.figma.com/slides/mmQgw9DYp2CZDK7xDu69aZ)
+- [Current 29-slide Figma presentation](https://www.figma.com/slides/mmQgw9DYp2CZDK7xDu69aZ)
 - [Slide-by-slide instructor guide](workshop_delivery/Instructor-Guide.md)
 - [Student quick start](workshop_delivery/Student-Quick-Start.md)
 - [Gemini API keys](https://aistudio.google.com/api-keys)
 
-The Figma deck is the current workshop. Older PPTX/PDF files in workshop_delivery
-are historical exports and do not reflect this 27-slide revision.
+The Figma deck is the current workshop. The matching FAQ/activity export is
+MCPJAM-Workshop-29-Slides.pptx in workshop_delivery. Other older PPTX/PDF
+files are historical exports.
 
 ## One-command setup
 
@@ -363,17 +364,23 @@ mute_track(track: str, muted: bool). A second tool is not required.
 
 | Time | Activity |
 |---|---|
-| Before the clock | Check-in and installation readiness |
-| 0–15 | Introduction, MCP theory, APIs, real-world examples, discovery, SDK |
-| 15–25 | Links, demo, architecture, code walkthrough, exercise briefing |
-| 25–30 | Flexible setup/help buffer; ready students begin early |
-| 30–50 | Protected student implementation and testing |
-| 50–55 | Security risks and defenses |
-| 55–58 | Advanced capabilities, multiple servers, enterprise overview |
-| 58–60 | Apply the pattern elsewhere, check understanding, close |
+| 0–8 | Start installation, check in, explain the goal |
+| 8–18 | MCP foundations, prompts/APIs, existing servers and MCP options |
+| 18–25 | Tempo demo, architecture, contract and activity map |
+| 25–40 | Protected build/test: 3 minutes guided + 12 audience testing/adaptation |
+| 40–47 | Security scenario, poisoning/rug pulls and defenses |
+| 47–52 | Advanced awareness, enterprise architecture and production best practices |
+| 52–55 | Hackathon transfer and exit check |
+| 55–60 | Spare time for delays or Q&A |
 
-35 minutes guided teaching/demo + 20 minutes practical work + 5 minutes buffer.
-There is no appendix in the current deck.
+55 minutes planned, including 15 minutes hands-on, plus 5 minutes spare.
+Installation continues during theory; pair blocked learners before minute 25.
+Fresh Python/Homebrew installation can take longer, so advance preparation helps.
+The maze illustration stays beside read/act/observe. Keep the full music showcase outside the live path.
+
+Slide 15 is the activity map: 14 traces the call, 16 explains the contract,
+20–21 edit mcp_server_sdk.py, and 22–23 discover, call and verify using
+workshop_client.py and get_state. Security and enterprise are required live content.
 
 ## Instructor verification
 

@@ -1,14 +1,24 @@
 # Intro to MCP Servers with MCPJAM
 
-Use the [current 27-slide Figma presentation](https://www.figma.com/slides/mmQgw9DYp2CZDK7xDu69aZ)
+Use the [current 29-slide Figma presentation](https://www.figma.com/slides/mmQgw9DYp2CZDK7xDu69aZ)
 and [matching instructor guide](workshop_delivery/Instructor-Guide.md).
 
 Students extend the supplied Python SDK server with one swing tool.
-The exact schedule is 0–15 theory, 15–25 demo/briefing, 25–30 setup/help,
-30–50 protected practice, 50–55 security, 55–58 advanced/enterprise,
-and 58–60 application and close. Setup/check-in precede the clock.
-This is 35 minutes guided teaching/demo, 20 minutes practical work, and 5 minutes buffer.
-There is no appendix.
+Plan 55 minutes and reserve minutes 55–60 for delays or Q&A.
+Start installation at minute 1: 0–8 setup, 8–18 theory and MCP choices,
+18–25 demo and activity map, 25–40 hands-on build/test, 40–47 security,
+47–52 advanced awareness, enterprise and production practices, 52–55 hackathon transfer and exit check.
+The 15-minute activity includes a three-minute guided build and twelve minutes
+of audience testing/adaptation. Pair blocked learners before the activity.
+Fresh Python/Homebrew installs may exceed the setup window; advance preparation helps.
+
+Activity navigation: slide 14 traces MCP versus the backend; slide 16 explains
+the tool contract; slides 20–21 show the edit in mcp_server_sdk.py; slides 22–23
+show discovery, explicit tests, and get_state verification. Slide 15 maps these steps.
+Slides 17–18 pair the read/act/observe concept with the maze example; keep each brief.
+FAQ slides 5, 19 and 29 cover prompts, standard MCP versus custom tools,
+AI testing without MCP, and a concrete hackathon use. Slide 11 compares SDKs,
+standalone FastMCP, Zapier MCP and the adjacent Databutton app-builder category.
 
 [README.md](README.md) is the maintained setup, launch, Gemini demo, and exercise reference.
 GeneralUser GS sampled playback and mcp_server_music.py are optional instructor
