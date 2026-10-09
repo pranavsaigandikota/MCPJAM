@@ -31,6 +31,15 @@ students add one tool and explain registration, validation, adapter and verifica
 Full music generation, a second tool, detailed JSON-RPC plumbing and installing
 multiple third-party servers are outside the clock. Security and enterprise stay live.
 
+## Live files to show
+
+Show workshop/starter/mcp_server_sdk.py, then .vscode/mcp.json and host discovery.
+Use [the configuration walkthrough](../workshop/README.md) for the prepared
+existing-server demonstration. These replace the longer code walkthrough; keep
+the 15-minute lab. Slides show the server basename; navigate into the starter
+folder. Root server files are compatibility launchers; students edit the starter.
+Reference answers are in workshop/solutions.
+
 ## Activity navigation
 
 | Slides | Students should understand/do |
@@ -38,7 +47,7 @@ multiple third-party servers are outside the clock. Security and enterprise stay
 | 14 | MCP over stdio reaches the server; local JSON socket reaches the backend |
 | 15 | Map the files and next steps |
 | 16 | Tool registration, input type and description |
-| 20–21 | MCP BUILD: edit mcp_server_sdk.py below Student exercise, above startup |
+| 20–21 | MCP BUILD: edit workshop/starter/mcp_server_sdk.py below Student exercise, above startup |
 | 22–23 | MCP TEST: discover, call explicit inputs, verify via get_state |
 
 Use README for exact Windows/Mac commands. Restart persistent hosts after edits;
@@ -163,7 +172,7 @@ On screen:
 - ↔
 - MCP
 - SERVER · exposes tools
-- Our demo: mcp_server_sdk.py
+- Our demo: workshop/starter/mcp_server_sdk.py
 - Built with FastMCP
 - Starter: get_state + set_tempo; you add set_swing
 - Model ≠ host: Gemini/Claude/GPT supply model reasoning; the host Application coordinates the work.
@@ -299,13 +308,13 @@ On screen:
 - aistudio.google.com/api-keys
 - 1  Open README.md for setup and launch instructions.
 - 2  Start the music Application.
-- 3  Open mcp_server_sdk.py.
+- 3  Open workshop/starter/mcp_server_sdk.py.
 - 4  Use workshop_client.py for explicit tool tests.
 - Gemini key: AI demo only. Explicit tool tests need no key.
 
 Presenter notes:
 
-Finish theory by minute 18. Install was started at minute 1. README has Windows/Mac clone, setup and launch commands. Run the app and open mcp_server_sdk.py. Use workshop_client.py for tests; no Gemini key needed. Core-only supports visual verification even if audio is unavailable. Pair blocked learners before minute 25.
+Finish theory by minute 18. Install was started at minute 1. README has Windows/Mac clone, setup and launch commands. Run the app and open workshop/starter/mcp_server_sdk.py. Use workshop_client.py for tests; no Gemini key needed. Core-only supports visual verification even if audio is unavailable. Pair blocked learners before minute 25.
 
 ### Slide 13: Demo: an AI controls the music app
 
@@ -326,7 +335,7 @@ On screen:
 
 - Host + MCP client
 - gemini_host.py or the explicit workshop_client.py
-- mcp_server_sdk.py
+- workshop/starter/mcp_server_sdk.py
 - Tool definitions and the Python SDK
 - call_daw()
 - Backend adapter
@@ -338,7 +347,7 @@ On screen:
 
 Presenter notes:
 
-18–25 segment. This is the MCP architecture slide for the activity. Host/client → mcp_server_sdk.py uses MCP over stdio. Python tool calls call_daw; adapter sends newline-delimited JSON over localhost socket to app.py. That socket is the backend protocol, not MCP. Students edit the server, not the music application.
+18–25 segment. This is the MCP architecture slide for the activity. Host/client → workshop/starter/mcp_server_sdk.py uses MCP over stdio. Python tool calls call_daw; adapter sends newline-delimited JSON over localhost socket to app.py. That socket is the backend protocol, not MCP. Students edit the server, not the music application.
 
 ### Slide 15: Activity map: where we edit
 
@@ -348,17 +357,17 @@ On screen:
 - Workshop step
 - README.md
 - SETUP · slide 12: launch and test commands
-- mcp_server_sdk.py
+- workshop/starter/mcp_server_sdk.py
 - BUILD · slides 20–21: add set_swing here
 - workshop_client.py
 - TEST · slides 22–23: discover, call, verify
-- mcp_server_solution.py
+- workshop/solutions/mcp_server_solution.py
 - REFERENCE · compare after your attempt
 - MCP slides 14 + 16 explain the path and contract. app.py is the backend.
 
 Presenter notes:
 
-18–25 demo block, 30 seconds. Slide 14 traces MCP/backend boundaries; 16 explains the contract. Slides 17–18 pair the read/act/observe concept with a maze. MCP BUILD slides 20–21 edit mcp_server_sdk.py; MCP TEST slides 22–23 use workshop_client.py and get_state. README is the command reference; compare solution only after attempting.
+18–25 demo block, 30 seconds. Slide 14 traces MCP/backend boundaries; 16 explains the contract. Slides 17–18 pair the read/act/observe concept with a maze. MCP BUILD slides 20–21 edit workshop/starter/mcp_server_sdk.py; MCP TEST slides 22–23 use workshop_client.py and get_state. README is the command reference; compare solution only after attempting.
 
 ### Slide 16: MCP ACTIVITY · understand the contract
 
@@ -449,7 +458,7 @@ Presenter notes:
 
 On screen:
 
-- YOUR EDIT: mcp_server_sdk.py
+- YOUR EDIT: workshop/starter/mcp_server_sdk.py
 - Register set_swing(amount: int).
 - Describe its purpose and range.
 - Validate 0–75 in Python.
@@ -470,11 +479,11 @@ Presenter notes:
 
 25–40 activity begins: 3 minutes guided build + 12 audience testing/adaptation. Read the six-step recipe; AI may generate code, but students explain registration, input contract, validation, adapter, acknowledgement and outcome verification. Implement set_swing below Student exercise and above startup. Validate 0–75; call_daw cmd=set_swing, amount=validated value; return the actual acknowledgement, then verify get_state. Full implementation remains in README/solution, not on the slide.
 
-### Slide 21: MCP BUILD · edit mcp_server_sdk.py
+### Slide 21: MCP BUILD · edit workshop/starter/mcp_server_sdk.py
 
 On screen:
 
-- 1  Explorer → MCPJAM       2  mcp_server_sdk.py       3  Add below “Student exercise”
+- 1  Explorer → MCPJAM       2  workshop/starter/mcp_server_sdk.py       3  Add below “Student exercise”
 - Keep it above server startup. Save → reconnect → test → verify with get_state.
 
 Presenter notes:

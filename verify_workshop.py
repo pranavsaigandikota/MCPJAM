@@ -31,7 +31,9 @@ class Backend(socketserver.StreamRequestHandler):
 async def check():
     global reject
     checks = 0
-    for server, names in [('mcp_server_sdk.py', {'get_state','set_tempo'}),
+    for server, names in [('workshop/starter/mcp_server_sdk.py', {'get_state','set_tempo'}),
+                          ('workshop/solutions/mcp_server_solution.py', {'get_state','set_tempo','set_swing','mute_track'}),
+                          ('mcp_server_sdk.py', {'get_state','set_tempo'}),
                           ('workshop_delivery/mcp_server_solution.py', {'get_state','set_tempo','set_swing','mute_track'})]:
         params = StdioServerParameters(command=sys.executable, args=[str(Path(server).resolve())])
         async with stdio_client(params) as (read, write):

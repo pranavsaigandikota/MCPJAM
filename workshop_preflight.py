@@ -9,12 +9,15 @@ import platform
 import sys
 
 
-def host_config() -> dict:
+def host_config(vscode: bool = False) -> dict:
     # Preserve the venv path: resolving the Unix executable symlink can bypass it.
-    return {'mcpServers': {'mcpjam': {
+    server = {
         'command': os.path.abspath(sys.executable),
-        'args': [str(Path(__file__).resolve().with_name('mcp_server_sdk.py'))],
-    }}}
+        'args': [str(Path(__file__).resolve().parent / 'workshop/starter/mcp_server_sdk.py')],
+    }
+    if vscode:
+        server['type'] = 'stdio'
+    return {'servers' if vscode else 'mcpServers': {'mcpjam': server}}
 
 
 def check() -> int:
@@ -52,8 +55,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--host-config', action='store_true',
                         help='Print example host JSON with the current interpreter and server paths')
+    parser.add_argument('--vscode-config', action='store_true',
+                        help='Print VS Code MCP JSON with this interpreter and starter server paths')
     args = parser.parse_args()
-    if args.host_config:
-        print(json.dumps(host_config(), indent=2))
+    if args.host_config or args.vscode_config:
+        print(json.dumps(host_config(vscode=args.vscode_config), indent=2))
     else:
         raise SystemExit(check())

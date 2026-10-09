@@ -32,13 +32,13 @@ Python from https://www.python.org/downloads/ and run the commands again.
 ```powershell
 git clone https://github.com/pranavsaigandikota/MCPJAM.git
 Set-Location MCPJAM
-powershell -NoProfile -ExecutionPolicy Bypass -File .\setup.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File .\setup.ps1 -CoreOnly
 ```
 
-The setup script creates `.venv`, installs `requirements-audio.txt`, downloads
-and verifies the pinned FluidSynth runtime, checks Tk, and runs preflight.
+Core-only setup creates `.venv`, installs `requirements.txt`, checks Tk, and
+runs preflight. For optional audio, omit `-CoreOnly` to configure FluidSynth.
 
-Start the background music chat:
+Optional full-audio showcase (rerun setup without `-CoreOnly` first):
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\run_music_chat.ps1
@@ -54,13 +54,14 @@ Run only one of those applications at a time because both use local port 8765.
 
 ### macOS
 
-Prerequisites: Homebrew, Python 3.13 with Tk, and a working audio output.
+Prerequisite for the automated Mac route: Homebrew. The helper installs Python
+3.13 and matching Tk. Audio output/FluidSynth is optional for the core lab.
 
 ```bash
 git clone https://github.com/pranavsaigandikota/MCPJAM.git
 cd MCPJAM
-bash setup.sh
-bash run_music_chat.sh
+bash setup.sh --core-only
+bash run_app.sh
 ```
 
 For Tk and FluidSynth installation details, see [MAC_SETUP.md](MAC_SETUP.md).
@@ -79,21 +80,27 @@ python3 -m venv .venv
 Linux audio playback additionally requires a system FluidSynth library and
 audio driver; install `requirements-audio.txt` after those system packages.
 
-## VS Code MCP setup
+## Follow the beginner lab first
 
-The repository includes [.vscode/mcp.json](.vscode/mcp.json), which launches
-the full music server with `.venv`. Open the cloned folder in VS Code, run the
-setup command above, and reconnect the `mcpjam-music` server. Then use an
-MCP-enabled chat to ask for songs, for example:
+[Open the live walkthrough](workshop/README.md): clone on Windows/Mac, inspect
+FastMCP, connect through `.vscode/mcp.json`, add one tool, and connect an existing MCP server.
 
-> Create an original fast cinematic orchestral song at 155 BPM in D with
-> dramatic violin, sustained strings, cello bass, and piano ostinatos.
+- **Work here:** `workshop/starter/mcp_server_sdk.py` (commented starter).
+- **Answers here:** `workshop/solutions/mcp_server_solution.py`.
+- **Host connection:** `.vscode/mcp.json` launches the starter and asks for your
+  virtual-environment Python path, so Windows and Mac use the same JSON.
+- **Path helper:** run your .venv Python with `workshop_preflight.py --vscode-config`.
+- **No AI account needed for tests:** run `workshop_client.py`; its default is the starter.
 
-After changing the MCP server or its imported Python modules, reconnect the
-server so VS Code refreshes its tools and resources.
+Use `setup.ps1 -CoreOnly` (Windows) or `bash setup.sh --core-only` (Mac) for the
+classroom lab, then launch `run_app.ps1`/`run_app.sh`. See the walkthrough for
+exact commands. Full music chat/audio commands below are optional showcases.
+The root server files are compatibility launchers for older slides/commands;
+edit the file inside `workshop/starter`.
 
-The included server is `mcp_server_music.py`. The beginner workshop server is
-`mcp_server_sdk.py`; use that one when following the `set_swing` exercise.
+To use the full music server after the lab, change the JSON `args` path to
+`${workspaceFolder}/mcp_server_music.py`, restart the connection, and inspect
+its tools. The full music server is not the student's exercise.
 
 ## Copy-and-paste setup and playback
 
@@ -171,9 +178,9 @@ committed. The explicit workshop client needs no key.
 |---|---|
 | README.md | Setup, launch commands, and exercises |
 | app.py | Music application, UI, audio, and local backend socket |
-| mcp_server_sdk.py | Starter MCP server with get_state, set_tempo, and call_daw |
+| workshop/starter/mcp_server_sdk.py | Starter MCP server with get_state, set_tempo, and call_daw |
 | workshop_client.py | Discover tools and test explicit arguments without a model |
-| mcp_server_solution.py | Completed reference implementation |
+| workshop/solutions/mcp_server_solution.py | Completed reference implementation |
 | gemini_host.py | Optional Gemini AI host with an MCP client |
 | mcp_server_music.py | Full music MCP server for creation, editing, playback, and export |
 | music_arranger.py | Project validation, arrangement generation, MIDI writing, and WAV rendering |
@@ -186,7 +193,7 @@ committed. The explicit workshop client needs no key.
 
 The architecture has these connections:
 
-1. Host/client ↔ mcp_server_sdk.py: **MCP over stdio**.
+1. Host/client ↔ workshop/starter/mcp_server_sdk.py: **MCP over stdio**.
 2. Tool function → call_daw(): **Python function call**.
 3. call_daw() ↔ app.py: **newline-delimited JSON over 127.0.0.1:8765**.
 
@@ -313,7 +320,7 @@ host-specific example, not an MCP standard. Use the actual absolute paths.
 
 ## Student exercise: add a swing tool
 
-Edit mcp_server_sdk.py. Use the existing set_tempo function as the example:
+Edit workshop/starter/mcp_server_sdk.py. Use the existing set_tempo function as the example:
 
 - Define set_swing(amount: int) and register it with @mcp.tool().
 - Give the tool a clear description.
@@ -353,8 +360,8 @@ A model may refuse or modify an invalid natural-language request, so use
 explicit client arguments to test validation. Success means showing one valid
 call, one rejected call, and explaining registration, validation, and the backend.
 
-After attempting the exercise, compare with mcp_server_solution.py.
-To rehearse the reference version, add --server mcp_server_solution.py to a
+After attempting the exercise, compare with workshop/solutions/mcp_server_solution.py.
+To rehearse the reference version, add --server workshop/solutions/mcp_server_solution.py to a
 client command. Do not overwrite the starter with the solution for students.
 
 Early finishers may try a natural-language request or optionally implement
@@ -379,7 +386,7 @@ Fresh Python/Homebrew installation can take longer, so advance preparation helps
 The maze illustration stays beside read/act/observe. Keep the full music showcase outside the live path.
 
 Slide 15 is the activity map: 14 traces the call, 16 explains the contract,
-20–21 edit mcp_server_sdk.py, and 22–23 discover, call and verify using
+20–21 edit workshop/starter/mcp_server_sdk.py, and 22–23 discover, call and verify using
 workshop_client.py and get_state. Security and enterprise are required live content.
 
 ## Instructor verification
@@ -465,11 +472,11 @@ Song edits restart playback from the beginning.
 These are original instrumental arrangements with an intro, verse, chorus,
 bridge, and outro. They do not generate sung vocals or reproduce commercial
 recordings. This optional music server does not change the workshop starter:
-students still implement only set_swing in mcp_server_sdk.py.
+students still implement only set_swing in workshop/starter/mcp_server_sdk.py.
 
 Any compatible local MCP host can launch mcp_server_music.py with the same
 virtual-environment Python. Use that server path for a music demo, or
-mcp_server_sdk.py for the student workshop. Gemini is the included host;
+workshop/starter/mcp_server_sdk.py for the student workshop. Gemini is the included host;
 configuration for another chat application's local MCP support depends on that host.
 
 

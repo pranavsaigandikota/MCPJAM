@@ -35,7 +35,7 @@ async def run(server: str, tool: str | None, arguments: str,
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--server', default='mcp_server_sdk.py')
+    parser.add_argument('--server', default=str(Path(__file__).resolve().parent / 'workshop/starter/mcp_server_sdk.py'))
     parser.add_argument('--tool')
     parser.add_argument('--list-resources', action='store_true')
     parser.add_argument('--resource', help='Read an MCP resource URI without changing the app')

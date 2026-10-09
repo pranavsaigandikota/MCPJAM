@@ -4,18 +4,18 @@ Use the [current 29-slide Figma presentation](https://www.figma.com/slides/mmQgw
 and [matching instructor guide](workshop_delivery/Instructor-Guide.md).
 
 Students extend the supplied Python SDK server with one swing tool.
-Plan 55 minutes and reserve minutes 55–60 for delays or Q&A.
-Start installation at minute 1: 0–8 setup, 8–18 theory and MCP choices,
-18–25 demo and activity map, 25–40 hands-on build/test, 40–47 security,
-47–52 advanced awareness, enterprise and production practices, 52–55 hackathon transfer and exit check.
+Plan 55 minutes and reserve minutes 55â€“60 for delays or Q&A.
+Start installation at minute 1: 0â€“8 setup, 8â€“18 theory and MCP choices,
+18â€“25 demo and activity map, 25â€“40 hands-on build/test, 40â€“47 security,
+47â€“52 advanced awareness, enterprise and production practices, 52â€“55 hackathon transfer and exit check.
 The 15-minute activity includes a three-minute guided build and twelve minutes
 of audience testing/adaptation. Pair blocked learners before the activity.
 Fresh Python/Homebrew installs may exceed the setup window; advance preparation helps.
 
 Activity navigation: slide 14 traces MCP versus the backend; slide 16 explains
-the tool contract; slides 20–21 show the edit in mcp_server_sdk.py; slides 22–23
+the tool contract; slides 20â€“21 show the edit in workshop/starter/mcp_server_sdk.py; slides 22â€“23
 show discovery, explicit tests, and get_state verification. Slide 15 maps these steps.
-Slides 17–18 pair the read/act/observe concept with the maze example; keep each brief.
+Slides 17â€“18 pair the read/act/observe concept with the maze example; keep each brief.
 FAQ slides 5, 19 and 29 cover prompts, standard MCP versus custom tools,
 AI testing without MCP, and a concrete hackathon use. Slide 11 compares SDKs,
 standalone FastMCP, Zapier MCP and the adjacent Databutton app-builder category.
@@ -24,3 +24,5 @@ standalone FastMCP, Zapier MCP and the adjacent Databutton app-builder category.
 GeneralUser GS sampled playback and mcp_server_music.py are optional instructor
 showcase capabilities; keep the core demo at set_tempo and save set_swing for students.
 The richer music server can create/edit pop instrumentals and export MIDI/WAV.
+
+Follow the [live FastMCP/configuration walkthrough](workshop/README.md) for starter/solution folders, VS Code JSON and the existing-server demo.

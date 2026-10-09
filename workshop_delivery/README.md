@@ -15,5 +15,10 @@ optional Gemini/music host, and bundled GeneralUser GS soundfont/license.
 Create your own virtual environment after extracting; native audio runtimes are not copied.
 
 Other older PowerPoint and PDF files are historical exports. Use the Figma deck
-or the matching FAQ/activity export. Slide 15 maps the lab; slides 20–21 are
-MCP BUILD and 22–23 are MCP TEST.
+or the matching FAQ/activity export. Slide 15 maps the lab; slides 20â€“21 are
+MCP BUILD and 22â€“23 are MCP TEST.
+
+Start with [the live lab](../workshop/README.md). Student edits are in
+workshop/starter; reference answers are in workshop/solutions. The root server
+files remain launchers for older commands and slides. The JSON now connects
+to the starter on Windows/Mac, using each student's .venv interpreter.

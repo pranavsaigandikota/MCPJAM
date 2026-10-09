@@ -45,8 +45,7 @@ From inside the cloned or extracted folder:
 
 ```bash
 python3.13 -m venv .venv
-brew install fluid-synth
-./.venv/bin/python -m pip install -r requirements-audio.txt
+./.venv/bin/python -m pip install -r requirements.txt
 ./.venv/bin/python workshop_preflight.py
 ./.venv/bin/python -m tkinter
 ```
@@ -66,22 +65,26 @@ cd ..
 Keep the Terminal window and DAW open. Run the package this way because the
 application uses relative imports. `__main__.py` supplies the entry point.
 Every playback path uses the bundled GeneralUser GS SoundFont through FluidSynth.
-Install FluidSynth before starting. There is no built-in synthesized fallback:
+For optional audio, run `brew install fluid-synth` and install
+`requirements-audio.txt`. Core-only participants verify state visually.
+There is no built-in synthesized fallback:
 if audio initialization fails, the app reports an audio error and cannot play.
-For automated Homebrew setup, run `bash setup.sh` inside MCPJAM, then
+For automated Homebrew setup, run `bash setup.sh --core-only` inside MCPJAM, then
 `bash run_app.sh`. Windows has been tested; Mac runtime still needs verification.
 
 ## 4. Connect a host using your Mac's paths
 
+Follow [the live lab](workshop/README.md) for the JSON walkthrough and existing MCP demo.
+
 In a second Terminal window, inside the `MCPJAM` folder:
 
 ```bash
-./.venv/bin/python workshop_preflight.py --host-config
+./.venv/bin/python workshop_preflight.py --vscode-config
 ```
 
 Copy the printed interpreter and script paths into your host's configuration.
-This prints JSON only and does not edit your host. The `mcpServers` structure
-is an example used by some hosts; adapt it to your host's format. Keep spaces
+This prints JSON only and does not edit your host. It uses the VS Code
+`servers` structure; `--host-config` prints an `mcpServers` example for other hosts. Keep spaces
 inside one JSON string and use absolute paths rather than `~`.
 Restart/reconnect the host connection after configuration or code edits. The
 host launches the stdio server; you do not launch a second server manually.
@@ -96,7 +99,7 @@ With the DAW running, from inside `MCPJAM`:
 ./.venv/bin/python workshop_client.py --tool get_state
 ```
 
-After implementing `set_swing` in `mcp_server_sdk.py`:
+After implementing `set_swing` in `workshop/starter/mcp_server_sdk.py`:
 
 ```bash
 ./.venv/bin/python workshop_client.py --tool set_swing --arguments '{"amount":35}'
@@ -107,7 +110,7 @@ After implementing `set_swing` in `mcp_server_sdk.py`:
 The invalid call should print `isError: true` and exit with code 1. Writes are
 queued; allow the UI to process them before checking state. The starter has
 two tools; swing and mute are student additions. To run the completed solution,
-add `--server mcp_server_solution.py` to the client command.
+add `--server workshop/solutions/mcp_server_solution.py` to the client command.
 
 ## Mac troubleshooting
 

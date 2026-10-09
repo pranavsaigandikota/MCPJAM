@@ -1,0 +1,22 @@
+{
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "mcpjamPython",
+      "description": "Absolute path to MCPJAM's .venv Python (Windows: .venv/Scripts/python.exe; Mac: .venv/bin/python). Use workshop_preflight.py --vscode-config to find it."
+    }
+  ],
+  "servers": {
+    "mcpjam": {
+      "type": "stdio",
+      "command": "${input:mcpjamPython}",
+      "args": [
+        "${workspaceFolder}/workshop/starter/mcp_server_sdk.py"
+      ]
+    },
+    "context7": {
+      "type": "http",
+      "url": "https://mcp.context7.com/mcp"
+    }
+  }
+}

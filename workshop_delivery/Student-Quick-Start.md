@@ -39,22 +39,22 @@ Windows has been tested; Mac runtime has not yet been verified.
 Create a new virtual environment on each computer.
 
 The host launches the stdio server with absolute paths to this interpreter and
-mcp_server_sdk.py. Do not launch another server manually for the host connection.
-Configuration layout is host-specific; see README.md.
+workshop/starter/mcp_server_sdk.py. Do not launch another server manually for the host connection.
+Configuration layout is host-specific; see [the live lab](../workshop/README.md).
 Print host JSON with your actual paths from inside MCPJAM using
-`./.venv/bin/python workshop_preflight.py --host-config` on Mac or
-`.\.venv\Scripts\python.exe workshop_preflight.py --host-config` on Windows.
+`./.venv/bin/python workshop_preflight.py --vscode-config` on Mac or
+`.\.venv\Scripts\python.exe workshop_preflight.py --vscode-config` on Windows.
 
 ## Exercise
 
-Edit mcp_server_sdk.py above its main guard. Implement set_swing(amount: int):
-register it, describe it, validate 0–75, send the set_swing backend command,
+Edit workshop/starter/mcp_server_sdk.py above its main guard. Implement set_swing(amount: int):
+register it, describe it, validate 0â€“75, send the set_swing backend command,
 return the actual acknowledgement. Restart the host connection and rediscover.
 AI may generate the short function. You must explain the contract, scope,
 validation and outcome checks. The main workshop emphasizes theory and application;
 full implementations remain in the repository. The current presentation has 29 slides.
 Slide 15 maps the activity: 14 traces MCP versus the backend, 16 explains the
-contract, 20–21 are MCP BUILD, and 22–23 are MCP TEST. Edit mcp_server_sdk.py;
+contract, 20â€“21 are MCP BUILD, and 22â€“23 are MCP TEST. Edit workshop/starter/mcp_server_sdk.py;
 test with workshop_client.py and verify actual state with get_state.
 The protected activity is 15 minutes, including a short guided build.
 See the repository README.md for the exact 60-minute schedule and optional Gemini demo.
@@ -94,6 +94,8 @@ Set-Content -LiteralPath swing-input.json -Value '{"amount":35}' -Encoding UTF8
 ```
 
 Starter has two tools; the completed solution adds swing and mute.
-To inspect the solution through the SDK client, add --server mcp_server_solution.py.
+To inspect the solution through the SDK client, add --server workshop/solutions/mcp_server_solution.py.
 The local DAW socket is not MCP and has no authentication. Keep it on loopback.
 
+
+Follow the [live FastMCP/configuration walkthrough](../workshop/README.md) for starter/solution folders, VS Code JSON and the existing-server demo.
