@@ -202,3 +202,17 @@ prompt discovery, then `--prompt compose_music --arguments-file
 workshop/examples/music-prompt.json` to retrieve its reusable instructions.
 Retrieval alone runs no AI or audio. This is an optional instructor example;
 the protected starter lab remains focused on tools. See [Music guide](../MUSIC_GENERATOR.md).
+
+## Copilot music showcase (slide 27)
+
+The classroom AI host is VS Code GitHub Copilot. Keep `.vscode/mcp.json` pointing
+to the starter during the student lab. For the prepared music showcase, add the
+`mcpjam-music` server entry from [.vscode/mcp.music.example.json](../.vscode/mcp.music.example.json)
+to its `servers` object; both entries can share the existing mcpjamPython input.
+Use **MCP: List Servers** to start the music server and enable its tools in chat.
+Type `/` and select `compose_music`, then enter an original music description.
+Copilot supplies web fetching/search when available, matches catalog sounds,
+writes a score and requests a 30-second MP3. Source URL fetching is different
+from web search; use a prepared link or disclose unavailable research. No Gemini
+key is required. Generation returns a path and never autoplays. The instructor
+prepares full audio dependencies; this does not expand the 15-minute core lab.

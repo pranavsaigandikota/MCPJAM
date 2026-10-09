@@ -45,19 +45,33 @@ Print host JSON with your actual paths from inside MCPJAM using
 `./.venv/bin/python workshop_preflight.py --vscode-config` on Mac or
 `.\.venv\Scripts\python.exe workshop_preflight.py --vscode-config` on Windows.
 
+## VS Code + GitHub Copilot
+
+1. Open the whole MCPJAM folder and sign into Copilot with agent/MCP access.
+2. Open `.vscode/mcp.json`. Keep its starter connection for the lab.
+3. Run `workshop_preflight.py --vscode-config` using your .venv Python to find
+   its absolute path; enter that path when VS Code prompts for mcpjamPython.
+4. Run **MCP: List Servers**, start **mcpjam**, then enable its tools in Copilot
+   agent chat. Ask: “Use set_tempo to set 120 BPM, then get_state to verify.”
+5. After adding set_swing, save and restart mcpjam; confirm the new tool appears.
+   Test 35, 0, 75 and invalid 100. Verify state after each call.
+
+Copilot uses your account; a Gemini API key is not part of this route.
+If Copilot is unavailable, use the explicit calls below.
+
 ## Exercise
 
 Edit workshop/starter/mcp_server_sdk.py above its main guard. Implement set_swing(amount: int):
-register it, describe it, validate 0â€“75, send the set_swing backend command,
+register it, describe it, validate 0–75, send the set_swing backend command,
 return the actual acknowledgement. Restart the host connection and rediscover.
 AI may generate the short function. You must explain the contract, scope,
 validation and outcome checks. The main workshop emphasizes theory and application;
 full implementations remain in the repository. The current presentation has 29 slides.
 Slide 15 maps the activity: 14 traces MCP versus the backend, 16 explains the
-contract, 20â€“21 are MCP BUILD, and 22â€“23 are MCP TEST. Edit workshop/starter/mcp_server_sdk.py;
+contract, 20 is MCP BUILD, 21 is the Copilot connection, and 22–23 are MCP TEST. Edit workshop/starter/mcp_server_sdk.py;
 test with workshop_client.py and verify actual state with get_state.
 The protected activity is 15 minutes, including a short guided build.
-See the repository README.md for the exact 60-minute schedule and optional Gemini demo.
+See the repository README.md for the 55-minute plan plus 5 minutes spare and the VS Code Copilot walkthrough.
 
 Call 35, 0, 75, and 100 explicitly. Invalid 100 must produce a tool error before
 the backend call. Read the `swing` key in get_state's result and allow the UI to
@@ -99,3 +113,15 @@ The local DAW socket is not MCP and has no authentication. Keep it on loopback.
 
 
 Follow the [live FastMCP/configuration walkthrough](../workshop/README.md) for starter/solution folders, VS Code JSON and the existing-server demo.
+
+## Instructor music showcase
+
+After full audio setup, use [.vscode/mcp.music.example.json](../.vscode/mcp.music.example.json)
+for a separate **mcpjam-music** connection. Add its server entry to the existing
+`servers` object, keeping the interpreter input and valid JSON. Start that server
+and enable its tools. In Copilot chat, type `/` and select `compose_music`.
+Provide a description; the host researches if web tools are available, matches
+sounds to the catalog, writes notes and requests a 30-second MP3.
+If search is unavailable, supply a source URL for fetching or compose from the
+description. Generation returns a local path without autoplay. This is an
+instructor showcase, not an extra requirement in the 15-minute student lab.

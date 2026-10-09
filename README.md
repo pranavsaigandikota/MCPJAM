@@ -7,18 +7,20 @@ README is the single setup sheet: clone the repository, run the setup script,
 then choose the visual sequencer, music chat, or explicit workshop client.
 
 Students do not need MIDI hardware. Audio uses the bundled GeneralUser GS
-soundfont and FluidSynth. Gemini is only needed for natural-language music
-chat; explicit MCP tests do not need an API key.
+soundfont and FluidSynth. VS Code GitHub Copilot is the workshop host. It uses your Copilot account;
+no Gemini API key is needed for the lab or music showcase.
 
-- [Current 29-slide Figma presentation](https://www.figma.com/slides/mmQgw9DYp2CZDK7xDu69aZ)
+- [Current 29-slide Copilot presentation](workshop_delivery/MCPJAM-Workshop-Copilot.pptx)
 - [Slide-by-slide instructor guide](workshop_delivery/Instructor-Guide.md)
 - [Student quick start](workshop_delivery/Student-Quick-Start.md)
 - [Description-driven music generator and all sounds](MUSIC_GENERATOR.md)
-- [Gemini API keys](https://aistudio.google.com/api-keys)
 
-The Figma deck is the current workshop. The matching FAQ/activity export is
-MCPJAM-Workshop-29-Slides.pptx in workshop_delivery. Other older PPTX/PDF
-files are historical exports.
+Use MCPJAM-Workshop-Copilot.pptx (and its PDF) in workshop_delivery. The Figma
+file and older exports predate the Copilot revision. The workshop follows
+[the VS Code connection walkthrough](workshop/README.md). Use the supplied
+.vscode/mcp.json for the student lab, and .vscode/mcp.music.example.json for
+the instructor music showcase. The standalone Gemini host is an optional
+alternative outside this workshop route.
 
 ## One-command setup
 

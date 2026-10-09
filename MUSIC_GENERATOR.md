@@ -1,5 +1,17 @@
 # Description-driven music through MCP
 
+## Workshop route: VS Code Copilot
+
+Use Copilot agent chat with a separate `mcpjam-music` entry from
+[.vscode/mcp.music.example.json](.vscode/mcp.music.example.json). Its command uses
+the clone’s absolute .venv interpreter; args points to mcp_server_music.py.
+Keep the student starter connection for the lab. Start the music server through
+MCP: List Servers and enable its tools. Type `/` and select `compose_music`.
+Copilot can combine host web tools with MCPJAM’s catalog and score tool.
+Web fetching is available for supplied URLs; open-ended search depends on
+enabled tools. If research is unavailable, disclose it and compose from the
+description. No Gemini API key is needed for this route.
+
 ## Reusable MCP prompt: compose_music
 
 The full music server exposes `compose_music` through `prompts/list` and

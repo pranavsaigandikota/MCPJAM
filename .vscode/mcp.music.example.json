@@ -1,0 +1,16 @@
+{
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "mcpjamPython",
+      "description": "Absolute path to this clone's .venv Python: Windows .venv/Scripts/python.exe; Mac .venv/bin/python."
+    }
+  ],
+  "servers": {
+    "mcpjam-music": {
+      "type": "stdio",
+      "command": "${input:mcpjamPython}",
+      "args": ["${workspaceFolder}/mcp_server_music.py"]
+    }
+  }
+}
