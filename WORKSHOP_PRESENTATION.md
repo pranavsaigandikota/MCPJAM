@@ -32,3 +32,31 @@ Slide 27 shows the separate music server and compose_music prompt, producing a 3
 Follow the [live FastMCP/configuration walkthrough](workshop/README.md) for starter/solution folders, VS Code JSON and the existing-server demo.
 
 The live Figma deck is maintained; PowerPoint/PDF exports are archived snapshots. Slide 16 shows abbreviated discovery/result payloads and distinguishes the host from the client. No Gemini API key is required for the workshop route.
+
+## MCP server walkthrough: transfer the pattern to your own project
+
+Use the existing slides; this adds explanation within the guided three minutes,
+not another activity. Begin with slides 4, 6 and 9–10 for the standard, roles,
+primitives and discovery. Then walk through these project-building slides:
+
+| Slide | Title | What students should carry into their own app |
+|---|---|---|
+| 14 | MCP ACTIVITY · trace the call | Keep host/client, MCP server and app backend separate. |
+| 16 | What the MCP client sees | The client discovers schemas, calls tools and receives data/errors. |
+| 20 | MCP BUILD · add set_tempo | Register, type, describe, validate, delegate and return. |
+| 21 | Copilot connection: .vscode/mcp.json | Point a host at the server using the correct interpreter/transport. |
+| 22 | MCP TEST · discover, call, verify | Save/restart, discover, retry and observe real results. |
+| 23 | MCP TEST · evidence of success | Check valid inputs, boundaries, errors and unchanged state. |
+| 24–26 | Security risks and controls | Authorize actions, scope access and distrust external content. |
+| 28 | Enterprise: identity + production rules | Add identity, auditability and reliable operations for production. |
+| 29 | Where can I use this at the hackathon? | Choose a useful action in your own project and wrap existing logic. |
+
+Explain on slide 20: replace set_tempo with a narrow project action such as
+search_inventory or create_draft_ticket, bpm with its typed inputs, and call_daw
+with an existing function/API adapter. Keep the MCP registration and result
+contract, use that app's validation and permissions, and supply a read/state tool
+to verify the effect. Never treat the decorator alone as a security policy.
+
+The current workshop has a default-tempo song before the edit, a missing-tool
+error before registration, and a successful 150 BPM result afterwards. Students
+add the capability in workshop/starter; workshop/solutions is the commented answer.

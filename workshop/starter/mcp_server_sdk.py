@@ -33,6 +33,8 @@ register_music_prompts(mcp, default_bpm=120)
 
 
 def call_daw(command: dict[str, Any]) -> dict[str, Any]:
+    # App adapter: reuse rendering for a saved song, or the optional GUI socket.
+    # This routing is application logic; MCP messages are handled by FastMCP.
     # A generated song is rendered to MP3; the GUI socket remains the core-only fallback.
     state = song_state()
     if state is not None and command['cmd'] == 'get_state':
@@ -89,12 +91,15 @@ def create_song_from_score(title: str, tracks: list[ScoreTrack], notes: list[Sco
 # YOUR EDIT GOES HERE: add set_tempo(bpm: int), above the startup block.
 # BEFORE YOUR EDIT: get_state works, but set_tempo is absent from discovery.
 # An explicit set_tempo call must fail because the tool has not been registered.
-# 1. Use @mcp.tool() and a short docstring explaining the 40–240 BPM range.
-# 2. Reject invalid input with ValueError BEFORE calling the app.
-# 3. call_daw({"cmd": "set_tempo", "bpm": bpm}), then return its acknowledgement.
+# 1. REGISTER: @mcp.tool() makes your function discoverable by the MCP client.
+# 2. CONTRACT: bpm: int defines the input type; -> dict describes returned data.
+# 3. DESCRIBE: a docstring tells the host/model what the tool does and its range.
+# 4. VALIDATE: reject values outside 40–240 BEFORE calling the backend.
+# 5. ERROR: raise ValueError; FastMCP returns a tool error to the client.
+# 6. ADAPTER + RESULT: call_daw delegates to existing app logic; return its data.
 # AFTER YOUR EDIT: save, restart the MCP server, and discover set_tempo.
-# 4. Repeat the SAME call with bpm=150; get_state must report bpm=150.
-# 5. Test boundaries 40 and 240 and invalid 300; invalid input must not reach the app.
+# Repeat the SAME call with bpm=150; get_state must report bpm=150.
+# Test boundaries 40 and 240 and invalid 300; invalid input must not reach the app.
 # Production pattern: validate inputs and verify state instead of trusting "queued".
 # Optional extension: add set_swing with amount 0–75 after completing tempo.
 

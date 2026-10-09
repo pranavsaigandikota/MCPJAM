@@ -15,11 +15,13 @@ from mcp.client.stdio import stdio_client
 from music_arranger import read_project, project_path
 
 ROOT = Path(__file__).resolve().parent
-SNIPPET = '''@mcp.tool()
-def set_tempo(bpm: int) -> dict:
-    """Change tempo from 40 to 240 BPM."""
+SNIPPET = '''@mcp.tool()  # 1. Register this function for MCP discovery.
+def set_tempo(bpm: int) -> dict:  # 2. Declare the input/result types.
+    """Change tempo from 40 to 240 BPM."""  # 3. Describe the capability.
+    # 4. Production pattern: validate BEFORE performing an action.
     if not 40 <= bpm <= 240:
-        raise ValueError("Use 40–240 BPM")
+        raise ValueError("Use 40–240 BPM")  # 5. Report a tool error.
+    # 6. Delegate to existing app logic and return data to the MCP client.
     return call_daw({"cmd": "set_tempo", "bpm": bpm})
 
 '''

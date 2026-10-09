@@ -33,6 +33,8 @@ register_music_prompts(mcp, default_bpm=120)
 
 
 def call_daw(command: dict[str, Any]) -> dict[str, Any]:
+    # App adapter: reuse rendering for a saved song, or the optional GUI socket.
+    # This routing is application logic; MCP messages are handled by FastMCP.
     state = song_state()
     if state is not None and command['cmd'] == 'get_state':
         return state
@@ -62,18 +64,19 @@ def call_app(command: dict[str, Any]) -> dict[str, Any]:
 # Its name, annotations and docstring form the tool contract the host sees.
 @mcp.tool()
 def get_state() -> dict[str, Any]:
-    """Read the current tempo, playback state, chords, and patterns."""
+    """Read the generated song's BPM and MP3 path, or the optional GUI state."""
     return call_daw({"cmd": "get_state"})
 
 
 # REFERENCE ANSWER: this is the set_tempo tool students add to the starter.
-@mcp.tool()
-def set_tempo(bpm: int) -> dict[str, Any]:
-    """Set tempo from 40 to 240 BPM."""
-    # Enforce the range in code: a description alone cannot prevent an unsafe input.
+@mcp.tool()  # 1. Register: make the function discoverable as an MCP tool.
+def set_tempo(bpm: int) -> dict[str, Any]:  # 2. Contract: typed input and returned data.
+    """Set tempo from 40 to 240 BPM."""  # 3. Describe the tool for the host/model.
+    # 4. Production validation: reject unsafe input BEFORE performing the action.
     if type(bpm) is not int or not 40 <= bpm <= 240:
-        raise ValueError("bpm must be between 40 and 240")
-    # A write acknowledgement can mean queued, so read actual state afterwards.
+        raise ValueError("bpm must be between 40 and 240")  # 5. FastMCP reports a tool error.
+    # 6. Adapter + result: delegate to existing app logic and return data to the client.
+    # Rendered song: new MP3. GUI fallback: queued acknowledgement; verify get_state.
     return call_daw({"cmd": "set_tempo", "bpm": bpm})
 
 

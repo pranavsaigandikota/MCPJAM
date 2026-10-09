@@ -20,11 +20,13 @@ tempo tool without rendering; pair them with an audio-ready learner for the MP3.
 3. Edit workshop/starter/mcp_server_sdk.py at YOUR EDIT GOES HERE. Add:
 
 ```python
-@mcp.tool()
-def set_tempo(bpm: int) -> dict:
-    """Change tempo from 40 to 240 BPM."""
+@mcp.tool()  # 1. Register this function for MCP discovery.
+def set_tempo(bpm: int) -> dict:  # 2. Declare the input/result types.
+    """Change tempo from 40 to 240 BPM."""  # 3. Describe the capability.
+    # 4. Production pattern: validate BEFORE performing an action.
     if not 40 <= bpm <= 240:
-        raise ValueError("Use 40–240 BPM")
+        raise ValueError("Use 40–240 BPM")  # 5. Report a tool error.
+    # 6. Delegate to existing app logic and return data to the MCP client.
     return call_daw({"cmd": "set_tempo", "bpm": bpm})
 ```
 
@@ -723,11 +725,13 @@ Presenter notes:
 25–40 protected activity: three minutes guided build and twelve minutes audience testing. Explain the decorator, integer input schema, descriptive docstring, range validation and prepared adapter. The backend renders a new 30-second MP3 at the requested tempo without playback. Verify discovery and get_state.
 
 ```python
-@mcp.tool()
-def set_tempo(bpm: int) -> dict:
-    """Change tempo from 40 to 240 BPM."""
+@mcp.tool()  # 1. Register this function for MCP discovery.
+def set_tempo(bpm: int) -> dict:  # 2. Declare the input/result types.
+    """Change tempo from 40 to 240 BPM."""  # 3. Describe the capability.
+    # 4. Production pattern: validate BEFORE performing an action.
     if not 40 <= bpm <= 240:
-        raise ValueError("Use 40–240 BPM")
+        raise ValueError("Use 40–240 BPM")  # 5. Report a tool error.
+    # 6. Delegate to existing app logic and return data to the MCP client.
     return call_daw({"cmd": "set_tempo", "bpm": bpm})
 ```
 
@@ -955,3 +959,31 @@ Presenter notes:
 Presenter notes:
 
 52–55 exit block. 90-second pair exercise: name one useful project tool, its input, permission, and observable success. Examples search_inventory, create_draft_ticket or test a game move. Add a thin MCP adapter over an existing API/function; do not rewrite the app. Consider MCP when multiple compatible hosts need these capabilities. A one-off fixed integration may use a direct API. Reserve 55–60 for genuine spare time/Q&A.
+
+## MCP server walkthrough: transfer the pattern to your own project
+
+Use the existing slides; this adds explanation within the guided three minutes,
+not another activity. Begin with slides 4, 6 and 9–10 for the standard, roles,
+primitives and discovery. Then walk through these project-building slides:
+
+| Slide | Title | What students should carry into their own app |
+|---|---|---|
+| 14 | MCP ACTIVITY · trace the call | Keep host/client, MCP server and app backend separate. |
+| 16 | What the MCP client sees | The client discovers schemas, calls tools and receives data/errors. |
+| 20 | MCP BUILD · add set_tempo | Register, type, describe, validate, delegate and return. |
+| 21 | Copilot connection: .vscode/mcp.json | Point a host at the server using the correct interpreter/transport. |
+| 22 | MCP TEST · discover, call, verify | Save/restart, discover, retry and observe real results. |
+| 23 | MCP TEST · evidence of success | Check valid inputs, boundaries, errors and unchanged state. |
+| 24–26 | Security risks and controls | Authorize actions, scope access and distrust external content. |
+| 28 | Enterprise: identity + production rules | Add identity, auditability and reliable operations for production. |
+| 29 | Where can I use this at the hackathon? | Choose a useful action in your own project and wrap existing logic. |
+
+Explain on slide 20: replace set_tempo with a narrow project action such as
+search_inventory or create_draft_ticket, bpm with its typed inputs, and call_daw
+with an existing function/API adapter. Keep the MCP registration and result
+contract, use that app's validation and permissions, and supply a read/state tool
+to verify the effect. Never treat the decorator alone as a security policy.
+
+The current workshop has a default-tempo song before the edit, a missing-tool
+error before registration, and a successful 150 BPM result afterwards. Students
+add the capability in workshop/starter; workshop/solutions is the commented answer.

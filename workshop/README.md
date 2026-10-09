@@ -130,11 +130,13 @@ tempo tool without rendering; pair them with an audio-ready learner for the MP3.
 3. Edit workshop/starter/mcp_server_sdk.py at YOUR EDIT GOES HERE. Add:
 
 ```python
-@mcp.tool()
-def set_tempo(bpm: int) -> dict:
-    """Change tempo from 40 to 240 BPM."""
+@mcp.tool()  # 1. Register this function for MCP discovery.
+def set_tempo(bpm: int) -> dict:  # 2. Declare the input/result types.
+    """Change tempo from 40 to 240 BPM."""  # 3. Describe the capability.
+    # 4. Production pattern: validate BEFORE performing an action.
     if not 40 <= bpm <= 240:
-        raise ValueError("Use 40–240 BPM")
+        raise ValueError("Use 40–240 BPM")  # 5. Report a tool error.
+    # 6. Delegate to existing app logic and return data to the MCP client.
     return call_daw({"cmd": "set_tempo", "bpm": bpm})
 ```
 
