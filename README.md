@@ -13,6 +13,7 @@ chat; explicit MCP tests do not need an API key.
 - [Current 29-slide Figma presentation](https://www.figma.com/slides/mmQgw9DYp2CZDK7xDu69aZ)
 - [Slide-by-slide instructor guide](workshop_delivery/Instructor-Guide.md)
 - [Student quick start](workshop_delivery/Student-Quick-Start.md)
+- [Description-driven music generator and all sounds](MUSIC_GENERATOR.md)
 - [Gemini API keys](https://aistudio.google.com/api-keys)
 
 The Figma deck is the current workshop. The matching FAQ/activity export is
@@ -130,7 +131,7 @@ The Mac helper installs Python 3.13, Tk, FluidSynth, and Python dependencies.
 This repository supports the same application and MCP tools on both platforms;
 Windows has been exercised locally, while macOS execution remains unverified.
 
-Music chat automatically starts a **background audio player with no window**.
+Music chat returns an MP3 location. Creation, edits and export never autoplay or start a player.
 Enter a Gemini key at the hidden prompt, then ask:
 
 > Make a 30-second original R&B instrumental in C at 98 BPM with legato phrases,
@@ -143,8 +144,7 @@ resumes held notes. Exact durations of 5–180 seconds are supported. Articulati
 can be legato, normal, or staccato; styles are pop or rnb.
 
 For the workshop's visual sequencer, run `run_app.ps1` on Windows (or
-`run_app.sh` on Mac) separately. Close it before starting background music chat.
-The player and sequencer share the local backend port; run one at a time.
+`run_app.sh` on Mac) separately. The app is needed only for explicit live playback, not for generating MP3 files.
 
 **Acoustic playback uses GeneralUser GS; modern808 mode uses WAV samples for bass/drums and GS for piano/strings.** There is no built-in DSP
 or default-MIDI fallback. If the soundfont or native engine cannot load, the
@@ -450,7 +450,7 @@ For the richer demonstration, use the separate mcp_server_music.py server:
 .\.venv\Scripts\python.exe gemini_host.py --server mcp_server_music.py --ask-key --chat
 ```
 
-Keep the music application running in its own window. For the same chat command,
+MP3 generation works with the music application closed. For the same chat command,
 you can run `powershell -ExecutionPolicy Bypass -File .\run_music_chat.ps1`.
 
 Example conversation:
@@ -459,15 +459,14 @@ Example conversation:
   finger bass, strings, and drums.
 - Make it 124 BPM, change the lead instrument to flute, and lower its volume to 65.
 - Mute the drums, then play it again.
-- Export the song as MIDI and WAV.
+- Export the song as an MP3.
 
 The host retains conversation context. The server saves editable projects in
- generated_music, rebuilds the MIDI after edits, and plays it in the running app.
-WAV export uses the same GeneralUser GS soundfont in an isolated renderer.
-get_state reports audio_engine, soundfont_path, the current song ID/revision,
-track settings, and playback state. The music tools require
- audio_engine=generaluser_gs and report an error if sampled playback is unavailable.
-Song edits restart playback from the beginning.
+`generated_music`, renders sampled audio and returns a playable MP3 path.
+MIDI and WAV are internal backend files. Generation and edits never autoplay.
+The latest successfully generated project can be edited without passing its ID;
+pass `song_id` explicitly when working with multiple projects. Live controls
+such as `play_song` require a separately running app and an explicit playback request.
 
 These are original instrumental arrangements with an intro, verse, chorus,
 bridge, and outro. They do not generate sung vocals or reproduce commercial
@@ -488,7 +487,7 @@ and a final drop. Sounds remain entirely GeneralUser GS, including electronic
 patches from that bank. Reverb applies to both live audio and exports.
 
 Example chat request: "Make a 30-second dark cinematic EDM beat in D at 132 BPM,
-energy 92, variation 17. Export the WAV." Follow up with "lower energy to 70" or
+energy 92, variation 17. Export the MP3." Follow up with "lower energy to 70" or
 "change variation to 35"; `edit_song` exposes both controls. Energy controls drum
 density; variation changes deterministic melodic accents. This is a MIDI arranger,
 not a model that copies recordings or produces vocals.
@@ -502,7 +501,7 @@ Ask music chat: "Use create_808_song to make a serious 30-second dark beat at
 128 BPM." This replaces GS bass/drums with the bundled hard-trap WAV sample kit,
 removes the bright lead, and uses restrained GS piano/strings over a minor drone.
 There is no oscillator fallback. The background player uses the rendered mix for
-playback, so its sound matches the WAV export; pause, resume and live edits work.
+playback, so its sound matches the MP3 export. Playback starts only when explicitly requested.
 The MIDI export contains note data and does not embed the sample pack.
 
 Source: https://github.com/Boochi44/free-drum-samples (CC0 as declared by its author).
@@ -559,8 +558,8 @@ generate vocals or reproduce commercial recordings.
 
 The SDK workshop, solution, and music servers expose the read-only JSON resource
 `music://instruments/catalog`. It lists the GeneralUser GS presets supported by
-the song editor, their exact instrument IDs and zero-based MIDI programs. It is
-not a complete list of every preset in the SoundFont. It also documents drum
+the song editor, their exact instrument IDs, banks and zero-based MIDI programs.
+It now includes all 287 presets in the bundled SoundFont (274 melodic and 13 kits). It also documents drum
 channel behavior and the optional modern808 sample override. Reading it does not
 start audio or change a song, and needs no new dependencies.
 
@@ -604,3 +603,10 @@ If audio is unavailable, rerun `setup.ps1` or run
 does not show the newer tools, use the MCP server reconnect/restart command.
 Do not run `run_app.ps1` and `run_music_chat.ps1` at the same time; both use
 port 8765.
+
+## AI-authored scores for open genre descriptions
+
+See [MUSIC_GENERATOR.md](MUSIC_GENERATOR.md). create_song_from_score accepts the
+AI's actual notes and tracks rather than selecting a fixed genre arrangement.
+get_instrument_catalog searches all bundled presets; replace_song_notes rewrites
+the composition. The older create_* tools retain their coded patterns.

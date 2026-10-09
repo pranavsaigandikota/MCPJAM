@@ -95,8 +95,11 @@ class BeatBoxStudio:
                     self.fs.noteon(channel, pitch, velocity)
                 def note_off(self, pitch, velocity=0, channel=0):
                     self.fs.noteoff(channel, pitch)
-                def set_instrument(self, instrument_id, channel=0):
-                    self.fs.program_change(channel, instrument_id)
+                def set_instrument(self, instrument_id, channel=0, bank=None):
+                    if bank is None:
+                        self.fs.program_change(channel, instrument_id)
+                    else:
+                        self.fs.program_select(channel, self.fs.soundfont_id, bank, instrument_id)
                 def silence(self):
                     for channel in range(16):
                         self.fs.cc(channel, 120, 0)
@@ -1049,10 +1052,10 @@ class BeatBoxStudio:
         for ev in all_events:
             ch = ev.get('channel', 0)
             prog = ev.get('program', 0)
-            if ch != 9 and ch not in seen_programs:
+            if ev.get('type') == 'program_change' and ch not in seen_programs:
                 seen_programs[ch] = prog
                 try:
-                    self.midi_out.set_instrument(prog, ch)
+                    self.midi_out.set_instrument(prog, ch, ev.get('bank', 128 if ch == 9 else 0))
                 except Exception:
                     pass
 
@@ -1090,8 +1093,8 @@ class BeatBoxStudio:
                 prog = ev.get('program', 0)
 
                 try:
-                    if ev_type == 'program_change' and ch != 9:
-                        self.midi_out.set_instrument(prog, ch)
+                    if ev_type == 'program_change':
+                        self.midi_out.set_instrument(prog, ch, ev.get('bank', 128 if ch == 9 else 0))
                     elif ev_type == 'note_on':
                         vol = int(vel * self.master_volume)
                         if vol > 0:

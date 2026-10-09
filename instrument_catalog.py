@@ -12,25 +12,41 @@ INSTRUMENTS = {
 }
 
 
+# The manifest is enumerated from the bundled SoundFont, not a guessed GM list.
+_MANIFEST = json.loads((Path(__file__).resolve().parent / "soundfonts/GeneralUser-GS/presets.json").read_text(encoding="utf-8"))
+PRESETS = {preset["id"]: preset for preset in _MANIFEST["presets"]}
+ALIASES = dict(INSTRUMENTS)
+INSTRUMENTS.update({name: preset["midi_program"] for name, preset in PRESETS.items()})
+
+
+def instrument_preset(instrument: str, drums: bool = False) -> dict:
+    # Older projects stored piano on the drum track while actually using Standard Kit.
+    if drums and instrument == "piano":
+        return PRESETS["gs_128_0"]
+    name = f"gs_0_{ALIASES[instrument]}" if instrument in ALIASES else instrument
+    if name not in PRESETS:
+        raise ValueError("Unknown instrument; read music://instruments/catalog")
+    preset = PRESETS[name]
+    if (preset["kind"] == "drum_kit") != drums:
+        raise ValueError("Use a drum kit on channel 10 and a melodic preset on other channels")
+    return preset
+
+
 def instrument_catalog() -> dict:
-    """Describe supported presets without loading audio or contacting the app."""
-    soundfont = Path(__file__).resolve().parent / "soundfonts" / "GeneralUser-GS" / "GeneralUser-GS.sf2"
+    soundfont = Path(__file__).resolve().parent / "soundfonts/GeneralUser-GS/GeneralUser-GS.sf2"
     return {
         "sound_library": "GeneralUser GS",
         "soundfont_installed": soundfont.is_file(),
-        "scope": "Presets supported by MCPJAM's song editor, not every preset in the SoundFont",
-        "program_numbering": "MIDI program values are zero-based; display numbers are one-based",
-        "instruments": [
-            {"id": name, "name": name.replace("_", " ").title(),
-             "bank": 0, "midi_program": program, "display_program": program + 1}
-            for name, program in INSTRUMENTS.items()
-        ],
+        "soundfont_sha256": _MANIFEST["soundfont_sha256"],
+        "scope": "All 287 presets enumerated from the bundled SoundFont, including 13 drum kits",
+        "program_numbering": "MIDI programs/channels are zero-based; percussion uses channel 9",
+        "instruments": list(PRESETS.values()),
+        "aliases": {name: f"gs_0_{number}" for name, number in ALIASES.items()},
         "usage": {
-            "melodic_tracks": ["keys", "bass", "pad", "lead"],
-            "tool": "set_song_track (music server only)",
-            "instrument_argument": "Use an instrument id from this catalog",
-            "drums": "MIDI channel 10 (zero-based 9); song editor permits drum volume/mute edits, not melodic preset selection",
-            "modern808": "Songs using the modern808 sample layer can override bass/drum audio; this resource catalogs GeneralUser GS presets only",
+            "tool": "set_song_track or create_song_from_score (music server)",
+            "instrument_argument": "Use a preset id or a legacy named alias",
+            "drums": "Select a drum_kit preset for MIDI channel 9",
+            "modern808": "Sampled bass/drums override GS timbres; instrument edits disable the corresponding override",
         },
     }
 

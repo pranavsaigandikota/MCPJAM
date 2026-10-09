@@ -126,8 +126,8 @@ class AudioPlayer:
                     while index < len(events) and events[index]['time_sec'] <= position:
                         event = events[index]
                         ch, kind = event['channel'], event['type']
-                        if kind == 'program_change' and ch != 9:
-                            self.synth.program_change(ch, event['program'])
+                        if kind == 'program_change':
+                            self.synth.program_select(ch, self.synth.soundfont_id, event.get('bank', 128 if ch == 9 else 0), event['program'])
                         elif kind == 'note_on':
                             pitch, velocity = event['note'], event['velocity']
                             self.synth.noteon(ch, pitch, velocity)

@@ -10,7 +10,8 @@ import mido
 
 ROOT = Path(__file__).resolve().parent
 OUTPUT = ROOT / 'generated_music'
-from instrument_catalog import INSTRUMENTS
+from instrument_catalog import INSTRUMENTS, instrument_preset
+from music_score import validate_score, score_events, score_channels
 PITCHES = {'C': 0, 'C#': 1, 'Db': 1, 'D': 2, 'Eb': 3, 'E': 4, 'F': 5,
            'F#': 6, 'Gb': 6, 'G': 7, 'Ab': 8, 'A': 9, 'Bb': 10, 'B': 11}
 CHANNELS = {'keys': 0, 'bass': 1, 'pad': 2, 'lead': 3, 'drums': 9}
@@ -36,14 +37,18 @@ def validate(spec):
         spec['bars'] = max(8, math.ceil(duration * spec['bpm'] / 240))
     if spec['key'] not in PITCHES:
         raise ValueError('key must be a supported note name, such as C, D, F#, or Bb')
-    for field, low, high in [('bpm', 40, 240), ('bars', 8, 64), ('swing', 0, 75)]:
+    for field, low, high in [('bpm', 40, 240), ('bars', 1 if spec.get('score') == 'custom' else 8, 180 if spec.get('score') == 'custom' else 64), ('swing', 0, 75)]:
         if type(spec[field]) is not int or not low <= spec[field] <= high:
             raise ValueError(f'{field} must be an integer from {low} to {high}')
     if not 1 <= len(spec['title']) <= 120:
         raise ValueError('title must contain 1–120 characters')
+    if spec.get('score') == 'custom':
+        validate_score(spec)
+        return
     for track, setting in spec['tracks'].items():
         if track not in CHANNELS or setting['instrument'] not in INSTRUMENTS:
             raise ValueError('Unknown track or instrument')
+        instrument_preset(setting['instrument'], track == 'drums')
         if not 0 <= setting['volume'] <= 100 or type(setting['muted']) is not bool:
             raise ValueError('volume must be 0–100 and muted must be a boolean')
 
@@ -79,6 +84,8 @@ def read_project(song_id):
 def arrangement(spec):
     """Intro, verses, choruses, bridge, outro with a repeating melodic hook."""
     validate(spec)
+    if spec.get('score') == 'custom':
+        return score_events(spec)
     rng = random.Random(spec['song_id'] + str(spec.get('variation', 0)))
     root = PITCHES[spec['key']]
     rnb = spec.get('style', 'pop') == 'rnb'
@@ -86,9 +93,9 @@ def arrangement(spec):
     musical_bars = math.ceil(total_beats / 4)
     events = []
     for track, ch in CHANNELS.items():
-        if ch != 9:
-            events.append({'beat': 0.0, 'type': 'program_change', 'channel': ch,
-                           'program': INSTRUMENTS[spec['tracks'][track]['instrument']]})
+        preset = instrument_preset(spec['tracks'][track]['instrument'], ch == 9)
+        events.append({'beat': 0.0, 'type': 'program_change', 'channel': ch,
+                       'program': preset['midi_program'], 'bank': preset['bank']})
 
     def note(track, pitch, beat, duration, velocity):
         settings = spec['tracks'][track]
@@ -290,13 +297,13 @@ def save_project(spec):
     OUTPUT.mkdir(exist_ok=True)
     path = project_path(spec['song_id'])
     path.write_text(json.dumps(spec, indent=2), encoding='utf-8')
-    midi = mido.MidiFile(type=1, ticks_per_beat=480)
+    midi = mido.MidiFile(type=1, ticks_per_beat=480, charset='utf-8')
     meta = mido.MidiTrack()
     meta.append(mido.MetaMessage('track_name', name=spec['title']))
     meta.append(mido.MetaMessage('set_tempo', tempo=mido.bpm2tempo(spec['bpm'])))
-    meta.append(mido.MetaMessage('time_signature', numerator=4, denominator=4))
+    meta.append(mido.MetaMessage('time_signature', numerator=spec.get('time_signature_numerator', 4), denominator=spec.get('time_signature_denominator', 4)))
     midi.tracks.append(meta)
-    for name, channel in CHANNELS.items():
+    for name, channel in (score_channels(spec) if spec.get("score") == "custom" else CHANNELS).items():
         track = mido.MidiTrack()
         track.append(mido.MetaMessage('track_name', name=name))
         previous = 0
@@ -304,6 +311,11 @@ def save_project(spec):
             if event['channel'] != channel:
                 continue
             tick = round(event['beat'] * 480)
+            if event['type'] == 'program_change':
+                bank = event.get('bank', 128 if channel == 9 else 0)
+                track.append(mido.Message('control_change', channel=channel, control=0, value=bank // 128, time=tick-previous))
+                track.append(mido.Message('control_change', channel=channel, control=32, value=bank % 128, time=0))
+                previous = tick
             kwargs = {'program': event['program']} if event['type'] == 'program_change' else {'note': event['note'], 'velocity': event['velocity']}
             track.append(mido.Message(event['type'], channel=channel, time=tick-previous, **kwargs))
             previous = tick
@@ -314,7 +326,7 @@ def save_project(spec):
     return {'song_id': spec['song_id'], 'title': spec['title'], 'bpm': spec['bpm'], 'key': spec['key'],
             'bars': spec['bars'], 'revision': spec['revision'], 'tracks': spec['tracks'], 'sections': sections,
             'duration_seconds': round(song_duration(spec), 2), 'articulation': spec.get('articulation', 'legato'), 'style': spec.get('style', 'pop'),
-            'event_count': len(events), 'midi_path': str(midi_path)}
+            'genre': spec.get('genre', spec.get('style', 'pop')), 'composer': 'ai_score' if spec.get('score') == 'custom' else 'coded_pattern', 'event_count': len(events), 'midi_path': str(midi_path)}
 
 
 def render_wav(spec):
@@ -344,7 +356,7 @@ def render_wav(spec):
                 samples(round(event['time_sec']*44100))
                 ch = event['channel']
                 if event['type'] == 'program_change':
-                    synth.program_change(ch, event['program'])
+                    synth.program_select(ch, synth.soundfont_id, event.get('bank', 128 if ch == 9 else 0), event['program'])
                 elif event['type'] == 'note_on':
                     synth.noteon(ch, event['note'], event['velocity'])
                 else:

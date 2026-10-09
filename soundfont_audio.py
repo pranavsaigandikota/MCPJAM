@@ -45,6 +45,7 @@ def create_synth(live=False):
         sfid = synth.sfload(str(SOUNDFONT))
         if sfid < 0:
             raise RuntimeError('FluidSynth could not load GeneralUser GS')
+        synth.soundfont_id = sfid
         # Select the bank on every channel; MIDI channel 10 uses the drum bank.
         for channel in range(16):
             if synth.program_select(channel, sfid, 128 if channel == 9 else 0, 0) < 0:

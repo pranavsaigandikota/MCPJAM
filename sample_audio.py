@@ -33,7 +33,8 @@ def render_sample_song(spec):
             return stored['result']
     accompaniment = copy.deepcopy(spec)
     accompaniment.pop('sample_pack', None)
-    for track in (('bass','drums') if spec.get('sample_bass', True) else ('drums',)):
+    overridden = (['bass'] if spec.get('sample_bass', True) else []) + (['drums'] if spec.get('sample_drums', True) else [])
+    for track in overridden:
         accompaniment['tracks'][track]['muted'] = True
     result = render_wav(accompaniment)
     mix = read_audio(result['wav_path']) * .7
@@ -61,6 +62,8 @@ def render_sample_song(spec):
             clip = np.column_stack([np.interp(positions, np.arange(len(source)), source[:,ch]) for ch in range(2)])
             level = .85
         else:
+            if not spec.get('sample_drums', True):
+                continue
             clip = samples[drum_names.get(event['note'], 'tom')]
             level = .65 if event['note'] == 36 else .28
         start = round(event['time_sec'] * 44100)
@@ -81,6 +84,6 @@ def render_sample_song(spec):
         wav.writeframes(pcm.tobytes())
     result = {'wav_path':str(path),'sample_rate':44100,'channels':2,
             'peak':int(np.max(np.abs(pcm.astype('int32')))),
-            'audio_engine':('modern808_samples_with_generaluser_gs' if spec.get('sample_bass', True) else 'modern_drums_with_generaluser_gs')}
+            'audio_engine':('modern808_samples_with_generaluser_gs' if spec.get('sample_bass', True) and spec.get('sample_drums', True) else 'modern_bass_with_generaluser_gs' if spec.get('sample_bass', True) else 'modern_drums_with_generaluser_gs')}
     cache.write_text(json.dumps({'signature':signature,'result':result}))
     return result

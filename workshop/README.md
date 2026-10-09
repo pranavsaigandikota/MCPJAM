@@ -189,3 +189,9 @@ Slides 20–21 show the build: navigate to the starter folder; 22–23 show test
 Sources: [VS Code setup](https://code.visualstudio.com/docs/agent-customization/mcp-servers),
 [configuration reference](https://code.visualstudio.com/docs/agents/reference/mcp-configuration),
 [official Python SDK](https://github.com/modelcontextprotocol/python-sdk).
+
+## Optional music showcase
+
+See [MUSIC_GENERATOR.md](../MUSIC_GENERATOR.md) for 30-second AI-authored scores,
+all 287 SoundFont presets, editable notes, and description-driven prompts.
+Keep this outside the beginner lab so setup and student practice fit the hour.

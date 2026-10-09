@@ -22,3 +22,6 @@ Start with [the live lab](../workshop/README.md). Student edits are in
 workshop/starter; reference answers are in workshop/solutions. The root server
 files remain launchers for older commands and slides. The JSON now connects
 to the starter on Windows/Mac, using each student's .venv interpreter.
+
+[Velvet-Circuit-30s.mp3](Velvet-Circuit-30s.mp3) is the original 30-second R&B
+score demo. [Music guide](../MUSIC_GENERATOR.md) explains the full score tools.
