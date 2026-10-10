@@ -35,9 +35,9 @@ async def check():
     checks = 0
     music = {'get_instrument_catalog', 'create_song_from_score'}
     for server, names in [('workshop/starter/mcp_server_sdk.py', {'get_state'} | music),
-                          ('workshop/solutions/mcp_server_solution.py', {'get_state','set_tempo','set_swing','mute_track'} | music),
+                          ('workshop/solutions/mcp_server_solution.py', {'get_state','set_swing','mute_track'} | music),
                           ('mcp_server_sdk.py', {'get_state'} | music),
-                          ('workshop_delivery/mcp_server_solution.py', {'get_state','set_tempo','set_swing','mute_track'} | music)]:
+                          ('workshop_delivery/mcp_server_solution.py', {'get_state','set_swing','mute_track'} | music)]:
         # Mock DAW tests must not accidentally use a learner's rendered song.
         params = StdioServerParameters(command=sys.executable, args=[str(Path(server).resolve())],
             env={**os.environ, 'MCPJAM_WORKSHOP_SONG_POINTER': str(Path(tempfile.gettempdir())/'mcpjam-mock-unused'/'song.json')})
@@ -50,14 +50,6 @@ async def check():
                     assert (await session.call_tool('set_tempo', {'bpm':150})).isError
                     assert len(received) == count; checks += 1
                     assert not (await session.call_tool('get_state', {})).isError; checks += 1
-                    continue
-                for bpm in [40,120,240]:
-                    result = await session.call_tool('set_tempo', {'bpm':bpm})
-                    assert not result.isError and state['bpm']==bpm; checks += 1
-                for bpm in [39,500]:
-                    count=len(received)
-                    assert (await session.call_tool('set_tempo', {'bpm':bpm})).isError
-                    assert len(received)==count; checks += 1
                 if 'set_swing' in names:
                     for value in [0,35,75]:
                         assert not (await session.call_tool('set_swing', {'amount':value})).isError
@@ -72,9 +64,10 @@ async def check():
                     assert (await session.call_tool('mute_track', {'track':'violin','muted':True})).isError
                     assert len(received)==count; checks += 1
                 assert not (await session.call_tool('get_state', {})).isError; checks += 1
-                reject=True
-                assert (await session.call_tool('set_tempo', {'bpm':120})).isError; checks += 1
-                reject=False
+                if 'set_swing' in names:
+                    reject=True
+                    assert (await session.call_tool('set_swing', {'amount':35})).isError; checks += 1
+                    reject=False
     print(f'PASS: {checks} protocol and tool checks (real stdio MCP, mock DAW).')
 
 if __name__ == '__main__':

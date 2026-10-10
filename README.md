@@ -64,18 +64,10 @@ has intentionally not been registered yet.
 ## 5. Student exercise: add set_tempo
 
 Edit **`workshop/starter/mcp_server_sdk.py`** at `YOUR EDIT GOES HERE`, above
-`if __name__`. Add:
+`if __name__`. Wait for the workshop snippet:
 
-```python
-@mcp.tool()  # 1. Register for MCP discovery.
-def set_tempo(bpm: int) -> dict:  # 2. Define input/result types.
-    """Change tempo from 40 to 240 BPM."""  # 3. Describe the capability.
-    # 4. Validate BEFORE performing an action.
-    if not 40 <= bpm <= 240:
-        raise ValueError("Use 40–240 BPM")  # 5. Return a tool error.
-    # 6. Run existing app logic and return data to the client.
-    return call_daw({"cmd": "set_tempo", "bpm": bpm})
-```
+The instructor will provide the commented `set_tempo` snippet during the workshop.
+It is intentionally omitted from this repository.
 
 ## 6. Restart and retry
 
@@ -91,7 +83,7 @@ validation, permissions, clear results and a way to verify the effect.
 ## More help
 
 - [Detailed lab and explicit terminal tests](workshop/README.md)
-- [Commented reference solution — after your attempt](workshop/solutions/mcp_server_solution.py)
+- [Optional swing/mute reference — tempo is supplied in class](workshop/solutions/mcp_server_solution.py)
 - [Music capabilities](MUSIC_GENERATOR.md)
 - [Live Figma slides](https://www.figma.com/slides/mmQgw9DYp2CZDK7xDu69aZ/MCP-Servers-Slides)
 

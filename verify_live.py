@@ -1,6 +1,6 @@
 """Verify the workshop against the running GUI, real MCP stdio, and local socket.
 
-Run with MCPJAM open. This changes tempo, swing, and kick mute temporarily,
+Run with MCPJAM open. This changes swing and kick mute temporarily,
 then restores those values. No Gemini key is required.
 """
 import asyncio
@@ -55,14 +55,8 @@ async def check_server(filename, expected):
             if 'set_tempo' not in tools:
                 await rejected('set_tempo', {'bpm': 150})
                 print(f'PASS: {filename}: missing tempo tool fails; state unchanged.')
-                return checks + 1
+                checks += 1
             try:
-                for bpm in (40, 120, 240):
-                    await accepted('set_tempo', {'bpm': bpm})
-                    checks += 1
-                for value in (39, 241, 'not a number', 120.5):
-                    await rejected('set_tempo', {'bpm': value})
-                    checks += 1
                 if 'set_swing' in tools:
                     assert tools['set_swing'].inputSchema['properties']['amount']['type'] == 'integer'
                     checks += 1
@@ -79,7 +73,6 @@ async def check_server(filename, expected):
                     await rejected('mute_track', {'track': 'violin', 'muted': True})
                     checks += 1
             finally:
-                await accepted('set_tempo', {'bpm': original['bpm']})
                 if 'set_swing' in tools:
                     await accepted('set_swing', {'amount': original['swing']})
                 if 'mute_track' in tools:
@@ -91,7 +84,7 @@ async def check_server(filename, expected):
 async def main():
     music = {'get_instrument_catalog', 'create_song_from_score'}
     count = await check_server('mcp_server_sdk.py', {'get_state'} | music)
-    count += await check_server('mcp_server_solution.py', {'get_state', 'set_tempo', 'set_swing', 'mute_track'} | music)
+    count += await check_server('mcp_server_solution.py', {'get_state', 'set_swing', 'mute_track'} | music)
     print(f'PASS: {count} live checks (GUI + audio status + MCP stdio + backend socket).')
 
 

@@ -26,3 +26,5 @@ WORKSHOP_REFERENCE.md
 workshop_delivery/Instructor-Guide.md
 workshop_delivery/*.pptx
 workshop_delivery/*.pdf
+verify_tempo_lab.py
+workshop_delivery/Tempo-Code-Snippet.png

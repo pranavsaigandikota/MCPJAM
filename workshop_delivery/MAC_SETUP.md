@@ -109,7 +109,7 @@ After implementing `set_swing` in `workshop/starter/mcp_server_sdk.py`:
 
 The invalid call should print `isError: true` and exit with code 1. Writes are
 queued; allow the UI to process them before checking state. The starter has
-two tools; swing and mute are student additions. To run the completed solution,
+two tools; swing and mute are student additions. To inspect the optional swing/mute reference (tempo is supplied in class),
 add `--server workshop/solutions/mcp_server_solution.py` to the client command.
 
 ## Mac troubleshooting

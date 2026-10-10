@@ -8,20 +8,19 @@ are part of the live workshop.
 Read [Student-Quick-Start.md](Student-Quick-Start.md) for the exercise and [../README.md](../README.md)
 for the maintained Windows/macOS setup and launch instructions.
 
-MCPJAM-Student-Code.zip contains the current starter, reference solution, app,
+MCPJAM-Student-Code.zip contains the current starter, optional swing/mute reference, app,
 optional Gemini/music host, and bundled GeneralUser GS soundfont/license.
 Create your own virtual environment after extracting; native audio runtimes are not copied.
 
 Slide 15 maps the lab; slide 20 is MCP BUILD, 21 explains the full Copilot JSON connection, and 22–23 are MCP TEST.
 
 Start with [the live lab](../workshop/README.md). Student edits are in
-workshop/starter; reference answers are in workshop/solutions. The root server
+workshop/starter; optional examples are in workshop/solutions; the tempo snippet is supplied in class. The root server
 files remain launchers for older commands and slides. The JSON now connects
 to the starter on Windows/Mac, using each student's .venv interpreter.
 
 [Velvet-Circuit-30s.mp3](Velvet-Circuit-30s.mp3) is the original 30-second R&B
 score demo. [Music guide](../MUSIC_GENERATOR.md) explains the full score tools.
 
-[Tempo-Code-Snippet.png](Tempo-Code-Snippet.png) is the exact code screenshot on slide 20.
-The copyable version is in the root README → Student exercise. Run
-`python verify_tempo_lab.py` after full audio setup to check the real MP3 activity.
+The instructor supplies the commented tempo snippet during the workshop.
+The student repository and ZIP intentionally omit that answer.

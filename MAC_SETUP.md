@@ -112,7 +112,7 @@ queued; allow the UI to process them before checking state. The starter has
 get_state, get_instrument_catalog and create_song_from_score. It creates 30-second
 MP3s at 120 BPM after full audio setup. Students add set_tempo; swing and mute
 are optional extensions. With a generated workshop song, tempo changes render a
-new MP3 rather than using the GUI queue. To run the completed solution,
+new MP3 rather than using the GUI queue. To inspect the optional swing/mute reference (tempo is supplied in class),
 add `--server workshop/solutions/mcp_server_solution.py` to the client command.
 
 ## Mac troubleshooting

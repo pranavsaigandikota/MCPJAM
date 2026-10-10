@@ -71,18 +71,10 @@ tempo tool without rendering; pair them with an audio-ready learner for the MP3.
    use the terminal, another server, or regenerate it. Then verify with get_state.”**
    Copilot should explain that set_tempo is unavailable. An explicit call below
    must return a tool error/exit 1. This expected failure proves missing capability.
-3. Edit workshop/starter/mcp_server_sdk.py at YOUR EDIT GOES HERE. Add:
+3. Edit workshop/starter/mcp_server_sdk.py at YOUR EDIT GOES HERE, using the snippet supplied in class:
 
-```python
-@mcp.tool()  # 1. Register this function for MCP discovery.
-def set_tempo(bpm: int) -> dict:  # 2. Declare the input/result types.
-    """Change tempo from 40 to 240 BPM."""  # 3. Describe the capability.
-    # 4. Production pattern: validate BEFORE performing an action.
-    if not 40 <= bpm <= 240:
-        raise ValueError("Use 40–240 BPM")  # 5. Report a tool error.
-    # 6. Delegate to existing app logic and return data to the MCP client.
-    return call_daw({"cmd": "set_tempo", "bpm": bpm})
-```
+The instructor will provide the commented `set_tempo` snippet during the workshop.
+It is intentionally omitted from this repository.
 
 4. Save. Run MCP: List Servers → mcpjam → Restart and refresh/enable tools.
    Confirm set_tempo appears. Repeat the **same 150 BPM request**.

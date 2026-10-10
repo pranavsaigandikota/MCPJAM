@@ -68,16 +68,8 @@ def get_state() -> dict[str, Any]:
     return call_daw({"cmd": "get_state"})
 
 
-# REFERENCE ANSWER: this is the set_tempo tool students add to the starter.
-@mcp.tool()  # 1. Register: make the function discoverable as an MCP tool.
-def set_tempo(bpm: int) -> dict[str, Any]:  # 2. Contract: typed input and returned data.
-    """Set tempo from 40 to 240 BPM."""  # 3. Describe the tool for the host/model.
-    # 4. Production validation: reject unsafe input BEFORE performing the action.
-    if type(bpm) is not int or not 40 <= bpm <= 240:
-        raise ValueError("bpm must be between 40 and 240")  # 5. FastMCP reports a tool error.
-    # 6. Adapter + result: delegate to existing app logic and return data to the client.
-    # Rendered song: new MP3. GUI fallback: queued acknowledgement; verify get_state.
-    return call_daw({"cmd": "set_tempo", "bpm": bpm})
+# The instructor supplies the set_tempo tool during the workshop.
+# It is intentionally absent from this shared reference.
 
 
 @mcp.tool()
