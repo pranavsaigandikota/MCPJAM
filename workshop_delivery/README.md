@@ -11,6 +11,7 @@ for the maintained Windows/macOS setup and launch instructions.
 MCPJAM-Student-Code.zip contains the current starter, optional swing/mute reference, app,
 optional Gemini/music host, and bundled GeneralUser GS soundfont/license.
 Create your own virtual environment after extracting; native audio runtimes are not copied.
+Setup defaults to chat-only MP3 rendering; the graphical interface is optional.
 
 Slide 15 maps the lab; slide 20 is MCP BUILD, 21 explains the full Copilot JSON connection, and 22–23 are MCP TEST.
 

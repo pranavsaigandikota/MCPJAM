@@ -20,6 +20,16 @@ def main():
     if platform.machine().lower() not in ('amd64', 'x86_64'):
         raise RuntimeError('This installer supplies the Windows x64 runtime only')
     destination = ROOT / '.audio_runtime'
+    if destination.exists():
+        try:
+            from soundfont_audio import create_synth
+            synth = create_synth(live=False)
+            synth.delete()
+            print('PASS: existing FluidSynth runtime and soundfont verified; no download needed.')
+            return
+        except Exception:
+            # A missing/broken runtime is repaired by the verified download below.
+            pass
     print(f'Downloading official FluidSynth {VERSION} Windows x64 runtime...')
     with urllib.request.urlopen(URL, timeout=60) as response:
         data = response.read(20_000_001)

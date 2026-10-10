@@ -1,6 +1,6 @@
 # Live lab: build a server, connect it, use an existing server
 
-Run commands from the cloned **MCPJAM** folder. Use Python 3.10–3.13 with Tk.
+Run commands from the cloned **MCPJAM** folder. Use Python 3.10–3.13; Tk is not required for chat-only use.
 For AI chat, use an MCP-capable VS Code/Copilot installation and account. The
 explicit Python client works without an AI account or API key.
 
@@ -12,7 +12,6 @@ Windows / PowerShell:
 git clone https://github.com/pranavsaigandikota/MCPJAM.git
 Set-Location MCPJAM
 powershell -NoProfile -ExecutionPolicy Bypass -File .\setup.ps1
-powershell -ExecutionPolicy Bypass -File .\run_app.ps1
 ```
 
 Mac / Terminal with Homebrew:
@@ -21,12 +20,12 @@ Mac / Terminal with Homebrew:
 git clone https://github.com/pranavsaigandikota/MCPJAM.git
 cd MCPJAM
 bash setup.sh
-bash run_app.sh
 ```
 
-Without Homebrew, follow [MAC_SETUP.md](../MAC_SETUP.md)'s manual core setup.
-Keep the app open. Core-only setup is enough to inspect UI/state and use MCP;
-FluidSynth/audio and Gemini chat are optional. Use one app instance (port 8765).
+Setup installs the MCP server and offline MP3 renderer. No app window is needed.
+Generate a song in Copilot before asking for its state or changing its tempo.
+Core-only mode skips rendering and cannot produce MP3s; pair with an audio-ready learner.
+The graphical app is optional: add `-WithGui` on Windows or `--with-gui` on Mac.
 Windows has been tested locally; native Mac execution still needs rehearsal.
 If Git is unavailable, extract the student ZIP and open its MCPJAM folder.
 
@@ -117,8 +116,8 @@ set_tempo is intentionally unregistered. AI still selects sounds and writes note
 
 Full audio setup is required for MP3 rendering: run setup.ps1 without -CoreOnly
 on Windows or bash setup.sh without --core-only on Mac. Prepare before class
-where possible. Core-only learners can use the running app to verify the same
-tempo tool without rendering; pair them with an audio-ready learner for the MP3.
+where possible. Core-only learners should pair with an audio-ready learner for the MP3 activity.
+The optional GUI requires `-WithGui` / `--with-gui`; it is not used in class.
 
 1. Start the starter connection in VS Code. Use / → compose_music with an
    original genre description. Request a 30-second song; creation uses 120 BPM.

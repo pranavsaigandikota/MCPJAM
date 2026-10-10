@@ -10,7 +10,7 @@ cd MCPJAM
 Basic Python is assumed; no MCP knowledge is required.
 Prepare before class if possible; installation also starts near the beginning.
 Mac users should first follow [MAC_SETUP.md](../MAC_SETUP.md)
-for Python with Tk, certificates, and host configuration. Both platforms use the
+for Python, FluidSynth and host configuration. Tk is not required. Both platforms use the
 same Python files, tool names, validations, and exercises.
 
 ## Windows / PowerShell setup
@@ -19,7 +19,6 @@ From inside MCPJAM:
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\setup.ps1
-powershell -ExecutionPolicy Bypass -File .\run_app.ps1
 ```
 
 ## macOS / Terminal setup
@@ -28,13 +27,11 @@ With Homebrew installed, from inside MCPJAM:
 
 ```bash
 bash setup.sh
-bash run_app.sh
 ```
 
 Full setup installs the MP3 renderer and configures FluidSynth. If native audio setup
-is blocked, use core-only setup to verify tempo through the GUI and get_state, and
-pair with an audio-ready learner for the MP3. GeneralUser GS and its license are bundled.
-Use Play/Pause, Stop, or Space in the desktop app. It starts paused.
+is blocked, pair with an audio-ready learner for MP3 generation.
+GeneralUser GS and its license are bundled. No app window or autoplay is used.
 Windows has been tested; Mac runtime has not yet been verified.
 Create a new virtual environment on each computer.
 
@@ -61,8 +58,8 @@ set_tempo is intentionally unregistered. AI still selects sounds and writes note
 
 Full audio setup is required for MP3 rendering: run setup.ps1 without -CoreOnly
 on Windows or bash setup.sh without --core-only on Mac. Prepare before class
-where possible. Core-only learners can use the running app to verify the same
-tempo tool without rendering; pair them with an audio-ready learner for the MP3.
+where possible. Setup is chat-only by default. Core-only learners pair with an audio-ready learner
+for MP3 generation. The optional GUI is not used in this workshop.
 
 1. Start the starter connection in VS Code. Use / → compose_music with an
    original genre description. Request a 30-second song; creation uses 120 BPM.

@@ -1,0 +1,3 @@
+# Optional graphical interface; not used by the Copilot MP3 workshop.
+-r requirements.txt
+pygame

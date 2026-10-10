@@ -1,4 +1,4 @@
-param([switch]$CoreOnly)
+param([switch]$CoreOnly, [switch]$WithGui)
 $ErrorActionPreference = 'Stop'
 Set-Location $PSScriptRoot
 
@@ -13,7 +13,9 @@ $pythonArgs = @()
 function Test-Python {
     param([string]$Candidate, [string[]]$CandidateArgs)
     try {
-        & $Candidate @CandidateArgs -c "import sys,tkinter,struct; assert (3,10) <= sys.version_info[:2] <= (3,13); assert struct.calcsize('P') == 8" 2>$null
+        $pythonCheck = "import sys,struct; assert (3,10) <= sys.version_info[:2] <= (3,13); assert struct.calcsize('P') == 8"
+        if ($WithGui) { $pythonCheck += '; import tkinter' }
+        & $Candidate @CandidateArgs -c $pythonCheck 2>$null
         return $LASTEXITCODE -eq 0
     } catch { return $false }
 }
@@ -27,7 +29,7 @@ if (-not $python -and (Get-Command python -ErrorAction SilentlyContinue)) {
 }
 if (-not $python) {
     if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
-        throw 'Install 64-bit Python 3.13 with Tk from python.org, then run setup.ps1 again.'
+        throw 'Install 64-bit Python 3.10–3.13 from python.org, then run setup.ps1 again. Tk is only needed with -WithGui.'
     }
     Invoke-Checked 'winget' @('install', '--id', 'Python.Python.3.13', '--exact', '--scope', 'user', '--silent', '--accept-package-agreements', '--accept-source-agreements')
     $python = Join-Path $env:LOCALAPPDATA 'Programs\Python\Python313\python.exe'
@@ -39,7 +41,12 @@ if (-not (Test-Path -LiteralPath '.venv\Scripts\python.exe')) {
 $venvPython = Join-Path $PSScriptRoot '.venv\Scripts\python.exe'
 $requirements = if ($CoreOnly) { 'requirements.txt' } else { 'requirements-audio.txt' }
 Invoke-Checked $venvPython @('-m', 'pip', 'install', '--disable-pip-version-check', '-r', $requirements)
+if ($WithGui) { Invoke-Checked $venvPython @('-m', 'pip', 'install', '--disable-pip-version-check', '-r', 'requirements-gui.txt') }
 if (-not $CoreOnly) { Invoke-Checked $venvPython @('setup_audio.py') }
-Invoke-Checked $venvPython @('workshop_preflight.py')
-Write-Host 'Setup complete. Run: powershell -ExecutionPolicy Bypass -File .\run_app.ps1'
-Write-Host 'Music chat: powershell -ExecutionPolicy Bypass -File .\run_music_chat.ps1'
+$preflightArgs = @('workshop_preflight.py')
+if ($CoreOnly) { $preflightArgs += '--core-only' }
+if ($WithGui) { $preflightArgs += '--with-gui' }
+Invoke-Checked $venvPython $preflightArgs
+Write-Host 'Setup complete. Open MCPJAM in VS Code, start mcpjam, and enable its tools in Copilot agent chat.'
+Write-Host 'Find your interpreter: .\.venv\Scripts\python.exe workshop_preflight.py --vscode-config'
+if ($WithGui) { Write-Host 'Optional GUI: powershell -ExecutionPolicy Bypass -File .\run_app.ps1' }

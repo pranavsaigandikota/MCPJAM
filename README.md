@@ -24,7 +24,9 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\setup.ps1
 bash setup.sh
 ```
 
-Use full setup for MP3 rendering. Python 3.10–3.13 with Tk is required.
+Setup is chat-only by default: Python 3.10–3.13 plus offline audio rendering.
+No Tk, Pygame, app window, MIDI hardware or Gemini key is needed.
+Use the normal command above; core-only mode cannot generate MP3s.
 If audio setup is blocked, pair with someone whose setup works.
 
 ## 3. Connect in VS Code
