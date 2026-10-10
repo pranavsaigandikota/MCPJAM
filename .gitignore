@@ -19,3 +19,10 @@ generated_music/
 
 .workshop-*.json
 .workshop_slide_edit/
+
+# Presenter material stays on the instructor's machine.
+WORKSHOP_PRESENTATION.md
+WORKSHOP_REFERENCE.md
+workshop_delivery/Instructor-Guide.md
+workshop_delivery/*.pptx
+workshop_delivery/*.pdf
